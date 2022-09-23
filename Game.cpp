@@ -9,6 +9,7 @@ Game::Game()
 	: m_window(sf::VideoMode(ScreenSize::s_width, ScreenSize::s_height, 32), "SFML Playground", sf::Style::Default)
 {
 	init();
+	setUpTexture(); 
 
 }
 
@@ -73,6 +74,26 @@ void Game::run()
 	}
 }
 
+void Game::setUpTexture()
+{
+	
+	//sf::Texture tankTexture; is temporary so it once the function is run it will disapear
+	if (!tankTexture.loadFromFile("images\\E-100.PNG"))
+	{
+		std::string s("Could not load PNG");
+		throw std::exception(s.c_str());
+	}
+	m_tankSprite.setTexture(tankTexture);
+	m_tankSprite.setOrigin(47, 88); // got these number from going into paint nd cheching what co-ords of the middle of the png, if set to somewhere not tin the middle part of the image could be missing 
+	m_tankSprite.setPosition(200, 200); 
+	m_tankSprite.setScale(1.0, 0.5);// make smol
+}
+
+void Game::move()
+{
+	//if(sf::Keyboard)
+}
+
 ////////////////////////////////////////////////////////////
 void Game::processEvents()
 {
@@ -110,7 +131,7 @@ void Game::processGameEvents(sf::Event& event)
 ////////////////////////////////////////////////////////////
 void Game::update(double dt)
 {
-
+	m_tankSprite.rotate(15);
 }
 
 ////////////////////////////////////////////////////////////
@@ -120,6 +141,7 @@ void Game::render()
 #ifdef TEST_FPS
 	m_window.draw(x_updateFPS);
 	m_window.draw(x_drawFPS);
+	m_window.draw(m_tankSprite);// 
 #endif
 	m_window.display();
 }

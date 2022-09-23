@@ -35,6 +35,9 @@ public:
 	/// </summary>
 	Game();
 
+	sf::Sprite m_tankSprite; 
+	sf::Texture tankTexture;
+	
 	/// <summary>
 	/// @brief the main game loop.
 	/// 
@@ -47,6 +50,8 @@ public:
 	///  complete in less than the target time.
 	/// </summary>
 	void run();
+	void  setUpTexture(); 
+	void move();
 
 protected:
 	/// <summary>
