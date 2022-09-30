@@ -9,7 +9,7 @@
 #include <SFML/Graphics.hpp>
 #include <string>
 #include "ScreenSize.h"
-
+#include "LevelLoader.h"
 /// <summary>
 /// @author RP
 /// @date September 2022
@@ -38,6 +38,10 @@ public:
 	sf::Sprite m_tankSprite; 
 	sf::Texture tankTexture;
 	
+	LevelData levelData;
+	int levelNr = 1;
+	
+	TankData m_tank; 
 	/// <summary>
 	/// @brief the main game loop.
 	/// 
@@ -49,6 +53,7 @@ public:
 	///  more render than update operations will be performed as we expect our game loop to
 	///  complete in less than the target time.
 	/// </summary>
+
 	void run();
 	void  setUpTexture(); 
 	void move();

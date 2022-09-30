@@ -24,6 +24,8 @@ void Game::init()
 		std::cout << "Error loading font file";
 	}
 
+	LevelLoader::load(levelNr, levelData);// loads yaml file 
+
 #ifdef TEST_FPS
 	x_updateFPS.setFont(m_arialFont);
 	x_updateFPS.setPosition(20, 300);
@@ -85,8 +87,8 @@ void Game::setUpTexture()
 	}
 	m_tankSprite.setTexture(tankTexture);
 	m_tankSprite.setOrigin(47, 88); // got these number from going into paint nd cheching what co-ords of the middle of the png, if set to somewhere not tin the middle part of the image could be missing 
-	m_tankSprite.setPosition(200, 200); 
-	m_tankSprite.setScale(1.0, 0.5);// make smol
+	m_tankSprite.setPosition(m_tank.m_x, m_tank.m_y); 
+	m_tankSprite.setScale(1.0,0.5);// make smol
 }
 
 void Game::move()
