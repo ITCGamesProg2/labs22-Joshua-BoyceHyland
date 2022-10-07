@@ -79,6 +79,13 @@ protected:
 	/// <param name="event">system event</param>
 	void processGameEvents(sf::Event&);
 
+	/// <summary>
+	/// creates the wall sprites and load them into vector
+	/// Note that sf::Sprite is considered a light weight class, so 
+	///  storing copies (instead of pointers to sf::Sprite) in std::vector is acceptable.
+	/// </summary>
+	void generateWalls(); 
+
 	// Font used for all text
 	sf::Font m_arialFont;
 	// main window
@@ -93,6 +100,10 @@ protected:
 
 	sf::Sprite m_bgSpritee; 
 	sf::Texture m_bgTexture;
+
+	std::vector<sf::Sprite> m_wallSprites; 
+	sf::Texture m_spriteSheetTexture; 
+
 
 
 #ifdef TEST_FPS

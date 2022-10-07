@@ -10,11 +10,7 @@ Game::Game()
 {
 	init();
 
-	if (!m_bgTexture.loadFromFile("images/Background.jpg"))
-	{
-		std::cout << "Can not load background" << std::endl;
-	}
-	m_bgSpritee.setTexture()
+	
 }
 
 ////////////////////////////////////////////////////////////
@@ -42,6 +38,12 @@ void Game::init()
 		std::cout << "Error loading font file";
 	}
 
+	if (!m_bgTexture.loadFromFile("images/Background.jpg"))
+	{
+		std::cout << "Can not load background" << std::endl;
+	}
+	m_bgSpritee.setTexture(m_bgTexture);
+
 	// Load the player tank
 	if (!m_tankTexture.loadFromFile("images/E-100.png"))
 	{
@@ -53,6 +55,13 @@ void Game::init()
 	m_tankSprite.setTexture(m_tankTexture);
 	m_tankSprite.setOrigin(m_tankTexture.getSize().x / 2.0, m_tankTexture.getSize().y / 2.0);
 
+	if (!m_spriteSheetTexture.loadFromFile("images/SpriteSheet.png"))
+	{
+		std::string errorMsg("Error loading texture"); 
+		throw std::exception(errorMsg.c_str()); 
+	}
+
+	generateWalls(); 
 #ifdef TEST_FPS
 	x_updateFPS.setFont(m_arialFont);
 	x_updateFPS.setPosition(20, 300);
@@ -137,6 +146,24 @@ void Game::processGameEvents(sf::Event& event)
 	}
 }
 
+void Game::generateWalls()
+{
+	sf::IntRect wallRect(2, 129, 33, 23);
+	
+	//creates the walls
+	// auto means compiler with deduce corrrect type for the variable obstacle, this case being obstacle data
+	for (auto const &obstacle : m_level.m_obstacles)
+	{
+		sf::Sprite sprite; 
+		sprite.setTexture(m_spriteSheetTexture);
+		sprite.setOrigin(wallRect.width / 2.0, wallRect.height / 2.0);
+		sprite.setPosition(obstacle.m_position);
+		sprite.setRotation(obstacle.m_rotation);
+		m_wallSprites.push_back(sprite); 
+
+	}
+}
+
 ////////////////////////////////////////////////////////////
 void Game::update(double dt)
 {
@@ -153,7 +180,16 @@ void Game::render()
 #endif
 
 	// Render your sprites here....
+	m_window.draw(m_bgSpritee);
 	m_window.draw(m_tankSprite);
+
+	for (size_t i = 0; i < 1; i++)
+	{
+		m_window.draw(m_wallSprites[i]);
+	}
+	
+	
+	
 
 	m_window.display();
 }
