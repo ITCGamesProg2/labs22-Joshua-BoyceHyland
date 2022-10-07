@@ -10,6 +10,7 @@
 #include <string>
 #include "ScreenSize.h"
 #include "LevelLoader.h"
+
 /// <summary>
 /// @author RP
 /// @date September 2022
@@ -35,13 +36,6 @@ public:
 	/// </summary>
 	Game();
 
-	sf::Sprite m_tankSprite; 
-	sf::Texture tankTexture;
-	
-	LevelData levelData;
-	int levelNr = 1;
-	
-	TankData m_tank; 
 	/// <summary>
 	/// @brief the main game loop.
 	/// 
@@ -53,10 +47,7 @@ public:
 	///  more render than update operations will be performed as we expect our game loop to
 	///  complete in less than the target time.
 	/// </summary>
-
 	void run();
-	void  setUpTexture(); 
-	void move();
 
 protected:
 	/// <summary>
@@ -92,6 +83,17 @@ protected:
 	sf::Font m_arialFont;
 	// main window
 	sf::RenderWindow m_window;
+
+	// Player tank sprite and texture
+	sf::Sprite m_tankSprite;
+	sf::Texture m_tankTexture;
+	LevelData m_level; 
+
+	sf::Vector2f m_tankPosition{ 0.0f,0.0f }; 
+
+	sf::Sprite m_bgSpritee; 
+	sf::Texture m_bgTexture;
+
 
 #ifdef TEST_FPS
 	sf::Text x_updateFPS;					// text used to display updates per second.

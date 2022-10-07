@@ -1,5 +1,4 @@
 #ifdef _DEBUG 
-#pragma comment(lib,"libyaml-cppmdd")
 #pragma comment(lib,"sfml-graphics-d.lib") 
 #pragma comment(lib,"sfml-audio-d.lib") 
 #pragma comment(lib,"sfml-system-d.lib") 
@@ -14,7 +13,7 @@
 #endif 
 #pragma comment(lib,"opengl32.lib") 
 #pragma comment(lib,"glu32.lib") 
-
+#pragma comment(lib,"libyaml-cppmdd") 
 
 #include "Game.h"
 
@@ -28,8 +27,6 @@
 /// <returns></returns>
 int main(int, char* argv[])
 {
-	
-
 	Game game;
 	game.run();
 }

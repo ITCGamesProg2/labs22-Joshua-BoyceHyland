@@ -9,13 +9,31 @@ Game::Game()
 	: m_window(sf::VideoMode(ScreenSize::s_width, ScreenSize::s_height, 32), "SFML Playground", sf::Style::Default)
 {
 	init();
-	setUpTexture(); 
 
+	if (!m_bgTexture.loadFromFile("images/Background.jpg"))
+	{
+		std::cout << "Can not load background" << std::endl;
+	}
+	m_bgSpritee.setTexture()
 }
 
 ////////////////////////////////////////////////////////////
 void Game::init()
 {
+
+	int currentLevel = 1;
+
+	// generates a exception if level loading fails.
+	try
+	{
+		LevelLoader::load(currentLevel, m_level);
+	}
+	catch (std::exception & e)
+	{
+		std::cout << "Level Loading failure." << std::endl;
+		std::cout << e.what() << std::endl;
+		throw e;
+	}
 	// Really only necessary is our target FPS is greater than 60.
 	m_window.setVerticalSyncEnabled(true);
 
@@ -24,7 +42,16 @@ void Game::init()
 		std::cout << "Error loading font file";
 	}
 
-	LevelLoader::load(levelNr, levelData);// loads yaml file 
+	// Load the player tank
+	if (!m_tankTexture.loadFromFile("images/E-100.png"))
+	{
+		std::string s("Error loading texture");
+		throw std::exception(s.c_str());
+	}
+	m_tankPosition = m_level.m_tank.m_position;
+	m_tankSprite.setPosition(m_tankPosition);
+	m_tankSprite.setTexture(m_tankTexture);
+	m_tankSprite.setOrigin(m_tankTexture.getSize().x / 2.0, m_tankTexture.getSize().y / 2.0);
 
 #ifdef TEST_FPS
 	x_updateFPS.setFont(m_arialFont);
@@ -76,28 +103,6 @@ void Game::run()
 	}
 }
 
-void Game::setUpTexture()
-{
-	
-	//sf::Texture tankTexture; is temporary so it once the function is run it will disapear
-	if (!tankTexture.loadFromFile("images\\E-100.PNG"))
-	{
-		std::string s("Could not load PNG");
-		throw std::exception(s.c_str());
-	}
-	m_tankSprite.setTexture(tankTexture);
-	m_tankSprite.setOrigin(47, 88); // got these number from going into paint nd cheching what co-ords of the middle of the png, if set to somewhere not tin the middle part of the image could be missing 
-	//m_tankSprite.setPosition(200.0f, 200.0f);
-	float value =m_tank.m_x;
-	m_tankSprite.setPosition(m_tank.m_x, m_tank.m_y); 
-	m_tankSprite.setScale(1.0,0.5);// make smol
-}
-
-void Game::move()
-{
-	//if(sf::Keyboard)
-}
-
 ////////////////////////////////////////////////////////////
 void Game::processEvents()
 {
@@ -135,7 +140,7 @@ void Game::processGameEvents(sf::Event& event)
 ////////////////////////////////////////////////////////////
 void Game::update(double dt)
 {
-	m_tankSprite.rotate(15);
+
 }
 
 ////////////////////////////////////////////////////////////
@@ -145,8 +150,11 @@ void Game::render()
 #ifdef TEST_FPS
 	m_window.draw(x_updateFPS);
 	m_window.draw(x_drawFPS);
-	m_window.draw(m_tankSprite);// 
 #endif
+
+	// Render your sprites here....
+	m_window.draw(m_tankSprite);
+
 	m_window.display();
 }
 
