@@ -70,7 +70,7 @@ void operator >> (const YAML::Node& t_levelNode, LevelData& t_level)
 ////////////////////////////////////////////////////////////
 void LevelLoader::load(int t_levelNr, LevelData& t_level)
 {
-	std::string filename = "./levelData/level" + std::to_string(t_levelNr) + ".yaml";
+	std::string filename = "./resources/levels/level" + std::to_string(t_levelNr) + ".yaml";
 
 	try
 	{

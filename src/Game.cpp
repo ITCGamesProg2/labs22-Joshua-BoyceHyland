@@ -6,7 +6,7 @@ static double const FPS{ 60.0f };
 
 ////////////////////////////////////////////////////////////
 Game::Game()
-	: m_window(sf::VideoMode(ScreenSize::s_width, ScreenSize::s_height, 32), "SFML Playground", sf::Style::Default)
+	: m_window(sf::VideoMode(ScreenSize::s_width, ScreenSize::s_height, 32), "SFML Playground", sf::Style::Default), m_tank(m_texture, sf::Vector2f(0,0))
 {
 	init();
 
@@ -38,14 +38,21 @@ void Game::init()
 		std::cout << "Error loading font file";
 	}
 
-	if (!m_bgTexture.loadFromFile("images/Background.jpg"))
+	if (!m_bgTexture.loadFromFile("./resources/images/Background.jpg"))
 	{
 		std::cout << "Can not load background" << std::endl;
 	}
 	m_bgSpritee.setTexture(m_bgTexture);
 
 	// Load the player tank
-	if (!m_tankTexture.loadFromFile("images/E-100.png"))
+	if (!m_texture.loadFromFile("./resources/images/SpriteSheet.png"))
+	{
+		std::string s("Error loading texture");  
+		throw std::exception(s.c_str()); 
+	}
+	m_tank.setPosition(m_level.m_tank.m_position); 
+	
+	/*if (!m_tankTexture.loadFromFile("images/E-100.png"))
 	{
 		std::string s("Error loading texture");
 		throw std::exception(s.c_str());
@@ -53,9 +60,9 @@ void Game::init()
 	m_tankPosition = m_level.m_tank.m_position;
 	m_tankSprite.setPosition(m_tankPosition);
 	m_tankSprite.setTexture(m_tankTexture);
-	m_tankSprite.setOrigin(m_tankTexture.getSize().x / 2.0, m_tankTexture.getSize().y / 2.0);
+	m_tankSprite.setOrigin(m_tankTexture.getSize().x / 2.0, m_tankTexture.getSize().y / 2.0);*/
 
-	if (!m_spriteSheetTexture.loadFromFile("images/SpriteSheet.png"))
+	if (!m_spriteSheetTexture.loadFromFile("./resources/images/SpriteSheet.png"))
 	{
 		std::string errorMsg("Error loading texture"); 
 		throw std::exception(errorMsg.c_str()); 
@@ -182,9 +189,8 @@ void Game::render()
 
 	// Render your sprites here....
 	m_window.draw(m_bgSpritee);
-	m_window.draw(m_tankSprite);
+	m_tank.render(m_window); 
 
-	// range based for loop, goes through the vector array
 	for (sf::Sprite sprite : m_wallSprites)
 	{
 		m_window.draw(sprite);

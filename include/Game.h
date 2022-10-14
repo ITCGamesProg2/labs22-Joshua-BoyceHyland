@@ -10,7 +10,7 @@
 #include <string>
 #include "ScreenSize.h"
 #include "LevelLoader.h"
-
+#include "Tank.h"
 /// <summary>
 /// @author RP
 /// @date September 2022
@@ -92,11 +92,11 @@ protected:
 	sf::RenderWindow m_window;
 
 	// Player tank sprite and texture
-	sf::Sprite m_tankSprite;
-	sf::Texture m_tankTexture;
+	//sf::Sprite m_tankSprite;
+	//sf::Texture m_tankTexture;
 	LevelData m_level; 
 
-	sf::Vector2f m_tankPosition{ 0.0f,0.0f }; 
+	//sf::Vector2f m_tankPosition{ 0.0f,0.0f }; 
 
 	sf::Sprite m_bgSpritee; 
 	sf::Texture m_bgTexture;
@@ -104,6 +104,9 @@ protected:
 	std::vector<sf::Sprite> m_wallSprites; 
 	sf::Texture m_spriteSheetTexture; 
 
+	// in
+	Tank m_tank; 
+	sf::Texture m_texture; 
 
 
 #ifdef TEST_FPS
