@@ -8,7 +8,7 @@ Tank::Tank(sf::Texture const & texture, sf::Vector2f const pos)
 
 void Tank::update(double dt)
 {	
-	
+	m_speed = std::clamp(m_speed, MAX_REVERSE_SPEED, MAX_FORWARD_SPEED);
 }
 
 void Tank::render(sf::RenderWindow & window) 
@@ -22,6 +22,36 @@ void Tank::setPosition(sf::Vector2f t_position)
 	m_tankBase.setPosition(t_position); 
 }
 
+void Tank::increaseSpeed()
+{
+	m_speed += 1;
+}
+
+void Tank::decreaseSpeed()
+{
+	m_speed -= 1; 
+}
+
+void Tank::increaseRotation()
+{
+	m_rotation += 1; 
+
+	if (m_rotation == 360.0)
+	{
+		m_rotation = 0; 
+	}
+}
+
+
+void Tank::decreaseRotation()
+{
+	m_rotation -= 1; 
+
+	if (m_rotation == 0.0)
+	{
+		m_rotation = 359.0; 
+	}
+}
 
 void Tank::initSprites(sf::Vector2f pos)
 {

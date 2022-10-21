@@ -44,5 +44,8 @@
     <ClInclude Include="include\Tank.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\MathUtility.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

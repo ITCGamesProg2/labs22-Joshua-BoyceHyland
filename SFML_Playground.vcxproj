@@ -28,6 +28,7 @@
     <ClInclude Include="include\Game.h" />
     <ClInclude Include="include\Header.h" />
     <ClInclude Include="include\LevelLoader.h" />
+    <ClInclude Include="include\MathUtility.h" />
     <ClInclude Include="include\ScreenSize.h" />
     <ClInclude Include="include\Tank.h" />
   </ItemGroup>
@@ -95,6 +96,8 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>C:\SFML-2.5.1\include;$(SFML_SDK)\include;.\include;.\include; .</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <PreprocessorDefinitions>_SILENCE_ALL_CXX17_DEPRECATION_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>C:\SFML-2.5.1\lib;.\lib</AdditionalLibraryDirectories>
