@@ -45,6 +45,6 @@ private:
 	sf::Texture const & m_texture;
 	double m_speed{ 0.0 };// The tank speed.
 	double m_rotation{ 0.0 };// The current rotation as applied to tank base.
-	
-	double const DEG_TORAD = thor::Pi / 180.0f;
+	sf::Vector2f m_position{ 0.0, 0.0 }; 
+	double const DEG_TO_RAD = thor::Pi / 180.0f;
 };
