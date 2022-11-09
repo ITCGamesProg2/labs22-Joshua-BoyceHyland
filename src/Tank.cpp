@@ -8,12 +8,16 @@ Tank::Tank(sf::Texture const & texture, sf::Vector2f const pos)
 
 void Tank::update(double dt)
 {	
-	m_speed = std::clamp(m_speed, MAX_REVERSE_SPEED, MAX_FORWARD_SPEED);
+	
+	float radianRotation = m_rotation * DEG_TO_RAD; 
 
-	int newXPos = m_position.x + std::cos(m_rotation) * m_speed * (dt/ 1000);
-	int newYPos = m_position.y + std::sin(m_rotation) * m_speed * (dt / 1000);
+	int newXPos = m_position.x + std::cos(radianRotation) * m_speed * (dt/ 1000);
+	int newYPos = m_position.y + std::sin(radianRotation) * m_speed * (dt / 1000);
 
 	m_tankBase.setPosition(newXPos, newYPos);
+	m_turret.setPosition(newXPos, newYPos); 
+	
+	m_speed = std::clamp(m_speed, MAX_REVERSE_SPEED, MAX_FORWARD_SPEED);
 }
 
 void Tank::render(sf::RenderWindow & window) 

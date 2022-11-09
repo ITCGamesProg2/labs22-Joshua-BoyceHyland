@@ -3,7 +3,6 @@
 
 // Our target FPS
 static double const FPS{ 60.0f };
-
 ////////////////////////////////////////////////////////////
 Game::Game()
 	: m_window(sf::VideoMode(ScreenSize::s_width, ScreenSize::s_height, 32), "SFML Playground", sf::Style::Default), m_tank(m_texture, sf::Vector2f(0,0))
@@ -141,33 +140,21 @@ void Game::processGameEvents(sf::Event& event)
 	{
 		switch (event.key.code)
 		{
-		case sf::Keyboard::Escape:
-			m_window.close();
-			break;
-		case sf::Keyboard::Up:
-			// Up key was pressed...
-			break;
-		default:
-			break;
+			case sf::Keyboard::Escape:
+				m_window.close();
+				break;
+			case sf::Keyboard::Up:
+				m_tank.increaseSpeed();
+				break;
+			case sf::Keyboard::Down:
+				m_tank.decreaseSpeed();
+				break;
+			default:
+				break;
 		}
 	}
 
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
-	{
-		m_tank.increaseRotation(); 
-	}
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
-	{
-		m_tank.decreaseRotation();
-	}
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
-	{
-		m_tank.increaseSpeed();
-	}
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
-	{
-		m_tank.decreaseSpeed();
-	}
+	
 }
 
 void Game::generateWalls()
@@ -192,7 +179,7 @@ void Game::generateWalls()
 ////////////////////////////////////////////////////////////
 void Game::update(double dt)
 {
-
+	m_tank.update(dt);
 }
 
 ////////////////////////////////////////////////////////////
@@ -208,14 +195,11 @@ void Game::render()
 	m_window.draw(m_bgSpritee);
 	m_tank.render(m_window); 
 
+	// draws all sprites in the vector
 	for (sf::Sprite sprite : m_wallSprites)
 	{
 		m_window.draw(sprite);
 	}
-	/*for (size_t i = 0; i <m_wallSprites.size(); i++)
-	{
-		m_window.draw(m_wallSprites[i]);
-	}*/
 	
 	
 	
