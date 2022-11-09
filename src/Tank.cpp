@@ -10,8 +10,8 @@ void Tank::update(double dt)
 {	
 	m_speed = std::clamp(m_speed, MAX_REVERSE_SPEED, MAX_FORWARD_SPEED);
 
-	int newXPos = m_position.x + std::cos(m_rotation) * m_speed * (delta time / 1000);
-	int newYPos = m_position.y + std::sin(m_rotation) * m_speed * (delta time / 1000);
+	int newXPos = m_position.x + std::cos(m_rotation) * m_speed * (dt/ 1000);
+	int newYPos = m_position.y + std::sin(m_rotation) * m_speed * (dt / 1000);
 
 	m_tankBase.setPosition(newXPos, newYPos);
 }
