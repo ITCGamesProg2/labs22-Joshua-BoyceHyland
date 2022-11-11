@@ -47,4 +47,5 @@ private:
 	double m_rotation{ 0.0 };// The current rotation as applied to tank base.
 	sf::Vector2f m_position{ 200.0, 200.0 }; 
 	double const DEG_TO_RAD = thor::Pi / 180.0f;
+	
 };

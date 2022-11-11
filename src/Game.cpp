@@ -136,25 +136,30 @@ void Game::processEvents()
 void Game::processGameEvents(sf::Event& event)
 {
 	// check if the event is a a mouse button release
-	if (sf::Event::KeyPressed == event.type)
+	
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
 	{
-		switch (event.key.code)
-		{
-			case sf::Keyboard::Escape:
-				m_window.close();
-				break;
-			case sf::Keyboard::Up:
-				m_tank.increaseSpeed();
-				break;
-			case sf::Keyboard::Down:
-				m_tank.decreaseSpeed();
-				break;
-			default:
-				break;
-		}
+		m_window.close();
+	}
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+	{
+		m_tank.increaseSpeed();
+ 
 	}
 
-	
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+	{
+		m_tank.decreaseSpeed();
+		
+	}
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+	{
+		m_tank.increaseRotation();
+	}
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+	{
+		m_tank.decreaseRotation();
+	}
 }
 
 void Game::generateWalls()

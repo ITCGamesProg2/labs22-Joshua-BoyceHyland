@@ -1,4 +1,5 @@
 #include "Tank.h"
+#include <iostream>
 
 Tank::Tank(sf::Texture const & texture, sf::Vector2f const pos)
 : m_texture(texture)
@@ -11,13 +12,23 @@ void Tank::update(double dt)
 	
 	float radianRotation = m_rotation * DEG_TO_RAD; 
 
-	int newXPos = m_position.x + std::cos(radianRotation) * m_speed * (dt/ 1000);
-	int newYPos = m_position.y + std::sin(radianRotation) * m_speed * (dt / 1000);
+	 m_position.x = m_position.x + std::cos(radianRotation) * m_speed * (dt/ 1000);
+	 m_position.y = m_position.y + std::sin(radianRotation) * m_speed * (dt / 1000);
 
-	m_tankBase.setPosition(newXPos, newYPos);
-	m_turret.setPosition(newXPos, newYPos); 
+	m_tankBase.setPosition(m_position);
+	m_turret.setPosition(m_position); 
+	
+	m_tankBase.setRotation(m_rotation); 
+	m_turret.setRotation(m_rotation); 
+
 	
 	m_speed = std::clamp(m_speed, MAX_REVERSE_SPEED, MAX_FORWARD_SPEED);
+	
+    m_speed = m_speed * 0.99; 
+	
+	
+
+	std::cout << m_speed << std::endl; 
 }
 
 void Tank::render(sf::RenderWindow & window) 
@@ -33,17 +44,17 @@ void Tank::setPosition(sf::Vector2f t_position)
 
 void Tank::increaseSpeed()
 {
-	m_speed += 1;
+	m_speed += 2;
 }
 
 void Tank::decreaseSpeed()
 {
-	m_speed -= 1; 
+	m_speed -= 2; 
 }
 
 void Tank::increaseRotation()
 {
-	m_rotation += 1; 
+	m_rotation += 2; 
 
 	if (m_rotation == 360.0)
 	{
@@ -54,13 +65,15 @@ void Tank::increaseRotation()
 
 void Tank::decreaseRotation()
 {
-	m_rotation -= 1; 
+	m_rotation -= 2; 
 
 	if (m_rotation == 0.0)
 	{
 		m_rotation = 359.0; 
 	}
 }
+
+
 
 void Tank::initSprites(sf::Vector2f pos)
 {
