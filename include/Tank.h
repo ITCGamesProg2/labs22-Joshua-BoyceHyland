@@ -34,18 +34,44 @@ public:
 	/// </summary>
 	void decreaseRotation();
 
-	double MAX_FORWARD_SPEED = 100; 
-	double MAX_REVERSE_SPEED = -100; 
+	/// <summary>
+	/// processed controle keys and applies speed /rotation as appropiatee
+	/// </summary>
+	void handleKeyInput(); 
+
+	/// <summary>
+	/// increases rotation the turret on its own
+	/// </summary>
+	void increaseTurretRotation(); 
+
+
+	/// <summary>
+	/// decreases the rotation turret on its own
+	/// </summary>
+	void decreaseTurretRotation(); 
+
+	/// <summary>
+	/// centers the turret to allign with base
+	/// </summary>
+	void centreTurret(); 
+	
 	
 private:
 	void initSprites(sf::Vector2f pos);
 
+	// tank variables 
 	sf::Sprite m_tankBase;
-	sf::Sprite m_turret;
-	sf::Texture const & m_texture;
 	double m_speed{ 0.0 };// The tank speed.
-	double m_rotation{ 0.0 };// The current rotation as applied to tank base.
+	double m_tankRotation{ 0.0 };// The current rotation as applied to tank base.
 	sf::Vector2f m_position{ 200.0, 200.0 }; 
-	double const DEG_TO_RAD = thor::Pi / 180.0f;
+
+	// turret variables 
+	sf::Sprite m_turret;
+	double m_turretRotation{ 0.0 }; 
+
+	sf::Texture const & m_texture;
 	
+	double const DEG_TO_RAD = thor::Pi / 180.0f;
+	double const MAX_FORWARD_SPEED = 100; 
+	double const MAX_REVERSE_SPEED = -100; 
 };

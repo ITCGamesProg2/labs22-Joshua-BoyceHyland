@@ -8,8 +8,6 @@ Game::Game()
 	: m_window(sf::VideoMode(ScreenSize::s_width, ScreenSize::s_height, 32), "SFML Playground", sf::Style::Default), m_tank(m_texture, sf::Vector2f(0,0))
 {
 	init();
-
-	
 }
 
 ////////////////////////////////////////////////////////////
@@ -51,16 +49,6 @@ void Game::init()
 	}
 	m_tank.setPosition(m_level.m_tank.m_position); 
 	
-	/*if (!m_tankTexture.loadFromFile("images/E-100.png"))
-	{
-		std::string s("Error loading texture");
-		throw std::exception(s.c_str());
-	}
-	m_tankPosition = m_level.m_tank.m_position;
-	m_tankSprite.setPosition(m_tankPosition);
-	m_tankSprite.setTexture(m_tankTexture);
-	m_tankSprite.setOrigin(m_tankTexture.getSize().x / 2.0, m_tankTexture.getSize().y / 2.0);*/
-
 	if (!m_spriteSheetTexture.loadFromFile("./resources/images/SpriteSheet.png"))
 	{
 		std::string errorMsg("Error loading texture"); 
@@ -141,25 +129,10 @@ void Game::processGameEvents(sf::Event& event)
 	{
 		m_window.close();
 	}
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
-	{
-		m_tank.increaseSpeed();
- 
-	}
 
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
-	{
-		m_tank.decreaseSpeed();
-		
-	}
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
-	{
-		m_tank.increaseRotation();
-	}
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
-	{
-		m_tank.decreaseRotation();
-	}
+	//m_tank.handleKeyInput();
+	
+	
 }
 
 void Game::generateWalls()

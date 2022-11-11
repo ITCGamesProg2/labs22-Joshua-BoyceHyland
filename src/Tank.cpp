@@ -9,8 +9,8 @@ Tank::Tank(sf::Texture const & texture, sf::Vector2f const pos)
 
 void Tank::update(double dt)
 {	
-	
-	float radianRotation = m_rotation * DEG_TO_RAD; 
+	handleKeyInput(); 
+	float radianRotation = m_tankRotation * DEG_TO_RAD; 
 
 	 m_position.x = m_position.x + std::cos(radianRotation) * m_speed * (dt/ 1000);
 	 m_position.y = m_position.y + std::sin(radianRotation) * m_speed * (dt / 1000);
@@ -18,8 +18,8 @@ void Tank::update(double dt)
 	m_tankBase.setPosition(m_position);
 	m_turret.setPosition(m_position); 
 	
-	m_tankBase.setRotation(m_rotation); 
-	m_turret.setRotation(m_rotation); 
+	m_tankBase.setRotation(m_tankRotation); 
+	m_turret.setRotation(m_turretRotation); 
 
 	
 	m_speed = std::clamp(m_speed, MAX_REVERSE_SPEED, MAX_FORWARD_SPEED);
@@ -54,26 +54,82 @@ void Tank::decreaseSpeed()
 
 void Tank::increaseRotation()
 {
-	m_rotation += 2; 
+	m_tankRotation += 2; 
 
-	if (m_rotation == 360.0)
+	if (m_tankRotation == 360.0)
 	{
-		m_rotation = 0; 
+		m_tankRotation = 0; 
 	}
 }
 
 
 void Tank::decreaseRotation()
 {
-	m_rotation -= 2; 
+	m_tankRotation -= 2; 
 
-	if (m_rotation == 0.0)
+	if (m_tankRotation == 0.0)
 	{
-		m_rotation = 359.0; 
+		m_tankRotation = 359.0; 
 	}
 }
 
+void Tank::handleKeyInput()
+{
+	// tank base 
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+	{
+		increaseSpeed();
+	}
 
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+	{
+		decreaseSpeed();
+	}
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+	{
+		increaseRotation();
+	}
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+	{
+		decreaseRotation();
+	}
+
+	//turret
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::X))
+	{
+		increaseTurretRotation(); 
+	}
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Z))
+	{
+		decreaseTurretRotation(); 
+	}
+}
+
+void Tank::increaseTurretRotation()
+{
+	m_turretRotation += 2;
+
+	/*if (m_tankRotation == 360.0)
+	{
+		m_turretRotation = 0;
+	}*/
+}
+
+
+
+void Tank::decreaseTurretRotation()
+{
+	m_turretRotation -= 2;
+
+	/*if (m_turretRotation == 0.0)
+	{
+		m_turretRotation = 360.0;
+	}*/
+}
+
+void Tank::centreTurret()
+{
+}
 
 void Tank::initSprites(sf::Vector2f pos)
 {
