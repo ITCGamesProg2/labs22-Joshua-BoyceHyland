@@ -68,6 +68,7 @@ private:
 	// turret variables 
 	sf::Sprite m_turret;
 	double m_turretRotation{ 0.0 }; 
+	bool centering = false; 
 
 	sf::Texture const & m_texture;
 	

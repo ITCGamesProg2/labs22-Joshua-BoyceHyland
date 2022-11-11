@@ -10,6 +10,7 @@ Tank::Tank(sf::Texture const & texture, sf::Vector2f const pos)
 void Tank::update(double dt)
 {	
 	handleKeyInput(); 
+	centreTurret();
 	float radianRotation = m_tankRotation * DEG_TO_RAD; 
 
 	 m_position.x = m_position.x + std::cos(radianRotation) * m_speed * (dt/ 1000);
@@ -128,7 +129,17 @@ void Tank::decreaseTurretRotation()
 }
 
 void Tank::centreTurret()
-{
+{	
+	double startAngle;
+
+	if (!centering)
+	{
+		startAngle = m_tankRotation;
+	}
+	if (centering)
+	{
+	//	if
+	}
 }
 
 void Tank::initSprites(sf::Vector2f pos)
