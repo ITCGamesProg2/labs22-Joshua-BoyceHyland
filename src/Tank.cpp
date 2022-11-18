@@ -104,6 +104,11 @@ void Tank::handleKeyInput()
 	{
 		decreaseTurretRotation(); 
 	}
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::C))
+	{
+		centering = true; 
+	}
 }
 
 void Tank::increaseTurretRotation()
@@ -130,15 +135,30 @@ void Tank::decreaseTurretRotation()
 
 void Tank::centreTurret()
 {	
-	double startAngle;
-
+	static float startAngle;
+	int destAngle = static_cast<int>(m_tankRotation);
+	int bottomOfTank = static_cast<int>(m_tankRotation) - 180; 
 	if (!centering)
 	{
 		startAngle = m_tankRotation;
 	}
-	if (centering)
+
+	else 
 	{
-	//	if
+		if (m_turretRotation>bottomOfTank)
+		{
+			m_turretRotation--; 
+		}
+		else
+		{
+			m_turretRotation++; 
+		}
+
+		if (static_cast<int>(m_turretRotation)%360 == destAngle )
+		{
+			centering = false; 
+		}
+
 	}
 }
 
