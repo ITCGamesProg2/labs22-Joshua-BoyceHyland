@@ -1,6 +1,8 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 #include <Thor/Math.hpp>
+#include "CollisionDetector.h"
+
 /// <summary>
 /// @brief A simple tank controller.
 /// 
@@ -9,7 +11,14 @@
 class Tank
 {
 public:	
-	Tank(sf::Texture const & texture, sf::Vector2f const pos);
+	/// <summary>
+/// @brief Constructor that stores drawable state (texture, sprite) for the tank.
+/// Stores references to the texture and container of wall sprites. 
+/// Creates sprites for the tank base and turret from the supplied texture.
+/// </summary>
+/// <param name="t_texture">A reference to the sprite sheet texture</param>
+///< param name="t_wallSprites">A reference to the container of wall sprites</param>  
+	Tank(sf::Texture const & texture, std::vector<sf::Sprite> & t_wallSprites);
 	void update(double dt);
 	void render(sf::RenderWindow & window);
 	void setPosition(sf::Vector2f t_position); 
@@ -54,10 +63,16 @@ public:
 	/// centers the turret to allign with base
 	/// </summary>
 	void centreTurret(); 
+
+	/// <summary>
+	/// checs for collision between the walls and the tank 
+	/// </summary>
+	/// <returns>true if there is a collison between tanks and one of the wall</returns>
+	bool checkCWallCollision(); 
 	
 	
 private:
-	void initSprites(sf::Vector2f pos);
+	void initSprites();
 
 	// tank variables 
 	sf::Sprite m_tankBase;
@@ -70,6 +85,8 @@ private:
 	double m_turretRotation{ 0.0 }; 
 	bool centering = false; 
 
+	// reference to containter of the wall sprites 
+	std::vector<sf::Sprite>& m_wallSprites; 
 	sf::Texture const & m_texture;
 	
 	double const DEG_TO_RAD = thor::Pi / 180.0f;
