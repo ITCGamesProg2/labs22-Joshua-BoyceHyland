@@ -138,14 +138,15 @@ void Tank::centreTurret()
 	static float startAngle;
 	int destAngle = static_cast<int>(m_tankRotation);
 	int bottomOfTank = static_cast<int>(m_tankRotation) - 180; 
+	
 	if (!centering)
 	{
-		startAngle = m_tankRotation;
+		startAngle = m_turretRotation;
 	}
 
 	else 
 	{
-		if (m_turretRotation>bottomOfTank)
+		/*if (m_turretRotation>bottomOfTank)
 		{
 			m_turretRotation--; 
 		}
@@ -154,11 +155,24 @@ void Tank::centreTurret()
 			m_turretRotation++; 
 		}
 
-		if (static_cast<int>(m_turretRotation)%360 == destAngle )
+		if (static_cast<int>(m_turretRotation)%180 == 0 )
+		{
+			centering = false; 
+		}*/
+
+		if (startAngle < destAngle)
+		{
+			m_turretRotation++;
+		}
+		else
+		{
+			m_turretRotation--; 
+		}
+
+		if (static_cast<int>(m_turretRotation) % 360 == 0)
 		{
 			centering = false; 
 		}
-
 	}
 }
 
