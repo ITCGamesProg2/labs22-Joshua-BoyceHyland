@@ -169,7 +169,7 @@ void Tank::centreTurret()
 			m_turretRotation--; 
 		}
 
-		if (static_cast<int>(m_turretRotation) % 360 == 0)
+		if (static_cast<int>(m_turretRotation) % destAngle == 0)
 		{
 			centering = false; 
 		}
