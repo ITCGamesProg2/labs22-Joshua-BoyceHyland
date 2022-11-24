@@ -12,10 +12,15 @@ void Tank::update(double dt)
 {	
 	handleKeyInput(); 
 	centreTurret();
-	float radianRotation = m_tankRotation * DEG_TO_RAD; 
+	if (checkCWallCollision())
+	{
+		//deflect(); 
+	}
 
-	 m_position.x = m_position.x + std::cos(radianRotation) * m_speed * (dt/ 1000);
-	 m_position.y = m_position.y + std::sin(radianRotation) * m_speed * (dt / 1000);
+
+	float radianRotation = m_tankRotation * DEG_TO_RAD; 
+	m_position.x = m_position.x + std::cos(radianRotation) * m_speed * (dt/ 1000);
+	m_position.y = m_position.y + std::sin(radianRotation) * m_speed * (dt / 1000);
 
 	m_tankBase.setPosition(m_position);
 	m_turret.setPosition(m_position); 
@@ -171,11 +176,40 @@ bool Tank::checkCWallCollision()
 	{
 		if((CollisionDetector::collision(m_turret, wall))||(CollisionDetector::collision(m_tankBase, wall)))
 		{
+			std::cout << "Motherfucking hit" << std::endl; 
 			return true; 
 		}
 	}
 
 	return false;
+}
+
+void Tank::deflect()
+{
+	// accomadates for if tank is rotating
+	//adjustRotation();
+
+	// if the tank is moving 
+
+	if (m_speed != 0)
+	{
+		// no rotation when there is a collision
+		m_enableRotation = false; 
+
+		// backs up to position in previous frame
+		m_tankBase.setPosition(m_previousPosition); 
+
+		// applying small force in oppositie direction fo travle
+
+		if (m_previousSpeed < 0)
+		{
+			m_speed = 8; 
+		}
+		else
+		{
+			m_speed = -8; 
+		}
+	}
 }
 
 void Tank::initSprites()
