@@ -14,10 +14,10 @@ void Tank::update(double dt)
 	centreTurret();
 	if (checkCWallCollision())
 	{
-		//deflect(); 
+		deflect(); 
 	}
 
-
+	m_previousPosition = m_position; 
 	float radianRotation = m_tankRotation * DEG_TO_RAD; 
 	m_position.x = m_position.x + std::cos(radianRotation) * m_speed * (dt/ 1000);
 	m_position.y = m_position.y + std::sin(radianRotation) * m_speed * (dt / 1000);
@@ -51,16 +51,19 @@ void Tank::setPosition(sf::Vector2f t_position)
 
 void Tank::increaseSpeed()
 {
+	m_previousSpeed = m_speed;
 	m_speed += 2;
 }
 
 void Tank::decreaseSpeed()
 {
+	m_previousSpeed = m_speed;
 	m_speed -= 2; 
 }
 
 void Tank::increaseRotation()
 {
+	m_previousRotation = m_tankRotation; 
 	m_tankRotation += 2; 
 
 	if (m_tankRotation == 360.0)
@@ -72,6 +75,7 @@ void Tank::increaseRotation()
 
 void Tank::decreaseRotation()
 {
+	m_previousRotation = m_tankRotation;
 	m_tankRotation -= 2; 
 
 	if (m_tankRotation == 0.0)
@@ -113,7 +117,11 @@ void Tank::handleKeyInput()
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::C))
 	{
-		centering = true; 
+		if (m_tankRotation != m_turretRotation)
+		{
+			centering = true; 
+		}
+		
 	}
 }
 
@@ -121,10 +129,10 @@ void Tank::increaseTurretRotation()
 {
 	m_turretRotation += 2;
 
-	/*if (m_tankRotation == 360.0)
+	if (m_tankRotation == 360.0)
 	{
 		m_turretRotation = 0;
-	}*/
+	}
 }
 
 
@@ -133,10 +141,10 @@ void Tank::decreaseTurretRotation()
 {
 	m_turretRotation -= 2;
 
-	/*if (m_turretRotation == 0.0)
+	if (m_turretRotation == 0.0)
 	{
 		m_turretRotation = 360.0;
-	}*/
+	}
 }
 
 void Tank::centreTurret()
@@ -158,7 +166,7 @@ void Tank::centreTurret()
 		{
 			m_turretRotation++;
 		}
-		else
+		else 
 		{
 			m_turretRotation--; 
 		}
@@ -175,8 +183,7 @@ bool Tank::checkCWallCollision()
 	for (sf::Sprite const& wall : m_wallSprites)
 	{
 		if((CollisionDetector::collision(m_turret, wall))||(CollisionDetector::collision(m_tankBase, wall)))
-		{
-			std::cout << "Motherfucking hit" << std::endl; 
+		{ 
 			return true; 
 		}
 	}

@@ -100,6 +100,7 @@ private:
 	bool m_enableRotation{ true }; 
 	sf::Vector2f m_previousPosition; 
 	double m_previousSpeed; 
+	double m_previousRotation; 
 	// reference to containter of the wall sprites 
 	std::vector<sf::Sprite>& m_wallSprites; 
 	sf::Texture const & m_texture;
