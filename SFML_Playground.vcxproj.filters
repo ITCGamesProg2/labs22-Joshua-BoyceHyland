@@ -38,9 +38,6 @@
     <ClInclude Include="include\Game.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\Header.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="include\LevelLoader.h">
       <Filter>Header Files</Filter>
     </ClInclude>

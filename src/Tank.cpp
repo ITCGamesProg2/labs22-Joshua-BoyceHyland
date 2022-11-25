@@ -65,6 +65,7 @@ void Tank::increaseRotation()
 {
 	m_previousRotation = m_tankRotation; 
 	m_tankRotation += 2; 
+	m_turretRotation += 2;
 
 	if (m_tankRotation == 360.0)
 	{
@@ -77,30 +78,32 @@ void Tank::decreaseRotation()
 {
 	m_previousRotation = m_tankRotation;
 	m_tankRotation -= 2; 
+	m_turretRotation -= 2; 
 
 	if (m_tankRotation == 0.0)
 	{
 		m_tankRotation = 359.0; 
 	}
+	
 }
 
 void Tank::handleKeyInput()
 {
 	// tank base 
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
 	{
 		increaseSpeed();
 	}
 
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
 	{
 		decreaseSpeed();
 	}
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
 	{
 		increaseRotation();
 	}
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
 	{
 		decreaseRotation();
 	}
@@ -110,6 +113,11 @@ void Tank::handleKeyInput()
 	{
 		increaseTurretRotation(); 
 	}
+	/*if (sf::Mouse::Wheel::)
+	{
+		increaseTurretRotation();
+	}*/
+
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Z))
 	{
 		decreaseTurretRotation(); 
@@ -122,6 +130,12 @@ void Tank::handleKeyInput()
 			centering = true; 
 		}
 		
+	}
+
+	if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+	{
+		std::cout << "~~~~~~~shhhhhhooot" << std::endl;
+		m_speed = m_speed - 8;
 	}
 }
 
@@ -149,16 +163,11 @@ void Tank::decreaseTurretRotation()
 
 void Tank::centreTurret()
 {	
-	static float startAngle;
+	float startAngle = m_turretRotation;
 	int destAngle = static_cast<int>(m_tankRotation);
-	int bottomOfTank = static_cast<int>(m_tankRotation) - 180; 
 	
-	if (!centering)
-	{
-		startAngle = m_turretRotation;
-	}
-
-	else 
+	// if not centering assigns the angle its beginning from 
+	if(centering)
 	{
 		
 
@@ -171,7 +180,13 @@ void Tank::centreTurret()
 			m_turretRotation--; 
 		}
 
-		if (static_cast<int>(m_turretRotation) % destAngle == 0)
+		if ((startAngle - destAngle)>180)
+		{
+			m_turretRotation--;
+		}
+
+		// if the turret rotation reaches the destination it stops 
+		if (static_cast<int>(m_turretRotation) == destAngle)
 		{
 			centering = false; 
 		}

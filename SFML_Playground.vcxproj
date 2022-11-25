@@ -29,7 +29,6 @@
   <ItemGroup>
     <ClInclude Include="include\CollisionDetector.h" />
     <ClInclude Include="include\Game.h" />
-    <ClInclude Include="include\Header.h" />
     <ClInclude Include="include\LevelLoader.h" />
     <ClInclude Include="include\MathUtility.h" />
     <ClInclude Include="include\OrientedBoundingBox.h" />
