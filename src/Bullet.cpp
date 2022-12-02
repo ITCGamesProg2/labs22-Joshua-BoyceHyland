@@ -34,7 +34,7 @@ bool Bullet::setStart(sf::Vector2f t_playerPosition, float t_playerRotation)
 
 
 		bulletBody.setPosition(m_position);
-		bulletBody.setRotation(t_playerRotation+180);
+		bulletBody.setRotation(t_playerRotation-90);
 
 		return true;
 	//}
