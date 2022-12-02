@@ -23,16 +23,18 @@ bool Bullet::setStart(sf::Vector2f t_playerPosition, float t_playerRotation)
 	//	m_speed = { 20,20 }; // resets the speed so it does multiply the unit vector my the last speed 
 		beenShot = true;
 		m_position = t_playerPosition; // make the start position the player
-
+		
 	//	//sf::Vector2f lengthBetween =   static_cast<sf::Vector2f>(sf::Mouse::getPosition(t_window)) - t_playerPosition;
-	//	//sf::Vector2f unitVector = thor::unitVector(lengthBetween);
+		//sf::Vector2f unitVector;/// = thor::unitVector(lengthBetween);
+		/*unitVector.x = cos(t_playerRotation);
+		unitVector.y = sin(t_playerRotation);
 
-	//	/*m_speed.x = m_speed.x * unitVector.x;
-	//	m_speed.y = m_speed.y * unitVector.y;*/
+		m_speed.x = m_speed.x * unitVector.x;
+		m_speed.y = m_speed.y * unitVector.y;*/
 
-	////	m_position = t_playerPosition;
-	//	bulletBody.setPosition(m_position);
-	//	//bulletBody.setRotation(t_playerRotation);
+
+		bulletBody.setPosition(m_position);
+		bulletBody.setRotation(t_playerRotation+180);
 
 		return true;
 	//}
