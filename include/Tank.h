@@ -2,7 +2,7 @@
 #include <SFML/Graphics.hpp>
 #include <Thor/Math.hpp>
 #include "CollisionDetector.h"
-
+#include "Bullet.h"
 /// <summary>
 /// @brief A simple tank controller.
 /// 
@@ -108,4 +108,7 @@ private:
 	double const DEG_TO_RAD = thor::Pi / 180.0f;
 	double const MAX_FORWARD_SPEED = 100; 
 	double const MAX_REVERSE_SPEED = -100; 
+
+	Bullet bullet;
+	
 };

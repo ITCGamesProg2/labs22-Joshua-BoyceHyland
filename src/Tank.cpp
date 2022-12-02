@@ -1,4 +1,5 @@
 #include "Tank.h"
+
 #include <iostream>
 
 Tank::Tank(sf::Texture const & texture, std::vector<sf::Sprite>& t_wallSprites)
@@ -11,7 +12,11 @@ Tank::Tank(sf::Texture const & texture, std::vector<sf::Sprite>& t_wallSprites)
 void Tank::update(double dt)
 {	
 	handleKeyInput(); 
-	centreTurret();
+	if (centering)
+	{
+		centreTurret();
+	}
+	
 	if (checkCWallCollision())
 	{
 		deflect(); 
@@ -34,14 +39,15 @@ void Tank::update(double dt)
     m_speed = m_speed * 0.99; 
 	
 	
-
-	std::cout << m_speed << std::endl; 
+	bullet.move();
+	std::cout <<"Position X: "<<m_position.x<< "Y: "<<m_position.y << std::endl;
 }
 
 void Tank::render(sf::RenderWindow & window) 
 {
 	window.draw(m_tankBase);
 	window.draw(m_turret);
+	bullet.draw(window);
 }
 
 void Tank::setPosition(sf::Vector2f t_position)
@@ -113,10 +119,6 @@ void Tank::handleKeyInput()
 	{
 		increaseTurretRotation(); 
 	}
-	/*if (sf::Mouse::Wheel::)
-	{
-		increaseTurretRotation();
-	}*/
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Z))
 	{
@@ -135,7 +137,8 @@ void Tank::handleKeyInput()
 	if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
 	{
 		std::cout << "~~~~~~~shhhhhhooot" << std::endl;
-		m_speed = m_speed - 8;
+		//m_speed = m_speed - 8;
+		bullet.setStart(m_position,m_turretRotation);
 	}
 }
 
@@ -164,13 +167,10 @@ void Tank::decreaseTurretRotation()
 void Tank::centreTurret()
 {	
 	float startAngle = m_turretRotation;
-	int destAngle = static_cast<int>(m_tankRotation);
-	
+	//int destAngle = static_cast<int>(m_tankRotation);
+	float destAngle =m_tankRotation;
 	// if not centering assigns the angle its beginning from 
-	if(centering)
-	{
-		
-
+	
 		if (startAngle < destAngle)
 		{
 			m_turretRotation++;
@@ -180,17 +180,17 @@ void Tank::centreTurret()
 			m_turretRotation--; 
 		}
 
-		if ((startAngle - destAngle)>180)
+		if (abs(startAngle - destAngle)>180)
 		{
 			m_turretRotation--;
 		}
 
 		// if the turret rotation reaches the destination it stops 
-		if (static_cast<int>(m_turretRotation) == destAngle)
+		if (startAngle == destAngle)
 		{
 			centering = false; 
 		}
-	}
+	
 }
 
 bool Tank::checkCWallCollision()
