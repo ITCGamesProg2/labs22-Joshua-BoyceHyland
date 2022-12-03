@@ -70,6 +70,8 @@ public:
 	/// <returns>true if there is a collison between tanks and one of the wall</returns>
 	bool checkCWallCollision();
 
+	void checkBulletCollisions();
+
 	/// <summary>
 	/// /// @brief Stops the tank if moving and applies a small increase in speed in the opposite direction of travel.
 	/// If the tank speed is currently 0, the rotation is set to a value that is less than the previous rotation value
@@ -97,18 +99,23 @@ private:
 	bool centering{ false };
 
 	// colliosion variables
-	bool m_enableRotation{ true }; 
-	sf::Vector2f m_previousPosition; 
-	double m_previousSpeed; 
-	double m_previousRotation; 
+	bool m_enableRotation{ true };
+	sf::Vector2f m_previousPosition;
+	double m_previousSpeed;
+	double m_previousRotation;
 	// reference to containter of the wall sprites 
-	std::vector<sf::Sprite>& m_wallSprites; 
-	sf::Texture const & m_texture;
-	
-	double const DEG_TO_RAD = thor::Pi / 180.0f;
-	double const MAX_FORWARD_SPEED = 100; 
-	double const MAX_REVERSE_SPEED = -100; 
+	std::vector<sf::Sprite>& m_wallSprites;
+	sf::Texture const& m_texture;
 
-	Bullet bullet;
+	double const DEG_TO_RAD = thor::Pi / 180.0f;
+	double const MAX_FORWARD_SPEED{ 100 };
+	double const MAX_REVERSE_SPEED{- 100};
+
+	// shooting variables
+	int const NUM_OF_BULLETS = 12;
+	Bullet bullets[12];
+	bool m_readyToShoot{ true };
+	int m_tillCanBeShot = 20;
+
 	
 };

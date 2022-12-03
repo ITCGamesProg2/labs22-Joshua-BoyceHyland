@@ -7,9 +7,29 @@ class Bullet {
 public:
 
 	Bullet();
-	bool setStart(sf::Vector2f t_playerPosition, float t_playerRotation);
+
+	/// <summary>
+	/// sets the starting position and rotation of the sprite while the bullet has not been already shot
+	/// </summary>
+	/// <param name="t_playerPosition"> the position of the tank</param>
+	/// <param name="t_playerRotation"> current rotation of the tank</param>
+	bool canSetStart(sf::Vector2f t_playerPosition, float t_playerRotation);
+	
+	/// <summary>
+	/// adds the speed to the current position of the bullet if it has been shot
+	/// </summary>
 	void move();
+
+	/// <summary>
+	/// draws the sprites with a reference to the window 
+	/// </summary>
+	/// <param name="t_window">referenced game window</param>
 	void draw(sf::RenderWindow& t_window);
+
+	/// <summary>
+	/// sets the bullet to not shot and moves it off screen
+	/// </summary>
+	void despawn();
 	sf::Sprite getBody() const;
 	bool checkCollisionAgainst(sf::RectangleShape t_enemy);
 	bool checkCollisionAgainst2(sf::Sprite t_Enemy);
@@ -22,6 +42,7 @@ private:
 	sf::Vector2f m_bodySize{ 10.0f,10.0f };
 	bool beenShot = false; // needles get rid of it 
 	bool m_readyToBeShot = false;
+	double const DEG_TO_RAD = thor::Pi / 180.0f;
 
 };
 

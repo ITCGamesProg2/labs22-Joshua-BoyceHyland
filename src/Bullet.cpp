@@ -3,7 +3,6 @@
 Bullet::Bullet()
 {
 	beenShot = false;
-	sf::Vector2f start{ 600,800 };
 	if (!bulletTexture.loadFromFile("resources/images/SpriteSheet.png"))
 	{
 		std::cout << "Could not load bullet\n";
@@ -12,36 +11,38 @@ Bullet::Bullet()
 	bulletBody.setTexture(bulletTexture);
 	bulletBody.setScale(2, 2);
 	bulletBody.setTextureRect(sf::IntRect(6, 175, 7, 11));
-	bulletBody.setOrigin(sf::Vector2f(-15,15));
-	//bulletBody.setPosition(start);
+	bulletBody.setOrigin(sf::Vector2f(5,-15));
 }
 
-bool Bullet::setStart(sf::Vector2f t_playerPosition, float t_playerRotation)
+bool Bullet::canSetStart(sf::Vector2f t_playerPosition, float t_playerRotation)
 {
-	//if (!beenShot)
-	//{
-	//	m_speed = { 20,20 }; // resets the speed so it does multiply the unit vector my the last speed 
-		beenShot = true;
+	if (!beenShot)
+	{
+		float radianRotation = t_playerRotation * DEG_TO_RAD; // converts to radians so rotation is usable in cos and sin 
+		sf::Vector2f scalar; //
+
 		m_position = t_playerPosition; // make the start position the player
+		m_speed = { 20,20 }; // resets the speed so it does multiply the unit vector my the last speed 
 		
-	//	//sf::Vector2f lengthBetween =   static_cast<sf::Vector2f>(sf::Mouse::getPosition(t_window)) - t_playerPosition;
-		//sf::Vector2f unitVector;/// = thor::unitVector(lengthBetween);
-		/*unitVector.x = cos(t_playerRotation);
-		unitVector.y = sin(t_playerRotation);
+		scalar.x = cos(radianRotation);
+		scalar.y = sin(radianRotation);
+		scalar = thor::unitVector(scalar);
 
-		m_speed.x = m_speed.x * unitVector.x;
-		m_speed.y = m_speed.y * unitVector.y;*/
-
+		m_speed.x = m_speed.x * scalar.x;
+		m_speed.y = m_speed.y * scalar.y;
 
 		bulletBody.setPosition(m_position);
-		bulletBody.setRotation(t_playerRotation-90);
+		bulletBody.setRotation(t_playerRotation - 90);
+
+		beenShot = true;
 
 		return true;
-	//}
-	///else
-	//{
-		//return false;
-	//}
+	}
+	else
+	{
+		return false;
+	}
+	
 }
 
 void Bullet::move()
@@ -63,10 +64,10 @@ void Bullet::move()
 
 void Bullet::draw(sf::RenderWindow& t_window)
 {
-	/*if (beenShot)
-	{*/
+	if (beenShot)
+	{
 		t_window.draw(bulletBody);
-	//}
+	}
 }
 bool Bullet::checkCollisionAgainst(sf::RectangleShape t_Enemy)
 {
@@ -96,6 +97,12 @@ bool Bullet::checkCollisionAgainst2(sf::Sprite t_Enemy)
 	}
 }
 
+
+void Bullet::despawn()
+{
+	beenShot = false;
+	m_position = { -100, -100 };
+}
 
 sf::Sprite Bullet::getBody() const
 {

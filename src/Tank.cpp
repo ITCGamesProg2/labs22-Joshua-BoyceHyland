@@ -21,6 +21,7 @@ void Tank::update(double dt)
 	{
 		deflect(); 
 	}
+	checkBulletCollisions();
 
 	m_previousPosition = m_position; 
 	float radianRotation = m_tankRotation * DEG_TO_RAD; 
@@ -38,8 +39,11 @@ void Tank::update(double dt)
 	
     m_speed = m_speed * 0.99; 
 	
+	for (int  i = 0; i < NUM_OF_BULLETS; i++)
+	{
+		bullets[i].move();
+	}
 	
-	bullet.move();
 	std::cout <<"Position X: "<<m_position.x<< "Y: "<<m_position.y << std::endl;
 }
 
@@ -47,7 +51,11 @@ void Tank::render(sf::RenderWindow & window)
 {
 	window.draw(m_tankBase);
 	window.draw(m_turret);
-	bullet.draw(window);
+	for (int i = 0; i < NUM_OF_BULLETS; i++)
+	{
+		bullets[i].draw(window);
+	}
+	
 }
 
 void Tank::setPosition(sf::Vector2f t_position)
@@ -134,11 +142,27 @@ void Tank::handleKeyInput()
 		
 	}
 
-	if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+	if ((sf::Mouse::isButtonPressed(sf::Mouse::Left))&&(m_readyToShoot))
 	{
 		std::cout << "~~~~~~~shhhhhhooot" << std::endl;
-		//m_speed = m_speed - 8;
-		bullet.setStart(m_position,m_turretRotation);
+		for (int i = 0; i < NUM_OF_BULLETS; i++)
+		{
+			if (bullets[i].canSetStart(m_position, m_turretRotation))
+			{
+				m_speed = m_speed - 8;
+				m_tillCanBeShot = 40;
+				m_readyToShoot = false;
+				break;
+			}
+		}
+	}
+	else
+	{
+		m_tillCanBeShot--; 
+		if (m_tillCanBeShot < 0)
+		{
+			m_readyToShoot = true;
+		}
 	}
 }
 
@@ -204,6 +228,22 @@ bool Tank::checkCWallCollision()
 	}
 
 	return false;
+}
+
+void Tank::checkBulletCollisions()
+{
+	for (int i = 0; i < NUM_OF_BULLETS; i++)
+	{
+		for (sf::Sprite const& wall : m_wallSprites)
+		{
+			if (CollisionDetector::collision(bullets[i].getBody(), wall))
+			{
+				std::cout << "BULLET HIT THE WALAL" << std::endl; 
+				bullets[i].despawn();
+			}
+		}
+	}
+	
 }
 
 void Tank::deflect()
