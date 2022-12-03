@@ -70,6 +70,9 @@ public:
 	/// <returns>true if there is a collison between tanks and one of the wall</returns>
 	bool checkCWallCollision();
 
+	/// <summary>
+	/// handles the collisions between bullets and sprites
+	/// </summary>
 	void checkBulletCollisions();
 
 	/// <summary>

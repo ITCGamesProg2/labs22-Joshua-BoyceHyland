@@ -86,17 +86,24 @@ protected:
 	/// </summary>
 	void generateWalls(); 
 
+	/// <summary>
+	/// updates the timer
+	/// </summary>
+	void updateTimer();
+
+	/// <summary>
+	/// sets up all text and fonts for game
+	/// </summary>
+	void setUpText();
+
 	// Font used for all text
 	sf::Font m_arialFont;
 	// main window
 	sf::RenderWindow m_window;
 
-	// Player tank sprite and texture
-	//sf::Sprite m_tankSprite;
-	//sf::Texture m_tankTexture;
+	
 	LevelData m_level; 
 
-	//sf::Vector2f m_tankPosition{ 0.0f,0.0f }; 
 
 	sf::Sprite m_bgSpritee; 
 	sf::Texture m_bgTexture;
@@ -104,10 +111,15 @@ protected:
 	std::vector<sf::Sprite> m_wallSprites; 
 	sf::Texture m_spriteSheetTexture; 
 
-	// in
+	// tanks 
 	Tank m_tank; 
 	sf::Texture m_texture; 
 
+	sf::Font m_font; 
+	sf::Text m_timerText;
+
+	sf::Time m_timer = sf::seconds(60);
+	sf::Clock m_clock;
 
 #ifdef TEST_FPS
 	sf::Text x_updateFPS;					// text used to display updates per second.

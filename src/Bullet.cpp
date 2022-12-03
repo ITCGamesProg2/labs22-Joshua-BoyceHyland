@@ -19,13 +19,11 @@ bool Bullet::canSetStart(sf::Vector2f t_playerPosition, float t_playerRotation)
 	if (!beenShot)
 	{
 		float radianRotation = t_playerRotation * DEG_TO_RAD; // converts to radians so rotation is usable in cos and sin 
-		sf::Vector2f scalar; //
+		sf::Vector2f scalar = { cos(radianRotation),sin(radianRotation) }; 
 
 		m_position = t_playerPosition; // make the start position the player
 		m_speed = { 20,20 }; // resets the speed so it does multiply the unit vector my the last speed 
 		
-		scalar.x = cos(radianRotation);
-		scalar.y = sin(radianRotation);
 		scalar = thor::unitVector(scalar);
 
 		m_speed.x = m_speed.x * scalar.x;
@@ -69,34 +67,6 @@ void Bullet::draw(sf::RenderWindow& t_window)
 		t_window.draw(bulletBody);
 	}
 }
-bool Bullet::checkCollisionAgainst(sf::RectangleShape t_Enemy)
-{
-	if ((bulletBody.getGlobalBounds().intersects(t_Enemy.getGlobalBounds()))&&(beenShot))
-	{
-		m_position = { 20, -100 }; 
-		bulletBody.setPosition(m_position); 
-		beenShot = false;
-		return true;
-	}
-	else
-	{
-		return false;
-	}
-}
-
-bool Bullet::checkCollisionAgainst2(sf::Sprite t_Enemy)
-{
-	if (bulletBody.getGlobalBounds().intersects(t_Enemy.getGlobalBounds()))
-	{
-		beenShot = false;
-		return true;
-	}
-	else
-	{
-		return false;
-	}
-}
-
 
 void Bullet::despawn()
 {

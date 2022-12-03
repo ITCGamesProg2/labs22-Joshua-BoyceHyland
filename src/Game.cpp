@@ -13,7 +13,6 @@ Game::Game()
 ////////////////////////////////////////////////////////////
 void Game::init()
 {
-
 	int currentLevel = 1;
 
 	// generates a exception if level loading fails.
@@ -55,6 +54,13 @@ void Game::init()
 		throw std::exception(errorMsg.c_str()); 
 	}
 
+	if (!m_font.loadFromFile("./resources/fonts/BAD_GRUNGE.ttf"))
+	{
+		std::string fontErrorMsg("Error loading font");
+		throw std::exception(fontErrorMsg.c_str());
+	}
+	setUpText();
+	
 	generateWalls(); 
 #ifdef TEST_FPS
 	x_updateFPS.setFont(m_arialFont);
@@ -130,7 +136,6 @@ void Game::processGameEvents(sf::Event& event)
 		m_window.close();
 	}
 
-	//m_tank.handleKeyInput();
 	
 	
 }
@@ -154,10 +159,28 @@ void Game::generateWalls()
 	}
 }
 
+void Game::updateTimer()
+{
+	sf::Time elapsedTime = m_clock.getElapsedTime();
+	int displayedTime = m_timer.asSeconds() - elapsedTime.asSeconds(); // truncates to int for display 
+	m_timerText.setString("Timer " + std::to_string(displayedTime));
+}
+
+void Game::setUpText()
+{
+	m_timerText.setFont(m_font);
+	//m_timerText.setColor(sf::Color::White);
+	m_timerText.setFillColor(sf::Color::White);
+	m_timerText.setCharacterSize(80u);
+	m_timerText.setPosition(20, 10);
+}
+
 ////////////////////////////////////////////////////////////
 void Game::update(double dt)
 {
+	
 	m_tank.update(dt);
+	updateTimer();
 }
 
 ////////////////////////////////////////////////////////////
@@ -171,6 +194,7 @@ void Game::render()
 
 	// Render your sprites here....
 	m_window.draw(m_bgSpritee);
+	
 	m_tank.render(m_window); 
 
 	// draws all sprites in the vector
@@ -178,7 +202,7 @@ void Game::render()
 	{
 		m_window.draw(sprite);
 	}
-	
+	m_window.draw(m_timerText);
 	
 	
 

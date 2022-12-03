@@ -30,9 +30,13 @@ public:
 	/// sets the bullet to not shot and moves it off screen
 	/// </summary>
 	void despawn();
+
+	/// <summary>
+	/// return the sprite of the bullet
+	/// </summary>
+	/// <returns>bullet sprite</returns>
 	sf::Sprite getBody() const;
-	bool checkCollisionAgainst(sf::RectangleShape t_enemy);
-	bool checkCollisionAgainst2(sf::Sprite t_Enemy);
+	
 
 private:
 	sf::Sprite bulletBody;
@@ -41,7 +45,6 @@ private:
 	sf::Vector2f m_position;
 	sf::Vector2f m_bodySize{ 10.0f,10.0f };
 	bool beenShot = false; // needles get rid of it 
-	bool m_readyToBeShot = false;
 	double const DEG_TO_RAD = thor::Pi / 180.0f;
 
 };

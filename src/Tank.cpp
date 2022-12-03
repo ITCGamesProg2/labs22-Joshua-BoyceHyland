@@ -44,7 +44,7 @@ void Tank::update(double dt)
 		bullets[i].move();
 	}
 	
-	std::cout <<"Position X: "<<m_position.x<< "Y: "<<m_position.y << std::endl;
+	//std::cout <<"Position X: "<<m_position.x<< "Y: "<<m_position.y << std::endl;
 }
 
 void Tank::render(sf::RenderWindow & window) 
