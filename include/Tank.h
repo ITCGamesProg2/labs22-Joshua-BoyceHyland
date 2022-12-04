@@ -94,7 +94,7 @@ private:
 	sf::Sprite m_tankBase;
 	double m_speed{ 0.0 };// The tank speed.
 	double m_tankRotation{ 0.0 };// The current rotation as applied to tank base.
-	sf::Vector2f m_position{ 200.0, 200.0 };
+	sf::Vector2f m_position;
 
 	// turret variables 
 	sf::Sprite m_turret;

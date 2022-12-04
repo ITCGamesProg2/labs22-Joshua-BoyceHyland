@@ -26,7 +26,7 @@
 ///		Game game;
 ///		game.run();
 /// </summary>
-
+enum GameState {Menu, Gameplay, GameOver};
 class Game
 {
 public:
@@ -118,8 +118,12 @@ protected:
 	sf::Font m_font; 
 	sf::Text m_timerText;
 
-	sf::Time m_timer = sf::seconds(60);
+	// displayed time variables
+	sf::Time m_timer = sf::seconds(4);
 	sf::Clock m_clock;
+
+	GameState m_currentGameState{ Gameplay };
+	
 
 #ifdef TEST_FPS
 	sf::Text x_updateFPS;					// text used to display updates per second.

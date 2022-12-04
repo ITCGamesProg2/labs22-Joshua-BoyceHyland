@@ -1,5 +1,5 @@
 #include "Tank.h"
-
+#include <cmath>
 #include <iostream>
 
 Tank::Tank(sf::Texture const & texture, std::vector<sf::Sprite>& t_wallSprites)
@@ -276,18 +276,33 @@ void Tank::deflect()
 
 void Tank::initSprites()
 {
-	// Initialise the tank base
-	m_tankBase.setTexture(m_texture);
 	sf::IntRect baseRect(2, 43, 79, 43);
+	sf::Vector2f spawnArray[4] { {79, 43}, {79, 900 - 43 }, { 1440 - 79, 43}, { 1440 - 79,900 - 43} }; // each corner of the screen
+	int randSpawn = 2; // rand() % 4;
+
+	if ((randSpawn == 0) || (randSpawn == 1))
+	{
+		m_tankRotation = 0;
+		m_turretRotation = 0; 
+	}
+	else
+	{
+		m_tankRotation = 180;
+		m_turretRotation = 180;
+	}
+	// initial is
+	m_tankBase.setTexture(m_texture);
 	m_tankBase.setTextureRect(baseRect);
 	m_tankBase.setOrigin(baseRect.width / 2.0, baseRect.height / 2.0);
-	//m_tankBase.setPosition(pos);
+	m_tankBase.setPosition(spawnArray[randSpawn]);
+	m_tankBase.setRotation(m_tankRotation);
 
 	// Initialise the turret
 	m_turret.setTexture(m_texture);
 	sf::IntRect turretRect(19, 1, 83, 31);
 	m_turret.setTextureRect(turretRect);
 	m_turret.setOrigin(turretRect.width / 3.0, turretRect.height / 2.0);
-	//m_turret.setPosition(pos);
-
+	m_turret.setPosition(spawnArray[randSpawn]);
+	m_position = spawnArray[randSpawn];
+	m_turret.setRotation(m_turretRotation);
 }

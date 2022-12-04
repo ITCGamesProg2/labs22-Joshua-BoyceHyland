@@ -72,6 +72,8 @@ void Bullet::despawn()
 {
 	beenShot = false;
 	m_position = { -100, -100 };
+	bulletBody.setPosition(m_position);
+
 }
 
 sf::Sprite Bullet::getBody() const

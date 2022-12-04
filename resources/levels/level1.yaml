@@ -1,7 +1,7 @@
 background:
    file: ./resource/images/Background.jpg # Sample comment
 tank:
-   position: {x: 850, y: 400}
+   position: {x: -100, y: -100}
 obstacles: 
    - type: wall
      position: {x: 100, y: 660}

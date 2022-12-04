@@ -164,6 +164,11 @@ void Game::updateTimer()
 	sf::Time elapsedTime = m_clock.getElapsedTime();
 	int displayedTime = m_timer.asSeconds() - elapsedTime.asSeconds(); // truncates to int for display 
 	m_timerText.setString("Timer " + std::to_string(displayedTime));
+
+	if (displayedTime < 1)
+	{
+		m_currentGameState = GameOver; 
+	}
 }
 
 void Game::setUpText()
@@ -178,9 +183,17 @@ void Game::setUpText()
 ////////////////////////////////////////////////////////////
 void Game::update(double dt)
 {
+	switch (m_currentGameState)
+	{
+		case Gameplay:
+			m_tank.update(dt);
+			updateTimer();
+			break;
+		case GameOver:
+			m_window.close();
+
+	}
 	
-	m_tank.update(dt);
-	updateTimer();
 }
 
 ////////////////////////////////////////////////////////////
