@@ -52,7 +52,7 @@ void Bullet::move()
 		bulletBody.setPosition(m_position);
 	}
 
-	if ((m_position.y < 0|| m_position.y > 800)||(m_position.x < 0 || m_position.y >800))
+	if ((m_position.y < 0|| m_position.y > 900)||(m_position.x < 0 || m_position.y >1440))
 	{
 		beenShot = false;
 	}

@@ -27,7 +27,7 @@ void Tank::update(double dt)
 	float radianRotation = m_tankRotation * DEG_TO_RAD; 
 	m_position.x = m_position.x + std::cos(radianRotation) * m_speed * (dt/ 1000);
 	m_position.y = m_position.y + std::sin(radianRotation) * m_speed * (dt / 1000);
-
+	
 	m_tankBase.setPosition(m_position);
 	m_turret.setPosition(m_position); 
 	
