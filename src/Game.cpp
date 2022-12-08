@@ -209,7 +209,7 @@ void Game::render()
 	m_window.draw(m_bgSpritee);
 	
 	m_tank.render(m_window); 
-
+	m_target.draw(m_window);
 	// draws all sprites in the vector
 	for (sf::Sprite sprite : m_wallSprites)
 	{

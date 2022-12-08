@@ -278,7 +278,7 @@ void Tank::initSprites()
 {
 	sf::IntRect baseRect(2, 43, 79, 43);
 	sf::Vector2f spawnArray[4] { {79, 43}, {79, 900 - 43 }, { 1440 - 79, 43}, { 1440 - 79,900 - 43} }; // each corner of the screen
-	int randSpawn = 2; // rand() % 4;
+	int randSpawn = rand() % 4;
 
 	if ((randSpawn == 0) || (randSpawn == 1))
 	{

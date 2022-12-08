@@ -26,6 +26,7 @@
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\OrientedBoundingBox.cpp" />
     <ClCompile Include="src\Tank.cpp" />
+    <ClCompile Include="Target.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Bullet.h" />
@@ -36,6 +37,7 @@
     <ClInclude Include="include\OrientedBoundingBox.h" />
     <ClInclude Include="include\ScreenSize.h" />
     <ClInclude Include="include\Tank.h" />
+    <ClInclude Include="Target.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{F10133B9-852C-4A93-A994-DC0D1C009AD5}</ProjectGuid>

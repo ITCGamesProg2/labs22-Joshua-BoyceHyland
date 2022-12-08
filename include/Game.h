@@ -11,6 +11,7 @@
 #include "ScreenSize.h"
 #include "LevelLoader.h"
 #include "Tank.h"
+#include "Target.h"
 /// <summary>
 /// @author RP
 /// @date September 2022
@@ -115,11 +116,13 @@ protected:
 	Tank m_tank; 
 	sf::Texture m_texture; 
 
+	// target
+	Target m_target; 
 	sf::Font m_font; 
 	sf::Text m_timerText;
 
 	// displayed time variables
-	sf::Time m_timer = sf::seconds(4);
+	sf::Time m_timer = sf::seconds(60);
 	sf::Clock m_clock;
 
 	GameState m_currentGameState{ Gameplay };
