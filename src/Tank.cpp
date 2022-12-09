@@ -2,9 +2,11 @@
 #include <cmath>
 #include <iostream>
 
-Tank::Tank(sf::Texture const & texture, std::vector<sf::Sprite>& t_wallSprites)
+Tank::Tank(sf::Texture const & texture, std::vector<sf::Sprite>& t_wallSprites,Target &t_target)
 : m_texture(texture),
-  m_wallSprites(t_wallSprites)
+  m_wallSprites(t_wallSprites),
+	m_target(t_target)
+	
 {
 	initSprites();
 }
@@ -60,7 +62,10 @@ void Tank::render(sf::RenderWindow & window)
 
 void Tank::setPosition(sf::Vector2f t_position)
 {
-	m_tankBase.setPosition(t_position); 
+	m_position = t_position;
+	m_turret.setPosition(m_position);
+	m_tankBase.setPosition(m_position); 
+	
 }
 
 void Tank::increaseSpeed()
@@ -243,6 +248,15 @@ void Tank::checkBulletCollisions()
 			}
 		}
 	}
+
+	for (int i = 0; i < NUM_OF_BULLETS; i++)
+	{
+		if (CollisionDetector::collision(bullets[i].getBody(), m_target.getBody()))
+		{
+			std::cout << "You hit the target" << std::endl; 
+			m_target.despawn(); 
+		}
+	}
 	
 }
 
@@ -277,10 +291,8 @@ void Tank::deflect()
 void Tank::initSprites()
 {
 	sf::IntRect baseRect(2, 43, 79, 43);
-	sf::Vector2f spawnArray[4] { {79, 43}, {79, 900 - 43 }, { 1440 - 79, 43}, { 1440 - 79,900 - 43} }; // each corner of the screen
-	int randSpawn = rand() % 4;
 
-	if ((randSpawn == 0) || (randSpawn == 1))
+	if (m_position.x >700 )
 	{
 		m_tankRotation = 0;
 		m_turretRotation = 0; 
@@ -294,7 +306,6 @@ void Tank::initSprites()
 	m_tankBase.setTexture(m_texture);
 	m_tankBase.setTextureRect(baseRect);
 	m_tankBase.setOrigin(baseRect.width / 2.0, baseRect.height / 2.0);
-	m_tankBase.setPosition(spawnArray[randSpawn]);
 	m_tankBase.setRotation(m_tankRotation);
 
 	// Initialise the turret
@@ -302,7 +313,5 @@ void Tank::initSprites()
 	sf::IntRect turretRect(19, 1, 83, 31);
 	m_turret.setTextureRect(turretRect);
 	m_turret.setOrigin(turretRect.width / 3.0, turretRect.height / 2.0);
-	m_turret.setPosition(spawnArray[randSpawn]);
-	m_position = spawnArray[randSpawn];
 	m_turret.setRotation(m_turretRotation);
 }

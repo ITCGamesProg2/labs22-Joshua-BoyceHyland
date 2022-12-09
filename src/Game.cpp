@@ -5,7 +5,7 @@
 static double const FPS{ 60.0f };
 ////////////////////////////////////////////////////////////
 Game::Game()
-	: m_window(sf::VideoMode(ScreenSize::s_width, ScreenSize::s_height, 32), "SFML Playground", sf::Style::Default), m_tank(m_texture,m_wallSprites)
+	: m_window(sf::VideoMode(ScreenSize::s_width, ScreenSize::s_height, 32), "SFML Playground", sf::Style::Default), m_tank(m_texture,m_wallSprites,m_target)
 {
 	init();
 }
@@ -46,7 +46,9 @@ void Game::init()
 		std::string s("Error loading texture");  
 		throw std::exception(s.c_str()); 
 	}
-	m_tank.setPosition(m_level.m_tank.m_position); 
+	int randSpawn = rand() % m_level.m_tank.m_tankPositions.size();
+	;
+	m_tank.setPosition(m_level.m_tank.m_tankPositions[randSpawn]);
 	
 	if (!m_spriteSheetTexture.loadFromFile("./resources/images/SpriteSheet.png"))
 	{
@@ -155,7 +157,6 @@ void Game::generateWalls()
 		sprite.setPosition(obstacle.m_position);
 		sprite.setRotation(obstacle.m_rotation);
 		m_wallSprites.push_back(sprite); 
-
 	}
 }
 

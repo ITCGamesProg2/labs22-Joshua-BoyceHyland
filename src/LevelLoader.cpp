@@ -37,10 +37,13 @@ void operator >> (const YAML::Node& t_backgroundNode, BackgroundData& t_backgrou
 /// <param name="t_tankNode">A YAML node</param>
 /// <param name="t_tank">A simple struct to store data related to the player tank</param>
 ////////////////////////////////////////////////////////////
-void operator >> (const YAML::Node& t_tankNode, TankData& t_tank)
+void operator >> (const YAML::Node& t_tankNode, sf::Vector2f & t_tankPos)
 {
-	t_tank.m_position.x = t_tankNode["position"]["x"].as<float>();
-	t_tank.m_position.y = t_tankNode["position"]["y"].as<float>();
+	
+	t_tankPos.x = t_tankNode["position"]["x"].as<float>();
+	t_tankPos.y = t_tankNode["position"]["y"].as<float>();
+
+	
 }
 
 /// <summary>
@@ -56,7 +59,16 @@ void operator >> (const YAML::Node& t_levelNode, LevelData& t_level)
 {
 	t_levelNode["background"] >> t_level.m_background;
 
-	t_levelNode["tank"] >> t_level.m_tank;
+	//t_levelNode["tank"] >> t_level.m_tank;
+
+	const YAML::Node& tanksNode = t_levelNode["tank"].as<YAML::Node>();
+	for (unsigned i = 0; i < tanksNode.size(); ++i)
+	{
+		sf::Vector2f position;
+
+		tanksNode[i] >> position;
+		t_level.m_tank.m_tankPositions.push_back(position);	
+	}
 
 	const YAML::Node& obstaclesNode = t_levelNode["obstacles"].as<YAML::Node>();
 	for (unsigned i = 0; i < obstaclesNode.size(); ++i)
@@ -65,6 +77,7 @@ void operator >> (const YAML::Node& t_levelNode, LevelData& t_level)
 		obstaclesNode[i] >> obstacle;
 		t_level.m_obstacles.push_back(obstacle);
 	}
+
 }
 
 ////////////////////////////////////////////////////////////

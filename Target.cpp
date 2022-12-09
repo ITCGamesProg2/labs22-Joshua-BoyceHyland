@@ -14,10 +14,19 @@ Target::Target()
 
 void Target::draw(sf::RenderWindow &t_window)
 {
-	t_window.draw(m_target); 
+	if (alive)
+	{
+		t_window.draw(m_target);
+	}
+	 
 }
 
 void Target::despawn()
 {
 	alive = false; 
+}
+
+sf::Sprite Target::getBody()
+{
+	return m_target;
 }

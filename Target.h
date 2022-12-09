@@ -7,6 +7,7 @@ public:
 	Target();
 	void draw(sf::RenderWindow &t_window);
 	void despawn(); 
+	sf::Sprite getBody(); 
 private:
 	sf::Sprite m_target;
 	sf::Texture m_texture;

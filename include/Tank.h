@@ -3,6 +3,7 @@
 #include <Thor/Math.hpp>
 #include "CollisionDetector.h"
 #include "Bullet.h"
+#include "Target.h"
 /// <summary>
 /// @brief A simple tank controller.
 /// 
@@ -18,7 +19,7 @@ public:
 /// </summary>
 /// <param name="t_texture">A reference to the sprite sheet texture</param>
 ///< param name="t_wallSprites">A reference to the container of wall sprites</param>  
-	Tank(sf::Texture const& texture, std::vector<sf::Sprite>& t_wallSprites);
+	Tank(sf::Texture const& texture, std::vector<sf::Sprite>& t_wallSprites, Target &t_target);
 	void update(double dt);
 	void render(sf::RenderWindow& window);
 	void setPosition(sf::Vector2f t_position);
@@ -120,5 +121,6 @@ private:
 	bool m_readyToShoot{ true };
 	int m_tillCanBeShot = 20;
 
-	
+	// targets 
+	Target &m_target; 
 };
