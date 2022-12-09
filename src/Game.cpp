@@ -5,7 +5,7 @@
 static double const FPS{ 60.0f };
 ////////////////////////////////////////////////////////////
 Game::Game()
-	: m_window(sf::VideoMode(ScreenSize::s_width, ScreenSize::s_height, 32), "SFML Playground", sf::Style::Default), m_tank(m_texture,m_wallSprites,m_target)
+	: m_window(sf::VideoMode(ScreenSize::s_width, ScreenSize::s_height, 32), "SFML Playground", sf::Style::Default), m_tank(m_texture,m_wallSprites,m_targets)
 {
 	init();
 }
@@ -49,7 +49,12 @@ void Game::init()
 	int randSpawn = rand() % m_level.m_tank.m_tankPositions.size();
 	;
 	m_tank.setPosition(m_level.m_tank.m_tankPositions[randSpawn]);
+	for (int i = 0; i < 4; i++)
+	{
+		m_targets[i].setPosition(m_level.m_targets[i].m_position);
+	}
 	
+
 	if (!m_spriteSheetTexture.loadFromFile("./resources/images/SpriteSheet.png"))
 	{
 		std::string errorMsg("Error loading texture"); 
@@ -210,7 +215,11 @@ void Game::render()
 	m_window.draw(m_bgSpritee);
 	
 	m_tank.render(m_window); 
-	m_target.draw(m_window);
+	
+	for (Target target : m_targets)
+	{
+		target.draw(m_window);
+	}
 	// draws all sprites in the vector
 	for (sf::Sprite sprite : m_wallSprites)
 	{

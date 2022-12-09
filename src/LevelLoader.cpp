@@ -42,8 +42,14 @@ void operator >> (const YAML::Node& t_tankNode, sf::Vector2f & t_tankPos)
 	
 	t_tankPos.x = t_tankNode["position"]["x"].as<float>();
 	t_tankPos.y = t_tankNode["position"]["y"].as<float>();
-
 	
+}
+
+void operator>>(const YAML::Node& t_targetNode, TargetData& t_targetPos)
+{
+	t_targetPos.m_offset = t_targetNode["position"]["offSet"].as<float>(); 
+	t_targetPos.m_position.x = t_targetNode["position"]["x"].as<float>(); 
+	t_targetPos.m_position.y = t_targetNode["position"]["y"].as<float>();
 }
 
 /// <summary>
@@ -76,6 +82,14 @@ void operator >> (const YAML::Node& t_levelNode, LevelData& t_level)
 		ObstacleData obstacle;
 		obstaclesNode[i] >> obstacle;
 		t_level.m_obstacles.push_back(obstacle);
+	}
+
+	const YAML::Node& targetNode = t_levelNode["target"].as<YAML::Node>();
+	for (unsigned i = 0; i < targetNode.size(); ++i)
+	{
+		TargetData position;
+		targetNode[i] >> position;
+		t_level.m_targets.push_back(position);
 	}
 
 }

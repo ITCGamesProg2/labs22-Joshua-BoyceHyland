@@ -2,10 +2,10 @@
 #include <cmath>
 #include <iostream>
 
-Tank::Tank(sf::Texture const & texture, std::vector<sf::Sprite>& t_wallSprites,Target &t_target)
+Tank::Tank(sf::Texture const & texture, std::vector<sf::Sprite>& t_wallSprites,std::vector<Target>& t_target)
 : m_texture(texture),
   m_wallSprites(t_wallSprites),
-	m_target(t_target)
+  m_target(t_target)
 	
 {
 	initSprites();
@@ -251,11 +251,15 @@ void Tank::checkBulletCollisions()
 
 	for (int i = 0; i < NUM_OF_BULLETS; i++)
 	{
-		if (CollisionDetector::collision(bullets[i].getBody(), m_target.getBody()))
+		for (int  i = 0; i < m_target.size(); i++)
 		{
-			std::cout << "You hit the target" << std::endl; 
-			m_target.despawn(); 
+			if (CollisionDetector::collision(bullets[i].getBody(), m_target[i].getBody()))
+			{
+				std::cout << "You hit the target" << std::endl; 
+				m_target[i].despawn();
+			}
 		}
+		
 	}
 	
 }

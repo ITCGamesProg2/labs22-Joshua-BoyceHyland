@@ -19,7 +19,7 @@ public:
 /// </summary>
 /// <param name="t_texture">A reference to the sprite sheet texture</param>
 ///< param name="t_wallSprites">A reference to the container of wall sprites</param>  
-	Tank(sf::Texture const& texture, std::vector<sf::Sprite>& t_wallSprites, Target &t_target);
+	Tank(sf::Texture const& texture, std::vector<sf::Sprite>& t_wallSprites, std::vector<Target>& t_target);
 	void update(double dt);
 	void render(sf::RenderWindow& window);
 	void setPosition(sf::Vector2f t_position);
@@ -122,5 +122,5 @@ private:
 	int m_tillCanBeShot = 20;
 
 	// targets 
-	Target &m_target; 
+	std::vector<Target> &m_target;
 };

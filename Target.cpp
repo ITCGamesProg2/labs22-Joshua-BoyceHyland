@@ -26,6 +26,12 @@ void Target::despawn()
 	alive = false; 
 }
 
+void Target::setPosition(sf::Vector2f t_position)
+{
+	m_position = t_position;
+	m_target.setPosition(m_position);
+}
+
 sf::Sprite Target::getBody()
 {
 	return m_target;

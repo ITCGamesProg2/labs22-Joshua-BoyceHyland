@@ -117,7 +117,7 @@ protected:
 	sf::Texture m_texture; 
 
 	// target
-	Target m_target; 
+	std::vector<Target> m_targets[4];
 	sf::Font m_font; 
 	sf::Text m_timerText;
 

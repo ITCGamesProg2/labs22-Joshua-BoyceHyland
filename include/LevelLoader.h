@@ -35,6 +35,12 @@ struct TankData
 	std::vector<sf::Vector2f> m_tankPositions;
 };
 
+struct TargetData
+{
+	float m_offset; 
+	sf::Vector2f m_position; 
+};
+
 /// <summary>
 /// @brief A struct representing all the Level Data.
 /// 
@@ -45,6 +51,7 @@ struct LevelData
 	BackgroundData m_background;
 	TankData m_tank;
 	std::vector<ObstacleData> m_obstacles;
+	std::vector<TargetData> m_targets; 
 };
 
 /// <summary>
