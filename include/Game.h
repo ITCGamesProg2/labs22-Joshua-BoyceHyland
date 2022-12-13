@@ -94,12 +94,22 @@ protected:
 	/// <summary>
 	/// updates the timer
 	/// </summary>
-	void updateTimer();
+	void timerUpdate();
 
 	/// <summary>
 	/// sets up all text and fonts for game
 	/// </summary>
 	void setUpText();
+
+	/// <summary>
+	/// checks if a target has been shot and whether to spawn another one 
+	/// </summary>
+	void targetUpdate();
+
+	/// <summary>
+	/// update the score text when a target has been shot
+	/// </summary>
+	void scoreUpdate(); 
 
 	// Font used for all text
 	sf::Font m_arialFont;
@@ -126,6 +136,7 @@ protected:
 
 	sf::Font m_font; 
 	sf::Text m_timerText;
+	sf::Text m_scoreText; 
 
 	// displayed time variables
 	sf::Time m_timer = sf::seconds(60);

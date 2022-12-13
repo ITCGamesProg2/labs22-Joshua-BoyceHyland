@@ -46,7 +46,7 @@ void Game::init()
 		std::string s("Error loading texture");  
 		throw std::exception(s.c_str()); 
 	}
-	if (!m_targetTexture.loadFromFile("resources/images/target.png"))
+	if (!m_targetTexture.loadFromFile("resources/images/target2.png"))
 	{
 		std::cout << "Could not load the texture for the target \n";
 	}
@@ -177,7 +177,7 @@ void Game::generateTargets()
 	}
 }
 
-void Game::updateTimer()
+void Game::timerUpdate()
 {
 	sf::Time elapsedTime = m_clock.getElapsedTime();
 	int displayedTime = m_timer.asSeconds() - elapsedTime.asSeconds(); // truncates to int for display 
@@ -192,10 +192,48 @@ void Game::updateTimer()
 void Game::setUpText()
 {
 	m_timerText.setFont(m_font);
-	//m_timerText.setColor(sf::Color::White);
 	m_timerText.setFillColor(sf::Color::White);
 	m_timerText.setCharacterSize(80u);
 	m_timerText.setPosition(20, 10);
+
+	m_scoreText.setFont(m_font);
+	m_scoreText.setFillColor(sf::Color::White);
+	m_scoreText.setCharacterSize(80u);
+	m_scoreText.setPosition(20, 90);
+
+
+}
+
+void Game::targetUpdate()
+{
+	bool aTargetIsDead = false; 
+
+	for (Target &target : m_targets)
+	{
+		if (!target.isAlive())
+		{
+			aTargetIsDead = true;
+		}
+	}
+
+	if (aTargetIsDead)
+	{
+		for (Target &target : m_targets)
+		{
+			if (!target.beenShot())
+			{
+				target.respawn();
+				break;
+			}
+		}
+	}
+
+	
+}
+
+void Game::scoreUpdate()
+{
+	m_scoreText.setString("Score: " + std::to_string(m_tank.getScore()));
 }
 
 ////////////////////////////////////////////////////////////
@@ -205,7 +243,9 @@ void Game::update(double dt)
 	{
 		case Gameplay:
 			m_tank.update(dt);
-			updateTimer();
+			targetUpdate(); 
+			timerUpdate();
+			scoreUpdate();
 			break;
 		case GameOver:
 			m_window.close();
@@ -238,7 +278,7 @@ void Game::render()
 		m_window.draw(sprite);
 	}
 	m_window.draw(m_timerText);
-	
+	m_window.draw(m_scoreText);
 	
 
 	m_window.display();

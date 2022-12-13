@@ -88,6 +88,12 @@ public:
 	/// </summary>
 	void deflect();
 
+	/// <summary>
+	/// return score to score text in game.cpp so it can be displayed
+	/// </summary>
+	/// <returns>current score, corresponding to the amount of targets shot</returns>
+	int getScore();
+
 private:
 	void initSprites();
 
@@ -107,6 +113,7 @@ private:
 	sf::Vector2f m_previousPosition;
 	double m_previousSpeed;
 	double m_previousRotation;
+
 	// reference to containter of the wall sprites 
 	std::vector<sf::Sprite>& m_wallSprites;
 	sf::Texture const& m_texture;
@@ -123,4 +130,7 @@ private:
 
 	// targets 
 	std::vector<Target> &m_target;
+
+	// variable for score text in game
+	int m_score = 0; 
 };

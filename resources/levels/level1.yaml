@@ -80,7 +80,15 @@ obstacles:
      position: {x: 1032, y: 632}
      rotation: 0
 target:
-    - position: {x: 200, y: 200, offSet: 50 }
-    - position: {x: 500, y: 500, offSet: 50}
-    - position: {x: 800, y: 800, offSet: 50 }
-    - position: {x: 1000, y: 1000, offSet: 50}
+    - position: {x: 950, y: 200, offSet: 50 }
+    - position: {x: 1200, y: 350, offSet: 50}
+    - position: {x: 1250, y: 50, offSet: 50 }
+    - position: {x: 600, y: 250, offSet: 50 }
+    - position: {x: 750, y: 400, offSet: 50}
+    - position: {x: 700, y: 50, offSet: 50 }
+    - position: {x: 150, y: 100, offSet: 50}
+    - position: {x: 200, y: 350, offSet: 50 }
+    - position: {x: 400, y: 600, offSet: 50}
+    - position: {x: 800, y: 700, offSet: 50 }
+    - position: {x: 150, y: 700, offSet: 50}
+    - position: {x: 1250, y: 700, offSet: 50}

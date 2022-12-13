@@ -253,10 +253,11 @@ void Tank::checkBulletCollisions()
 	{
 		for (Target  &target : m_target)
 		{
-			if (CollisionDetector::collision(bullets[i].getBody(), target.getBody()))
+			if ((CollisionDetector::collision(bullets[i].getBody(), target.getBody()))&&target.isAlive())
 			{
 				std::cout << "You hit the target" << std::endl; 
 				target.despawn();
+				m_score++;
 			}
 		}
 		
@@ -290,6 +291,11 @@ void Tank::deflect()
 			m_speed = -8; 
 		}
 	}
+}
+
+int Tank::getScore()
+{
+	return m_score;
 }
 
 void Tank::initSprites()
