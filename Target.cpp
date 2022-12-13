@@ -29,6 +29,19 @@ void Target::despawn()
 void Target::respawn()
 {
 	alive = true;
+	int randOffset = rand()%100 + 1;
+	if (randOffset <=40)
+	{
+		m_position.x = m_position.x + randOffset;
+	}
+	else if ((randOffset > 40)&&(randOffset<80))
+	{
+		m_position.x = m_position.x - randOffset;
+	}
+	else
+	{
+		m_position = m_position;
+	}
 }
 
 void Target::setPosition(sf::Vector2f t_position)

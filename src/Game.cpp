@@ -218,6 +218,7 @@ void Game::targetUpdate()
 
 	if (aTargetIsDead)
 	{
+
 		for (Target &target : m_targets)
 		{
 			if (!target.beenShot())
