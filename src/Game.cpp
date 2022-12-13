@@ -49,10 +49,7 @@ void Game::init()
 	int randSpawn = rand() % m_level.m_tank.m_tankPositions.size();
 	;
 	m_tank.setPosition(m_level.m_tank.m_tankPositions[randSpawn]);
-	for (int i = 0; i < 4; i++)
-	{
-		m_targets[i].setPosition(m_level.m_targets[i].m_position);
-	}
+	
 	
 
 	if (!m_spriteSheetTexture.loadFromFile("./resources/images/SpriteSheet.png"))
@@ -69,6 +66,7 @@ void Game::init()
 	setUpText();
 	
 	generateWalls(); 
+	generateTargets(); 
 #ifdef TEST_FPS
 	x_updateFPS.setFont(m_arialFont);
 	x_updateFPS.setPosition(20, 300);
@@ -162,6 +160,17 @@ void Game::generateWalls()
 		sprite.setPosition(obstacle.m_position);
 		sprite.setRotation(obstacle.m_rotation);
 		m_wallSprites.push_back(sprite); 
+	}
+}
+
+void Game::generateTargets()
+{
+	for (auto const& targetData : m_level.m_targetData)
+	{
+		Target target;
+		target.setPosition(targetData.m_position);
+		target.setOffSet(targetData.m_offset);
+		m_targets.push_back(target);
 	}
 }
 

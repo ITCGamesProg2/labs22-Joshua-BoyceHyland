@@ -88,6 +88,10 @@ protected:
 	void generateWalls(); 
 
 	/// <summary>
+	/// creates the targets and loads them into the vectors
+	/// </summary>
+	void generateTargets(); 
+	/// <summary>
 	/// updates the timer
 	/// </summary>
 	void updateTimer();
@@ -117,7 +121,7 @@ protected:
 	sf::Texture m_texture; 
 
 	// target
-	std::vector<Target> m_targets[4];
+	std::vector<Target> m_targets;
 	sf::Font m_font; 
 	sf::Text m_timerText;
 

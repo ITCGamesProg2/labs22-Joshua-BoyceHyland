@@ -89,7 +89,7 @@ void operator >> (const YAML::Node& t_levelNode, LevelData& t_level)
 	{
 		TargetData position;
 		targetNode[i] >> position;
-		t_level.m_targets.push_back(position);
+		t_level.m_targetData.push_back(position);
 	}
 
 }
