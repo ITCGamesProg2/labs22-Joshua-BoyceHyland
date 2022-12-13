@@ -1,13 +1,22 @@
 #include "Target.h"
 
-Target::Target()
+Target::Target(sf::Texture const &t_texture, sf::Vector2f t_position, float t_offSet)
 {
-	if (!m_texture.loadFromFile("resources/images/target.png"))
-	{
-		std::cout << "Could not load the texture for the target \n"; 
-	}
+	m_target.setTexture(t_texture);
 
-	m_target.setTexture(m_texture);
+
+	// settinf up what side of the offset it will initially set up on 
+	bool hasMinusOffset = rand() % 1+1;
+	m_position = t_position;
+	m_offSet = t_offSet;
+	if (hasMinusOffset)
+	{
+		m_position = { m_position.x - m_offSet, m_position.y - m_offSet };
+	}
+	else
+	{
+		m_position = { m_position.x + m_offSet, m_position.y + m_offSet };
+	}
 	m_target.setPosition(m_position);
 	m_target.setScale(0.1,0.1);
 }

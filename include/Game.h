@@ -118,10 +118,12 @@ protected:
 
 	// tanks 
 	Tank m_tank; 
-	sf::Texture m_texture; 
+	sf::Texture m_tankTexture; 
 
 	// target
 	std::vector<Target> m_targets;
+	sf::Texture m_targetTexture; 
+
 	sf::Font m_font; 
 	sf::Text m_timerText;
 

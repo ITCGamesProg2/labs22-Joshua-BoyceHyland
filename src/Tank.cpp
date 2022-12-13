@@ -251,12 +251,12 @@ void Tank::checkBulletCollisions()
 
 	for (int i = 0; i < NUM_OF_BULLETS; i++)
 	{
-		for (int  i = 0; i < m_target.size(); i++)
+		for (Target  &target : m_target)
 		{
-			if (CollisionDetector::collision(bullets[i].getBody(), m_target[i].getBody()))
+			if (CollisionDetector::collision(bullets[i].getBody(), target.getBody()))
 			{
 				std::cout << "You hit the target" << std::endl; 
-				m_target[i].despawn();
+				target.despawn();
 			}
 		}
 		

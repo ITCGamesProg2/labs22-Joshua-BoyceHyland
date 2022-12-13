@@ -5,7 +5,7 @@
 static double const FPS{ 60.0f };
 ////////////////////////////////////////////////////////////
 Game::Game()
-	: m_window(sf::VideoMode(ScreenSize::s_width, ScreenSize::s_height, 32), "SFML Playground", sf::Style::Default), m_tank(m_texture,m_wallSprites,m_targets)
+	: m_window(sf::VideoMode(ScreenSize::s_width, ScreenSize::s_height, 32), "SFML Playground", sf::Style::Default), m_tank(m_tankTexture,m_wallSprites,m_targets)
 {
 	init();
 }
@@ -41,13 +41,18 @@ void Game::init()
 	m_bgSpritee.setTexture(m_bgTexture);
 
 	// Load the player tank
-	if (!m_texture.loadFromFile("./resources/images/SpriteSheet.png"))
+	if (!m_tankTexture.loadFromFile("./resources/images/SpriteSheet.png"))
 	{
 		std::string s("Error loading texture");  
 		throw std::exception(s.c_str()); 
 	}
+	if (!m_targetTexture.loadFromFile("resources/images/target.png"))
+	{
+		std::cout << "Could not load the texture for the target \n";
+	}
+
+
 	int randSpawn = rand() % m_level.m_tank.m_tankPositions.size();
-	;
 	m_tank.setPosition(m_level.m_tank.m_tankPositions[randSpawn]);
 	
 	
@@ -167,9 +172,7 @@ void Game::generateTargets()
 {
 	for (auto const& targetData : m_level.m_targetData)
 	{
-		Target target;
-		target.setPosition(targetData.m_position);
-		target.setOffSet(targetData.m_offset);
+		Target target(m_targetTexture, targetData.m_position, targetData.m_offset);
 		m_targets.push_back(target);
 	}
 }
