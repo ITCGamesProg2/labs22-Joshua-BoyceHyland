@@ -9,5 +9,8 @@
 class YAMLWriter
 {
 public: 
-	//static
+	static void writeOrderedMaps(std::ostream& out, const YAML::Node& node);
+
+private:
+	static void writeNode(const YAML::Node& node, YAML::Emitter& emmitter); 
 };

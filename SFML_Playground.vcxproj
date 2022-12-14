@@ -27,6 +27,7 @@
     <ClCompile Include="src\OrientedBoundingBox.cpp" />
     <ClCompile Include="src\Tank.cpp" />
     <ClCompile Include="Target.cpp" />
+    <ClCompile Include="YAMLWrite.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Bullet.h" />
