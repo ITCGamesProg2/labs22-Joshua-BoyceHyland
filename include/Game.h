@@ -111,6 +111,11 @@ protected:
 	/// </summary>
 	void scoreUpdate(); 
 
+	/// <summary>
+	/// updates the targets timers and whether they should be still alive determined on how long they
+	/// havee been alive for
+	/// </summary>
+	void manageTargetTimers(); 
 	// Font used for all text
 	sf::Font m_arialFont;
 	// main window

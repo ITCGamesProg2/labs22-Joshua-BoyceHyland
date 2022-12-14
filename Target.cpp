@@ -1,5 +1,5 @@
 #include "Target.h"
-
+#include <iostream>
 Target::Target(sf::Texture const &t_texture, sf::Vector2f t_position, float t_offSet)
 {
 	
@@ -13,15 +13,24 @@ Target::Target(sf::Texture const &t_texture, sf::Vector2f t_position, float t_of
 
 void Target::draw(sf::RenderWindow &t_window)
 {
-	if (alive)
+	if ((alive)&&(!m_blinkingState))
 	{
 		t_window.draw(m_target);
 	}
-	 
+	if ((m_blinkingState)&&(alive))
+	{
+		// 7 good // 9 consistent ///  5 quick // 4 decent
+		if (m_timedLife.getElapsedTime().asMilliseconds() % 2 ==0) //sf::milliseconds(2500))
+		{
+			t_window.draw(m_target);
+		}
+	}
+	std::cout << m_timedLife.getElapsedTime().asSeconds()<< std::endl; 
 }
 
 void Target::despawn()
 {
+	leftOverTime = abs(m_timedLife.getElapsedTime().asSeconds() - m_lifeSpan.asSeconds());
 	alive = false; 
 	m_beenShot = true;
 }
@@ -42,6 +51,12 @@ void Target::respawn()
 	{
 		m_position = m_position;
 	}
+
+	//int
+	// adds tge remaining time from the last target to the current one if there is on
+	sf::Time newLifeSpan = m_lifeSpan  + sf::milliseconds(leftOverTime);
+	m_timedLife.restart();
+	m_lifeSpan = newLifeSpan; 
 }
 
 void Target::setPosition(sf::Vector2f t_position)
@@ -68,4 +83,22 @@ bool Target::isAlive()
 bool Target::beenShot()
 {
 	return m_beenShot;
+}
+
+void Target::updateTimer()
+{
+	if (alive)
+	{
+		
+		if (m_timedLife.getElapsedTime().asSeconds() > m_blinkingTime.asSeconds())
+		{
+			m_blinkingState = true;
+		}
+		
+		if (m_timedLife.getElapsedTime().asSeconds() > m_lifeSpan.asSeconds())
+		{
+			alive = false; 
+		}
+		
+	}
 }

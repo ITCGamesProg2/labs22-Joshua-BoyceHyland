@@ -257,6 +257,7 @@ void Tank::checkBulletCollisions()
 			{
 				std::cout << "You hit the target" << std::endl; 
 				target.despawn();
+				bullets[i].despawn();
 				m_score++;
 			}
 		}

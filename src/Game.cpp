@@ -220,7 +220,7 @@ void Game::chechForTargetRespawn()
 	if (!aTargetIsActive)
 	{
 		int randSpawn = rand() % m_targets.size();
-		if (m_targets[randSpawn].beenShot())
+		if (!m_targets[randSpawn].beenShot())
 		{
 			m_targets[randSpawn].respawn();
 		}
@@ -232,6 +232,14 @@ void Game::scoreUpdate()
 	m_scoreText.setString("Score: " + std::to_string(m_tank.getScore()));
 }
 
+void Game::manageTargetTimers()
+{
+	for (Target &target : m_targets)
+	{
+		target.updateTimer();
+	}
+}
+
 ////////////////////////////////////////////////////////////
 void Game::update(double dt)
 {
@@ -239,9 +247,10 @@ void Game::update(double dt)
 	{
 		case Gameplay:
 			m_tank.update(dt);
-			chechForTargetRespawn(); 
 			timerUpdate();
 			scoreUpdate();
+			manageTargetTimers();
+			chechForTargetRespawn();
 			break;
 		case GameOver:
 			m_window.close();

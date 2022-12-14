@@ -13,6 +13,8 @@ public:
 	sf::Sprite getBody();
 	bool isAlive();
 	bool beenShot();
+	void updateTimer();
+
 private:
 	sf::Sprite m_target;
 	sf::Texture m_texture;
@@ -20,4 +22,9 @@ private:
 	float m_offSet{ 0 };
 	bool alive {false};
 	bool m_beenShot{ false };
+	sf::Clock m_timedLife;
+	sf::Time  m_lifeSpan{ sf::seconds(6) };
+	sf::Time m_blinkingTime{ sf::seconds(3) };
+	bool m_blinkingState{ false };
+	static int leftOverTime;
 };
