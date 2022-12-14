@@ -204,32 +204,27 @@ void Game::setUpText()
 
 }
 
-void Game::targetUpdate()
+void Game::chechForTargetRespawn()
 {
-	bool aTargetIsDead = false; 
+	bool aTargetIsActive = false; 
 
-	for (Target &target : m_targets)
+	for (Target& target : m_targets)
 	{
-		if (!target.isAlive())
+		if (target.isAlive())
 		{
-			aTargetIsDead = true;
+			aTargetIsActive = true;
+			break;
 		}
 	}
 
-	if (aTargetIsDead)
+	if (!aTargetIsActive)
 	{
-
-		for (Target &target : m_targets)
+		int randSpawn = rand() % m_targets.size();
+		if (m_targets[randSpawn].beenShot())
 		{
-			if (!target.beenShot())
-			{
-				target.respawn();
-				break;
-			}
+			m_targets[randSpawn].respawn();
 		}
 	}
-
-	
 }
 
 void Game::scoreUpdate()
@@ -244,7 +239,7 @@ void Game::update(double dt)
 	{
 		case Gameplay:
 			m_tank.update(dt);
-			targetUpdate(); 
+			chechForTargetRespawn(); 
 			timerUpdate();
 			scoreUpdate();
 			break;
