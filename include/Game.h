@@ -104,7 +104,7 @@ protected:
 	/// <summary>
 	/// checks if a target has been shot and whether to spawn another one 
 	/// </summary>
-	void targetUpdate();
+	void chechForTargetRespawn();
 
 	/// <summary>
 	/// update the score text when a target has been shot
