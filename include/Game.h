@@ -149,7 +149,7 @@ protected:
 	sf::Text m_scoreText; 
 
 	// displayed time variables
-	sf::Time m_timer = sf::seconds(10);
+	sf::Time m_timer = sf::seconds(60);
 	sf::Clock m_clock;
 
 	GameState m_currentGameState{ Gameplay };

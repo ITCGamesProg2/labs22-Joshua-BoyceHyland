@@ -1,5 +1,8 @@
 #include "Target.h"
 #include <iostream>
+
+int Target::m_leftOverTime; 
+
 Target::Target(sf::Texture const &t_texture, sf::Vector2f t_position, float t_offSet)
 {
 	
@@ -25,13 +28,13 @@ void Target::draw(sf::RenderWindow &t_window)
 			t_window.draw(m_target);
 		}
 	}
-	std::cout << m_timedLife.getElapsedTime().asSeconds()<< std::endl; 
+	//std::cout << m_timedLife.getElapsedTime().asSeconds()<< std::endl; 
 }
 
 void Target::despawn()
 {
-	/*m_leftOverTime = abs(m_timedLife.getElapsedTime().asSeconds() - m_lifeSpan.asSeconds());
-	leftOverTime = abs(m_timedLife.getElapsedTime().asSeconds() - m_lifeSpan.asSeconds());*/
+	m_leftOverTime = abs(m_timedLife.getElapsedTime().asSeconds() - m_lifeSpan.asSeconds());
+	std::cout <<"Left over time: " + m_leftOverTime << std::endl;
 	alive = false; 
 	m_beenShot = true;
 }
@@ -55,10 +58,11 @@ void Target::respawn()
 
 	//int
 	// adds tge remaining time from the last target to the current one if there is on
-	//sf::Time newLifeSpan = m_lifeSpan  + sf::milliseconds(leftOverTime);
+	sf::Time newLifeSpan = m_lifeSpan  + sf::seconds(m_leftOverTime);
 	m_timedLife.restart();
 	m_blinkingState = false; 
-	//m_lifeSpan = newLifeSpan; 
+	m_lifeSpan = newLifeSpan; 
+	std::cout << "newLifeSpan: " + std::to_string(m_lifeSpan.asSeconds()) << std::endl;
 }
 
 void Target::setPosition(sf::Vector2f t_position)
@@ -101,6 +105,7 @@ void Target::updateTimer()
 		if (m_timedLife.getElapsedTime().asSeconds() > m_lifeSpan.asSeconds())
 		{
 			alive = false; 
+			m_leftOverTime = 0; // reset so it doesnt keep adding on even tho you waited 
 		}
 		
 	}
