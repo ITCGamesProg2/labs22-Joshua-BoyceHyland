@@ -157,6 +157,8 @@ void Tank::handleKeyInput()
 				m_speed = m_speed - 8;
 				m_tillCanBeShot = 40;
 				m_readyToShoot = false;
+				m_bulletsFired++; 
+				std::cout << m_bulletsFired << std::endl; 
 				break;
 			}
 		}
@@ -297,6 +299,11 @@ void Tank::deflect()
 int Tank::getScore()
 {
 	return m_score;
+}
+
+float Tank::calculateAverage()
+{
+	return m_score/m_bulletsFired;
 }
 
 void Tank::initSprites()

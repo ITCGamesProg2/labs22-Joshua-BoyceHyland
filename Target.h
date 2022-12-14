@@ -14,6 +14,8 @@ public:
 	bool isAlive();
 	bool beenShot();
 	void updateTimer();
+	float getLeftOverTime();
+	
 
 private:
 	sf::Sprite m_target;
@@ -25,6 +27,7 @@ private:
 	sf::Clock m_timedLife;
 	sf::Time  m_lifeSpan{ sf::seconds(6) };
 	sf::Time m_blinkingTime{ sf::seconds(3) };
+	float m_leftOverTime; 
 	bool m_blinkingState{ false };
 	static int leftOverTime;
 };

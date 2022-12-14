@@ -94,6 +94,8 @@ public:
 	/// <returns>current score, corresponding to the amount of targets shot</returns>
 	int getScore();
 
+	float calculateAverage();
+
 private:
 	void initSprites();
 
@@ -132,5 +134,7 @@ private:
 	std::vector<Target> &m_target;
 
 	// variable for score text in game
-	int m_score = 0; 
+	float m_score = 0; 
+	int m_bulletsFired = 0;
+	float m_accuracy = 0;
 };

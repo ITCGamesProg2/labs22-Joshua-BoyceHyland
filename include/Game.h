@@ -116,6 +116,11 @@ protected:
 	/// havee been alive for
 	/// </summary>
 	void manageTargetTimers(); 
+
+	/// <summary>
+	/// manages the scores and accuracy and sets the strings so they can be displayed
+	/// </summary>
+	void gameSummary();
 	// Font used for all text
 	sf::Font m_arialFont;
 	// main window
@@ -144,10 +149,15 @@ protected:
 	sf::Text m_scoreText; 
 
 	// displayed time variables
-	sf::Time m_timer = sf::seconds(60);
+	sf::Time m_timer = sf::seconds(10);
 	sf::Clock m_clock;
 
 	GameState m_currentGameState{ Gameplay };
+	
+	// adding
+	sf::Text m_highScore; 
+	sf::Text m_score;
+	sf::Text m_accuracy; 
 	
 
 #ifdef TEST_FPS

@@ -201,13 +201,28 @@ void Game::setUpText()
 	m_scoreText.setCharacterSize(80u);
 	m_scoreText.setPosition(20, 90);
 
+	m_highScore.setFont(m_font);
+	m_highScore.setFillColor(sf::Color::White);
+	m_highScore.setCharacterSize(80u);
+	m_highScore.setPosition(ScreenSize::s_width/2 -200, (ScreenSize::s_height/2) -200);
+
+	m_score.setFont(m_font);
+	m_score.setFillColor(sf::Color::White);
+	m_score.setCharacterSize(80u);
+	m_score.setPosition(ScreenSize::s_width / 2 -200 , (ScreenSize::s_height / 2 + 80)-200);
+
+	m_accuracy.setFont(m_font);
+	m_accuracy.setFillColor(sf::Color::White);
+	m_accuracy.setCharacterSize(80u);
+	m_accuracy.setPosition(ScreenSize::s_width / 2 -200, (ScreenSize::s_height /2+ 160)-200);
+
 
 }
 
 void Game::chechForTargetRespawn()
 {
 	bool aTargetIsActive = false; 
-
+	//static float additionalTime = 0; 
 	for (Target& target : m_targets)
 	{
 		if (target.isAlive())
@@ -219,6 +234,7 @@ void Game::chechForTargetRespawn()
 
 	if (!aTargetIsActive)
 	{
+		
 		int randSpawn = rand() % m_targets.size();
 		if (!m_targets[randSpawn].beenShot())
 		{
@@ -240,6 +256,13 @@ void Game::manageTargetTimers()
 	}
 }
 
+void Game::gameSummary()
+{
+	m_highScore.setString("High Score: " + std::to_string(2));
+	m_score.setString("Game Score: " + std::to_string(m_tank.getScore()));
+	m_accuracy.setString("Game Average: " + std::to_string(m_tank.calculateAverage()));
+}
+
 ////////////////////////////////////////////////////////////
 void Game::update(double dt)
 {
@@ -253,7 +276,9 @@ void Game::update(double dt)
 			chechForTargetRespawn();
 			break;
 		case GameOver:
-			m_window.close();
+			gameSummary();
+			break; 
+			//m_window.close();
 
 	}
 	
@@ -268,22 +293,32 @@ void Game::render()
 	m_window.draw(x_drawFPS);
 #endif
 
-	// Render your sprites here....
 	m_window.draw(m_bgSpritee);
-	
-	m_tank.render(m_window); 
-	
-	for (Target target : m_targets)
+	if (m_currentGameState == Gameplay)
 	{
-		target.draw(m_window);
+		// Render your sprites here....
+		
+		m_tank.render(m_window);
+		for (Target target : m_targets)
+		{
+			target.draw(m_window);
+		}
+		// draws all sprites in the vector
+		for (sf::Sprite sprite : m_wallSprites)
+		{
+			m_window.draw(sprite);
+		}
+
+		m_window.draw(m_timerText);
+		m_window.draw(m_scoreText);
 	}
-	// draws all sprites in the vector
-	for (sf::Sprite sprite : m_wallSprites)
+	if (m_currentGameState == GameOver)
 	{
-		m_window.draw(sprite);
+		m_window.draw(m_highScore);
+		m_window.draw(m_score);
+		m_window.draw(m_accuracy);
 	}
-	m_window.draw(m_timerText);
-	m_window.draw(m_scoreText);
+	
 	
 
 	m_window.display();
