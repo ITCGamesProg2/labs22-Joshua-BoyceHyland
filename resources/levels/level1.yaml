@@ -82,7 +82,7 @@ obstacles:
 target:
     - position: {x: 950, y: 200, offSet: 50 }
     - position: {x: 1200, y: 350, offSet: 50}
-    - position: {x: 1250, y: 50, offSet: 100 }
+    - position: {x: 1270, y: 50, offSet: 100 }
     - position: {x: 600, y: 250, offSet: 50 }
     - position: {x: 750, y: 400, offSet: 50}
     - position: {x: 700, y: 50, offSet: 50 }
@@ -90,5 +90,6 @@ target:
     - position: {x: 200, y: 350, offSet: 50 }
     - position: {x: 400, y: 600, offSet: 50}
     - position: {x: 800, y: 700, offSet: 50 }
-    - position: {x: 150, y: 700, offSet: 50}
-    - position: {x: 1250, y: 700, offSet: 50}
+    - position: {x: 150, y: 650, offSet: 50}
+    - position: {x: 1250, y: 650, offSet: 50}
+    - position: {x: 400, y: 50, offSet: 50}

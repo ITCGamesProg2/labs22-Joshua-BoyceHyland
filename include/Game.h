@@ -154,10 +154,16 @@ protected:
 
 	GameState m_currentGameState{ Gameplay };
 	
-	// adding
+	// game over screen
 	sf::Text m_highScore; 
 	sf::Text m_score;
 	sf::Text m_accuracy; 
+
+	// repairs text
+	sf::Text m_repairNotification;
+
+	// text depends on whether they won or not 
+	sf::Text m_gameResult; 
 	
 
 #ifdef TEST_FPS

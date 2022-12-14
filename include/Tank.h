@@ -94,7 +94,16 @@ public:
 	/// <returns>current score, corresponding to the amount of targets shot</returns>
 	int getScore();
 
+	/// <summary>
+	/// returns the average of bullets shot to targets hit
+	/// </summary>
+	/// <returns></returns>
 	float calculateAverage();
+
+	/// <summary>
+	/// tells game to display text notiffying player to repair turret
+	/// </summary>
+	bool needsRepair(); 
 
 private:
 	void initSprites();
@@ -136,5 +145,9 @@ private:
 	// variable for score text in game
 	float m_score = 0; 
 	int m_bulletsFired = 0;
-	float m_accuracy = 0;
+	
+	// repairs varaibles
+	bool m_turretRequiresRepair{ false };
+	int m_repairsMade = 30; 
+
 };

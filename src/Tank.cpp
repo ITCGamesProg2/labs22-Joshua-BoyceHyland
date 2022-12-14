@@ -14,6 +14,7 @@ Tank::Tank(sf::Texture const & texture, std::vector<sf::Sprite>& t_wallSprites,s
 void Tank::update(double dt)
 {	
 	handleKeyInput(); 
+
 	if (centering)
 	{
 		centreTurret();
@@ -36,6 +37,10 @@ void Tank::update(double dt)
 	m_tankBase.setRotation(m_tankRotation); 
 	m_turret.setRotation(m_turretRotation); 
 
+	if (m_turretRequiresRepair)
+	{
+		m_turretRotation -= 0.25;
+	}
 	
 	m_speed = std::clamp(m_speed, MAX_REVERSE_SPEED, MAX_FORWARD_SPEED);
 	
@@ -138,13 +143,27 @@ void Tank::handleKeyInput()
 		decreaseTurretRotation(); 
 	}
 
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::C))
+	if ((sf::Keyboard::isKeyPressed(sf::Keyboard::C)) && (!m_turretRequiresRepair))
 	{
 		if (m_tankRotation != m_turretRotation)
 		{
 			centering = true; 
 		}
+		else if (centering)
+		{
+			centering = false; 
+		}
 		
+	}
+	
+	if ((sf::Keyboard::isKeyPressed(sf::Keyboard::R)) && (m_turretRequiresRepair))
+	{
+		if (m_repairsMade < 1)
+		{
+			m_repairsMade = 30; 
+			m_turretRequiresRepair = false; 
+		}
+		m_repairsMade--; 
 	}
 
 	if ((sf::Mouse::isButtonPressed(sf::Mouse::Left))&&(m_readyToShoot))
@@ -158,6 +177,10 @@ void Tank::handleKeyInput()
 				m_tillCanBeShot = 40;
 				m_readyToShoot = false;
 				m_bulletsFired++; 
+				if (m_bulletsFired % 10 == 0)
+				{
+					m_turretRequiresRepair = true;
+				}
 				std::cout << m_bulletsFired << std::endl; 
 				break;
 			}
@@ -197,9 +220,9 @@ void Tank::decreaseTurretRotation()
 
 void Tank::centreTurret()
 {	
-	float startAngle = m_turretRotation;
+	int startAngle = m_turretRotation;
 	//int destAngle = static_cast<int>(m_tankRotation);
-	float destAngle =m_tankRotation;
+	int destAngle =m_tankRotation;
 	// if not centering assigns the angle its beginning from 
 	
 		if (startAngle < destAngle)
@@ -304,6 +327,11 @@ int Tank::getScore()
 float Tank::calculateAverage()
 {
 	return m_score/m_bulletsFired;
+}
+
+bool Tank::needsRepair()
+{
+	return m_turretRequiresRepair;
 }
 
 void Tank::initSprites()

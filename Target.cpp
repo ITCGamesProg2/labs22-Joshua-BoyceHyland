@@ -42,20 +42,22 @@ void Target::despawn()
 void Target::respawn()
 {
 	alive = true;
-	int randOffset = rand()%100 + 1;
+	int randOffset = 20;//rand()%100 + 1;
 	if (randOffset <=40)
 	{
-		m_position.x = m_position.x + randOffset;
+		m_position.x = m_position.x + m_offSet;
+		m_position.y = m_position.y + m_offSet;
 	}
 	else if ((randOffset > 40)&&(randOffset<80))
 	{
-		m_position.x = m_position.x - randOffset;
+		m_position.x = m_position.x - m_offSet;
+		m_position.y = m_position.y - m_offSet;
 	}
 	else
 	{
 		m_position = m_position;
 	}
-
+	m_target.setPosition(m_position); 
 	//int
 	// adds tge remaining time from the last target to the current one if there is on
 	sf::Time newLifeSpan = m_lifeSpan  + sf::seconds(m_leftOverTime);
