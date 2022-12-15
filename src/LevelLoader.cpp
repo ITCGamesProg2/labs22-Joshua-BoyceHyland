@@ -56,6 +56,7 @@ void operator>>(const YAML::Node& t_scoreNode, ScoreData& t_scores)
 {
 	t_scores.m_highScore = t_scoreNode["highScore"].as<int>(); 
 	t_scores.m_highAccuracy = t_scoreNode["bestAccuracy"].as<float>(); 
+	t_scores.m_userName = t_scoreNode["userName"].as<std::string>(); 
 }
 
 /// <summary>

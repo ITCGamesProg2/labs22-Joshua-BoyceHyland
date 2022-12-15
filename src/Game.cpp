@@ -199,11 +199,11 @@ void Game::setUpText()
 {
 
 
-	m_userName.setFont(m_font);
-	m_userName.setFillColor(sf::Color::White);
-	m_userName.setCharacterSize(80u);
-	m_userName.setPosition(ScreenSize::s_width / 2 - 200, (ScreenSize::s_height / 2) - 100);
-	m_userName.setString("Name: ");
+	m_userInput.setFont(m_font);
+	m_userInput.setFillColor(sf::Color::White);
+	m_userInput.setCharacterSize(80u);
+	m_userInput.setPosition(ScreenSize::s_width / 2 - 200, (ScreenSize::s_height / 2) - 100);
+	m_userInput.setString("Name: ");
 
 	m_timerText.setFont(m_font);
 	m_timerText.setFillColor(sf::Color::White);
@@ -344,20 +344,22 @@ void Game::updateYAML()
 void Game::enterUserInfo(sf::Event& event)
 {
 	sf::String currentKey;
-
+	m_userName = m_level.m_scores.m_userName;
 	if (event.type == sf::Event::TextEntered)
 	{
 		currentKey = event.text.unicode;
 	}
 
 	// size safe guards so if the user back spaces too many times it doenst go out of bounds of the sting array
-	if ((sf::Keyboard::isKeyPressed(sf::Keyboard::BackSpace))&&(usersInput.size()!=0))
+	if ((sf::Keyboard::isKeyPressed(sf::Keyboard::BackSpace))&&(m_userName.size()!=0))
 	{
-		usersInput.pop_back(); 
+		m_userName.pop_back(); 
 	}
 
-	usersInput =  usersInput + currentKey; 
-	m_userName.setString("Name: " + usersInput);
+	m_userName =  m_userName + currentKey; 
+	m_userInput.setString("Name: " + m_userName);
+	m_level.m_scores.m_userName = m_userName; 
+	std::cout << m_level.m_scores.m_userName << std::endl; 
 }
 
 ////////////////////////////////////////////////////////////
@@ -395,7 +397,7 @@ void Game::render()
 
 	if (m_currentGameState == Menu)
 	{
-		m_window.draw(m_userName);
+		m_window.draw(m_userInput);
 	}
 
 	if (m_currentGameState == Gameplay)

@@ -174,8 +174,8 @@ protected:
 	GameState m_currentGameState{ Menu };
 	
 	// menu text
-	sf::Text m_userName; 
-	std::string usersInput;
+	sf::Text m_userInput; 
+	std::string m_userName;
 	// game over screen
 	sf::Text m_highScore; 
 	sf::Text m_score;

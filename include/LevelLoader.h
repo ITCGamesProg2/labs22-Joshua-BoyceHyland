@@ -45,6 +45,7 @@ struct ScoreData
 {
 	int m_highScore; 
 	float m_highAccuracy; 
+	std::string m_userName; 
 
 };
 

@@ -124,6 +124,7 @@ obstacles:
 scores:
   bestAccuracy: 1
   highScore: 13
+  userName: john
 tank:
   - position:
       x: 79
