@@ -98,7 +98,7 @@ public:
 	/// returns the average of bullets shot to targets hit
 	/// </summary>
 	/// <returns></returns>
-	float calculateAverage();
+	float getAccuracy();
 
 	/// <summary>
 	/// tells game to display text notiffying player to repair turret

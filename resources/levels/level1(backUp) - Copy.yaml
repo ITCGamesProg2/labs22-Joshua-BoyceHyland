@@ -93,3 +93,4 @@ target:
     - position: {x: 150, y: 650, offSet: 50}
     - position: {x: 1250, y: 650, offSet: 50}
     - position: {x: 400, y: 50, offSet: 50}
+scores: { highScore: 0, bestAccuracy: 0}

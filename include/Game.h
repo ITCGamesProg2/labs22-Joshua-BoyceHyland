@@ -21,6 +21,13 @@
 /// </summary>
 
 /// <summary>
+/// switches between states of the game as neccasary
+/// Gameplay: player inputs for tank, controlling respawn of targets
+/// Gameover: checks whether to update yaml file and displays stats
+/// </summary>
+enum GameState { Menu, Gameplay, GameOver };
+
+/// <summary>
 /// @brief Main class for the SFML Playground project.
 /// 
 /// This will be a single class framework for learning about SFML. 
@@ -28,7 +35,8 @@
 ///		Game game;
 ///		game.run();
 /// </summary>
-enum GameState {Menu, Gameplay, GameOver};
+/// 
+
 class Game
 {
 public:
@@ -156,10 +164,10 @@ protected:
 	sf::Text m_scoreText; 
 
 	// displayed time variables
-	sf::Time m_timer = sf::seconds(60);
+	sf::Time m_timer = sf::seconds(2);
 	sf::Clock m_clock;
 
-	GameState m_currentGameState{ GameOver };
+	GameState m_currentGameState{ Gameplay };
 	
 	// game over screen
 	sf::Text m_highScore; 

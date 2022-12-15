@@ -51,7 +51,6 @@ void Tank::update(double dt)
 		bullets[i].move();
 	}
 	
-	//std::cout <<"Position X: "<<m_position.x<< "Y: "<<m_position.y << std::endl;
 }
 
 void Tank::render(sf::RenderWindow & window) 
@@ -324,7 +323,7 @@ int Tank::getScore()
 	return m_score;
 }
 
-float Tank::calculateAverage()
+float Tank::getAccuracy()
 {
 	return m_score/m_bulletsFired;
 }

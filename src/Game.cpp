@@ -188,7 +188,7 @@ void Game::timerUpdate()
 
 	if (displayedTime < 1)
 	{
-		m_currentGameState = GameOver; 
+		m_currentGameState = GameOver;
 	}
 }
 
@@ -280,29 +280,47 @@ void Game::gameSummary()
 	
 	if (targetsShot == m_targets.size())
 	{
-		m_gameResult.setString("            WINNER! \n You shot all the targets in \nthe allotted time");
+		m_gameResult.setString("            WINNER! \n You shot all the targets in");
 	}
 	else
 	{
 		m_gameResult.setString("            LOSER! \n There was still " + std::to_string((m_targets.size()) - targetsShot) + " left");
 	}
 
-	m_highScore.setString("High Score: " + std::to_string(2));
+	m_highScore.setString("High Score: " + std::to_string(m_level.m_scores.m_highScore));
 	m_score.setString("Game Score: " + std::to_string(m_tank.getScore()));
-	m_accuracy.setString("Game Average: " + std::to_string(m_tank.calculateAverage()));
+	m_accuracy.setString("Game Average: " + std::to_string(m_tank.getAccuracy()));
 }
 
 void Game::updateYAML()
 {
-	m_level.m_scores.m_highScore =2;
-	std::string fileName = "./resources/levels/level1.yaml";
-	
-	m_baseNode["scores"]["bestScore"] = m_level.m_scores.m_highScore;
-	//baseNode["scores"] = m_level.m_scores.m_highAccuracy;
-	std::ofstream fout(fileName);
+	bool write = false; 
+ 
 
-	YAMLWriter::writeOrderedMaps(fout, m_baseNode);
-	//YAMLW
+	// chechs if it should write to the file or not based on whther the scores are higher
+	if (m_tank.getScore() > m_level.m_scores.m_highScore)
+	{
+		m_level.m_scores.m_highScore = m_tank.getScore(); 
+		m_baseNode["scores"]["highScore"] = m_level.m_scores.m_highScore;
+		write = true;
+	}
+	else if (m_tank.getAccuracy() > m_level.m_scores.m_highAccuracy)
+	{
+		m_level.m_scores.m_highAccuracy = m_tank.getAccuracy(); 
+		m_baseNode["scores"]["bestAccuracy"] = m_level.m_scores.m_highAccuracy;
+		write = true;
+	}
+	
+	// if true write new vairables to the file 
+	if (write)
+	{
+		std::string fileName = "./resources/levels/test.yaml";
+		std::ofstream fout(fileName);
+		YAMLWriter::writeYamlOrderedMaps(fout, m_baseNode);
+		fout.close(); // close the file 
+	}
+
+	
 }
 
 ////////////////////////////////////////////////////////////
@@ -317,8 +335,8 @@ void Game::update(double dt)
 			manageTargetTimers();
 			chechForTargetRespawn();
 			break;
-		case GameOver:
-			updateYAML(); 
+		case GameOver: 
+			updateYAML();
 			gameSummary();
 			break; 
 
@@ -358,6 +376,7 @@ void Game::render()
 			m_window.draw(m_repairNotification);
 		}
 	}
+
 	if (m_currentGameState == GameOver)
 	{
 		m_window.draw(m_gameResult);

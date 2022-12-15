@@ -22,13 +22,13 @@ void Target::draw(sf::RenderWindow &t_window)
 	}
 	if ((m_blinkingState)&&(alive))
 	{
-		// 7 good // 9 consistent ///  5 quick // 4 decent
-		if (m_timedLife.getElapsedTime().asMilliseconds() % 2 ==0) //sf::milliseconds(2500))
+		// 7 good // 9 consistent ///  5 quick // 4 decent // 
+		if (m_timedLife.getElapsedTime().asMilliseconds() % 2 ==0)
 		{
 			t_window.draw(m_target);
 		}
 	}
-	//std::cout << m_timedLife.getElapsedTime().asSeconds()<< std::endl; 
+
 }
 
 void Target::despawn()
@@ -111,11 +111,6 @@ void Target::updateTimer()
 		}
 		
 	}
-}
-
-float Target::getLeftOverTime()
-{
-	return m_leftOverTime;
 }
 
 
