@@ -124,7 +124,7 @@ obstacles:
 scores:
   bestAccuracy: 1
   highScore: 13
-  userName: john
+  userName: ""
 tank:
   - position:
       x: 79

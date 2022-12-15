@@ -190,7 +190,7 @@ void Game::timerUpdate()
 	// game over criteria 
 	if (displayedTime < 1)
 	{
-		m_currentGameState = GameOver;
+		m_currentGameState = PersonalStats;
 	}
 }
 	
@@ -218,28 +218,20 @@ void Game::setUpText()
 	m_repairNotification.setFont(m_font);
 	m_repairNotification.setFillColor(sf::Color::Red);
 	m_repairNotification.setCharacterSize(40u);
-	m_repairNotification.setPosition(ScreenSize::s_width / 2 - 150, 40);
+	m_repairNotification.setPosition(ScreenSize::s_width / 2 - 250, 40);
 	m_repairNotification.setString("TURRET REPAIR REQUIRED \n     Smash: R");
 
-	m_highScore.setFont(m_font);
-	m_highScore.setFillColor(sf::Color::White);
-	m_highScore.setCharacterSize(80u);
-	m_highScore.setPosition(ScreenSize::s_width/2 -200, (ScreenSize::s_height/2) -100);
-
-	m_score.setFont(m_font);
-	m_score.setFillColor(sf::Color::White);
-	m_score.setCharacterSize(80u);
-	m_score.setPosition(ScreenSize::s_width / 2 -200 , (ScreenSize::s_height / 2 + 80)-100);
-
-	m_accuracy.setFont(m_font);
-	m_accuracy.setFillColor(sf::Color::White);
-	m_accuracy.setCharacterSize(80u);
-	m_accuracy.setPosition(ScreenSize::s_width / 2 -200, (ScreenSize::s_height /2+ 160)-100);
+	m_personalStats.setFont(m_font);
+	m_personalStats.setFillColor(sf::Color::White);
+	m_personalStats.setCharacterSize(80u);
+	m_personalStats.setPosition(ScreenSize::s_width/2 - 300, (ScreenSize::s_height/2) -100);
 
 	m_gameResult.setFont(m_font);
 	m_gameResult.setFillColor(sf::Color::White);
 	m_gameResult.setCharacterSize(90u);
 	m_gameResult.setPosition( 430 , 50);
+
+
 
 	
 
@@ -273,7 +265,7 @@ void Game::chechForTargetRespawn()
 	
 	if (targetsAvailable == 0)
 	{
-		m_currentGameState = GameOver;
+		m_currentGameState = PersonalStats;
 	}
 }
 
@@ -295,6 +287,8 @@ void Game::gameSummary()
 	
 	int targetsShot = m_tank.getScore(); 
 	int hitAccuracy = m_tank.getAccuracy() * 100; // truncated int for percentage
+	int highestAccuracy = m_level.m_scores.m_highAccuracy * 100; 
+
 	if (targetsShot == m_targets.size())
 	{
 		m_gameResult.setString("            WINNER! \n You shot all the targets");
@@ -304,9 +298,12 @@ void Game::gameSummary()
 		m_gameResult.setString("            LOSER! \n There was still " + std::to_string((m_targets.size()) - targetsShot) + " left");
 	}
 
-	m_highScore.setString("High Score: " + std::to_string(m_level.m_scores.m_highScore));
-	m_score.setString("Game Score: " + std::to_string(m_tank.getScore()));
-	m_accuracy.setString("Hit Accuracy: " + std::to_string(hitAccuracy)+"%");
+	m_personalStats.setString("High Score: " + std::to_string(m_level.m_scores.m_highScore) 
+		+"\nGame Score: " + std::to_string(m_tank.getScore()) 
+		+ "\nHit Accuracy: " + std::to_string(hitAccuracy) + "%" 
+		+ "\n Your Best Accuracy: " + std::to_string(highestAccuracy) + "%" 
+		+"\n \n  Press S to view scoreboard");
+	
 
 }
 
@@ -362,11 +359,23 @@ void Game::enterUserInfo(sf::Event& event)
 	std::cout << m_level.m_scores.m_userName << std::endl; 
 }
 
+void Game::switchToScoreboardCheck()
+{
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
+	{
+		m_currentGameState = Scoreboard;
+	}
+	
+}
+
 ////////////////////////////////////////////////////////////
 void Game::update(double dt)
 {
 	switch (m_currentGameState)
 	{
+		case Menu:
+			break; 
+
 		case Gameplay:
 			m_tank.update(dt);
 			timerUpdate();
@@ -374,9 +383,16 @@ void Game::update(double dt)
 			manageTargetTimers();
 			chechForTargetRespawn();
 			break;
-		case GameOver: 
+
+		case PersonalStats: 
 			updateYAML();
 			gameSummary();
+			switchToScoreboardCheck(); 
+			break; 
+
+		case Scoreboard:
+
+
 			break; 
 
 	}
@@ -423,12 +439,15 @@ void Game::render()
 		}
 	}
 
-	if (m_currentGameState == GameOver)
+	if (m_currentGameState == PersonalStats)
 	{
 		m_window.draw(m_gameResult);
-		m_window.draw(m_highScore);
-		m_window.draw(m_score);
-		m_window.draw(m_accuracy);
+		m_window.draw(m_personalStats);
+	}
+
+	if (m_currentGameState == Scoreboard)
+	{
+
 	}
 	
 	

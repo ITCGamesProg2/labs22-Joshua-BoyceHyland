@@ -25,7 +25,7 @@
 /// Gameplay: player inputs for tank, controlling respawn of targets
 /// Gameover: checks whether to update yaml file and displays stats
 /// </summary>
-enum GameState { Menu, Gameplay, GameOver };
+enum GameState { Menu, Gameplay, PersonalStats, Scoreboard };
 
 /// <summary>
 /// @brief Main class for the SFML Playground project.
@@ -138,7 +138,17 @@ protected:
 	void updateYAML();
 
 	
+	/// <summary>
+	/// checks what the user is typing and puts it into a string and displays it as text in sfml
+	/// </summary>
+	/// <param name="event"></param>
 	void enterUserInfo(sf::Event& event);
+
+	/// <summary>
+	/// checks if user wants to switch to score boards
+	/// </summary>
+	void switchToScoreboardCheck(); ;
+
 
 	// Font used for all text
 	sf::Font m_arialFont;
@@ -166,6 +176,7 @@ protected:
 	sf::Font m_font; 
 	sf::Text m_timerText;
 	sf::Text m_scoreText; 
+	
 
 	// displayed time variables
 	sf::Time m_timer = sf::seconds(60);
@@ -176,10 +187,8 @@ protected:
 	// menu text
 	sf::Text m_userInput; 
 	std::string m_userName;
-	// game over screen
-	sf::Text m_highScore; 
-	sf::Text m_score;
-	sf::Text m_accuracy; 
+	//personal stats text
+	sf::Text m_personalStats; 
 
 	// repairs text
 	sf::Text m_repairNotification;
