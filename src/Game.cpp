@@ -145,6 +145,11 @@ void Game::processGameEvents(sf::Event& event)
 		m_window.close();
 	}
 
+	if (m_currentGameState == Menu)
+	{
+		enterUserInfo(event); 
+	}
+
 	
 	
 }
@@ -192,6 +197,14 @@ void Game::timerUpdate()
 
 void Game::setUpText()
 {
+
+
+	m_userName.setFont(m_font);
+	m_userName.setFillColor(sf::Color::White);
+	m_userName.setCharacterSize(80u);
+	m_userName.setPosition(ScreenSize::s_width / 2 - 200, (ScreenSize::s_height / 2) - 100);
+	m_userName.setString("Name: ");
+
 	m_timerText.setFont(m_font);
 	m_timerText.setFillColor(sf::Color::White);
 	m_timerText.setCharacterSize(80u);
@@ -328,6 +341,25 @@ void Game::updateYAML()
 	
 }
 
+void Game::enterUserInfo(sf::Event& event)
+{
+	sf::String currentKey;
+
+	if (event.type == sf::Event::TextEntered)
+	{
+		currentKey = event.text.unicode;
+	}
+
+	// size safe guards so if the user back spaces too many times it doenst go out of bounds of the sting array
+	if ((sf::Keyboard::isKeyPressed(sf::Keyboard::BackSpace))&&(usersInput.size()!=0))
+	{
+		usersInput.pop_back(); 
+	}
+
+	usersInput =  usersInput + currentKey; 
+	m_userName.setString("Name: " + usersInput);
+}
+
 ////////////////////////////////////////////////////////////
 void Game::update(double dt)
 {
@@ -359,6 +391,13 @@ void Game::render()
 #endif
 
 	m_window.draw(m_bgSpritee);
+
+
+	if (m_currentGameState == Menu)
+	{
+		m_window.draw(m_userName);
+	}
+
 	if (m_currentGameState == Gameplay)
 	{
 		// Render your sprites here....

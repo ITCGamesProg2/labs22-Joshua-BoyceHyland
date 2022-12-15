@@ -137,6 +137,9 @@ protected:
 	/// </summary>
 	void updateYAML();
 
+	
+	void enterUserInfo(sf::Event& event);
+
 	// Font used for all text
 	sf::Font m_arialFont;
 	// main window
@@ -168,8 +171,11 @@ protected:
 	sf::Time m_timer = sf::seconds(60);
 	sf::Clock m_clock;
 
-	GameState m_currentGameState{ Gameplay };
+	GameState m_currentGameState{ Menu };
 	
+	// menu text
+	sf::Text m_userName; 
+	std::string usersInput;
 	// game over screen
 	sf::Text m_highScore; 
 	sf::Text m_score;
