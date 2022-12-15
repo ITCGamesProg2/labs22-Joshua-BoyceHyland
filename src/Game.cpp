@@ -190,7 +190,7 @@ void Game::timerUpdate()
 	// game over criteria 
 	if (displayedTime < 1)
 	{
-		m_currentGameState = PersonalStats;
+		m_currentGameState = UpdateYAML;;
 	}
 }
 	
@@ -267,7 +267,7 @@ void Game::chechForTargetRespawn()
 	// all target have been destroyed
 	if (targetsAvailable == 0)
 	{
-		m_currentGameState = PersonalStats;
+		m_currentGameState = UpdateYAML;
 	}
 }
 
@@ -311,7 +311,8 @@ void Game::gameSummary()
 
 void Game::updateYAML()
 {
-	
+	bool isBetter = false; 
+
 	m_baseNode["user"]["userName"] = m_level.m_currentUser.m_userName;
 
 	// chechs if it should write to the file or not based on whther the scores are higher
@@ -328,21 +329,10 @@ void Game::updateYAML()
 		
 	}
 
-	for (int i = 0; i < m_level.m_scoreboard.size();i++)
-	{
-		
-		
-		// prioritizes high score over accuracy
-		if (m_tank.getScore() > m_level.m_scoreboard[i].m_highScore)
-		{
-			std::string place ="t";
-			place.at(0)= m_level.m_scoreboard[i].place;
+	addPlayerToLeaderBoard();
+	sortScoreboard();
+	 
 
-			m_baseNode["scoreboard"][place]["bestAccuracy"] = m_tank.getAccuracy();
-			m_baseNode["scoreboard"][place]["highScore"] = m_tank.getScore();
-			m_baseNode["scoreboard"][place]["username"] = m_level.m_currentUser.m_userName;
-		}
-	}
 
 
 	
@@ -353,7 +343,7 @@ void Game::updateYAML()
 	YAMLWriter::writeYamlOrderedMaps(fout, m_baseNode);
 	fout.close(); // close the file 
 	
-
+	m_currentGameState = GameStats; 
 	
 }
 
@@ -392,9 +382,52 @@ void Game::switchToScoreboardCheck()
 
 void Game::updateScoreBoard()
 {
-	m_scoreBoard.setString("1. Username: " + m_level.m_scoreboard[0].m_userName + "\n High Score: " + std::to_string(m_level.m_scoreboard[0].m_highScore) + "\n Best Accuracy: " + std::to_string(static_cast<int>(m_level.m_scoreboard[0].m_highAccuracy * 100)) + "%" +
-		"\n2. Username: " + m_level.m_scoreboard[1].m_userName + "\n High Score: " + std::to_string(m_level.m_scoreboard[1].m_highScore) + "\n Best Accuracy: " + std::to_string(static_cast<int>(m_level.m_scoreboard[1].m_highAccuracy*100)) + "%" +
-		"\n3. Username: " + m_level.m_scoreboard[2].m_userName + "\n High Score: " + std::to_string(m_level.m_scoreboard[2].m_highScore) + "\n Best Accuracy: " + std::to_string(static_cast<int>(m_level.m_scoreboard[2].m_highAccuracy * 100)) + "%");
+	m_scoreBoard.setString("1. Username: " + m_level.m_scoreBoard[0].m_userName + "\n High Score: " + std::to_string(m_level.m_scoreBoard[0].m_highScore) + "\n Best Accuracy: " + std::to_string(static_cast<int>(m_level.m_scoreBoard[0].m_highAccuracy * 100)) + "%" +
+		"\n2. Username: " + m_level.m_scoreBoard[1].m_userName + "\n High Score: " + std::to_string(m_level.m_scoreBoard[1].m_highScore) + "\n Best Accuracy: " + std::to_string(static_cast<int>(m_level.m_scoreBoard[1].m_highAccuracy*100)) + "%" +
+		"\n3. Username: " + m_level.m_scoreBoard[2].m_userName + "\n High Score: " + std::to_string(m_level.m_scoreBoard[2].m_highScore) + "\n Best Accuracy: " + std::to_string(static_cast<int>(m_level.m_scoreBoard[2].m_highAccuracy * 100)) + "%");
+}
+
+void Game::sortScoreboard()
+{
+
+	UserData tempContainer; 
+	for (int  i = 2; i >0; i--)
+	{
+		
+		// is 3 greater than 2
+		// is 2 greater than 1
+		if ((m_level.m_scoreBoard[i].m_highScore > m_level.m_scoreBoard[i - 1].m_highScore)&&(i!=0))
+		{
+			tempContainer = m_level.m_scoreBoard[i - 1]; 
+			m_level.m_scoreBoard[i - 1] = m_level.m_scoreBoard[i]; 
+			m_level.m_scoreBoard[i] = tempContainer; 
+		}
+		
+		
+	}
+
+	for (int i = 0; i < 3; i++)
+	{
+		m_baseNode[m_level.m_scoreBoard[i].m_place]["bestAccuracy"] = m_level.m_scoreBoard[i].m_highAccuracy;
+		m_baseNode[m_level.m_scoreBoard[i].m_place]["highScore"] = m_level.m_scoreBoard[i].m_highScore;
+		m_baseNode[m_level.m_scoreBoard[i].m_place]["userName"] = m_level.m_scoreBoard[i].m_userName;
+	}
+}
+
+void Game::addPlayerToLeaderBoard()
+{
+	// checks if the player got a better score than the last player
+	if (m_tank.getScore() > m_level.m_scoreBoard[2].m_highScore)
+	{
+		m_level.m_scoreBoard[2].m_highAccuracy = m_tank.getAccuracy();
+		m_level.m_scoreBoard[2].m_highScore = m_tank.getScore();
+		m_level.m_scoreBoard[2].m_userName = m_level.m_currentUser.m_userName;
+
+		/*m_baseNode[m_level.m_scoreBoard[2].m_place]["bestAccuracy"] = m_level.m_scoreBoard[2].m_highAccuracy;
+		m_baseNode[m_level.m_scoreBoard[2].m_place]["highScore"] = m_level.m_scoreBoard[2].m_highScore;
+		m_baseNode[m_level.m_scoreBoard[2].m_place]["userName"] = m_level.m_scoreBoard[2].m_userName;*/
+
+	}
 }
 
 ////////////////////////////////////////////////////////////
@@ -413,8 +446,11 @@ void Game::update(double dt)
 			chechForTargetRespawn();
 			break;
 
-		case PersonalStats: 
+		case UpdateYAML:
 			updateYAML();
+			break; 
+
+		case GameStats: 
 			gameSummary();
 			switchToScoreboardCheck(); 
 			break; 
@@ -468,7 +504,7 @@ void Game::render()
 		}
 	}
 
-	if (m_currentGameState == PersonalStats)
+	if (m_currentGameState == GameStats)
 	{
 		m_window.draw(m_gameResult);
 		m_window.draw(m_personalStats);

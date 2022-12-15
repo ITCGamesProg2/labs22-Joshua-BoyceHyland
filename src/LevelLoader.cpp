@@ -53,21 +53,13 @@ void operator>>(const YAML::Node& t_targetNode, TargetData& t_targetPos)
 	t_targetPos.m_position.y = t_targetNode["position"]["y"].as<float>();
 }
 
-
-void operator>>(const YAML::Node& t_baseNode, ScoreBoardData& t_scores)
-{
-
-	t_scores.m_highAccuracy = t_baseNode[t_scores.place]["bestAccuracy"].as<float>();
-	t_scores.m_highScore = t_baseNode[t_scores.place]["highScore"].as<int>();
-	t_scores.m_userName = t_baseNode[t_scores.place]["userName"].as<std::string>();
-}
-
 void operator>>(const YAML::Node& t_baseNode, UserData& t_user)
 {
 
 	t_user.m_highAccuracy = t_baseNode["bestAccuracy"].as<float>();
 	t_user.m_highScore = t_baseNode["highScore"].as<int>();
 	t_user.m_userName = t_baseNode["userName"].as<std::string>();
+	
 }
 
 /// <summary>
@@ -83,6 +75,15 @@ void operator >> (const YAML::Node& t_levelNode, LevelData& t_level)
 {
 	t_levelNode["background"] >> t_level.m_background;
 	t_levelNode["user"] >> t_level.m_currentUser;
+
+	t_levelNode["firstPlace"] >> t_level.m_scoreBoard[0]; 
+	t_level.m_scoreBoard[0].m_place = "firstPlace";
+
+	t_levelNode["secondPlace"] >> t_level.m_scoreBoard[1];
+	t_level.m_scoreBoard[1].m_place = "secondPlace";
+
+	t_levelNode["thirdPlace"] >> t_level.m_scoreBoard[2];
+	t_level.m_scoreBoard[0].m_place = "thirdPlace";
 
 	const YAML::Node& tanksNode = t_levelNode["tank"].as<YAML::Node>();
 	for (unsigned i = 0; i < tanksNode.size(); ++i)
@@ -109,14 +110,7 @@ void operator >> (const YAML::Node& t_levelNode, LevelData& t_level)
 		t_level.m_targetData.push_back(position);
 	}
 	
-	const YAML::Node& targetNodeScoreboard = t_levelNode["scoreboard"].as<YAML::Node>();
-	for (unsigned i = 0; i < targetNodeScoreboard.size(); ++i)
-	{
-		ScoreBoardData score; 
-		score.place = score.place+ i; 
-		targetNodeScoreboard[i] >> score;
-		t_level.m_scoreboard.push_back(score); 
-	}
+	
 
 	
 

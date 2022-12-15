@@ -25,7 +25,7 @@
 /// Gameplay: player inputs for tank, controlling respawn of targets
 /// Gameover: checks whether to update yaml file and displays stats
 /// </summary>
-enum GameState { Menu, Gameplay, PersonalStats, Scoreboard };
+enum GameState { Menu, Gameplay, UpdateYAML,GameStats, Scoreboard };
 
 /// <summary>
 /// @brief Main class for the SFML Playground project.
@@ -153,6 +153,17 @@ protected:
 	/// sets score board text and upadtes the yaml to new positions
 	/// </summary>
 	void updateScoreBoard(); 
+
+	/// <summary>
+	/// sorts the scoreboard
+	/// </summary>
+	void sortScoreboard(); 
+
+	/// <summary>
+	/// checks scores to see if a new player should be added
+	/// </summary>
+	void addPlayerToLeaderBoard(); 
+
 
 
 	// Font used for all text

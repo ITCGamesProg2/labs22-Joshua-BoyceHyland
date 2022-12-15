@@ -187,17 +187,7 @@ target:
       offSet: 50
       x: 400
       y: 50
-user: {bestAccuracy: 0, highScore: 0, userName: "" }
-scoreboard:
-  - a:
-      bestAccuracy: 0
-      highScore: 0
-      userName: player
-  - b:
-      bestAccuracy: 0
-      highScore: 0
-      userName: player
-  - c:
-      bestAccuracy: 0
-      highScore: 0
-      userName: player
+user: {bestAccuracy: 0, highScore: 0, userName: player }
+firstPlace: {bestAccuracy: 0, highScore: 0, userName: player }
+secondPlace: {bestAccuracy: 0, highScore: 0, userName: player }
+thirdPlace: {bestAccuracy: 0, highScore: 0, userName: player }

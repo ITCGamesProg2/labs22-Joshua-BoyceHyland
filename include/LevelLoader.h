@@ -46,22 +46,17 @@ struct UserData
 	int m_highScore; 
 	float m_highAccuracy; 
 	std::string m_userName;  
-};
+	std::string m_place;
 
-struct ScoreBoardData
-{
-	int m_highScore;
-	float m_highAccuracy;
-	std::string m_userName;
-	char place = 'a';
-	void operator = (UserData user)
+	void operator =(UserData t_other)
 	{
-		m_highScore = user.m_highScore;
-		m_highAccuracy = user.m_highAccuracy;
-		m_userName = user.m_userName;
-	};
-
+		m_highScore = t_other.m_highScore;
+		m_highAccuracy = t_other.m_highAccuracy;
+		m_userName = t_other.m_userName;
+		m_place = m_place; 
+	}
 };
+
 /// <summary>
 /// @brief A struct representing all the Level Data.
 /// 
@@ -69,11 +64,11 @@ struct ScoreBoardData
 /// </summary>
 struct LevelData
 {
+
 	BackgroundData m_background;
 	TankData m_tank;
 	UserData m_currentUser; 
-
-	std::vector<ScoreBoardData> m_scoreboard; 
+	UserData m_scoreBoard[3];
 	std::vector<ObstacleData> m_obstacles;
 	std::vector<TargetData> m_targetData; 
 };

@@ -1,5 +1,13 @@
+"":
+  bestAccuracy: 0
+  highScore: 0
+  userName: player
 background:
   file: ./resource/images/Background.jpg
+firstPlace:
+  bestAccuracy: 0
+  highScore: 0
+  userName: player
 obstacles:
   - position:
       x: 100
@@ -121,6 +129,10 @@ obstacles:
       y: 632
     rotation: 0
     type: wall
+secondPlace:
+  bestAccuracy: 0
+  highScore: 0
+  userName: player
 tank:
   - position:
       x: 79
@@ -187,17 +199,11 @@ target:
       offSet: 50
       x: 400
       y: 50
-user: {bestAccuracy: 0, highScore: 0, userName: "" }
-scoreboard:
-  - a:
-      bestAccuracy: 0
-      highScore: 0
-      userName: player
-  - b:
-      bestAccuracy: 0
-      highScore: 0
-      userName: player
-  - c:
-      bestAccuracy: 0
-      highScore: 0
-      userName: player
+thirdPlace:
+  bestAccuracy: 0.5
+  highScore: 2
+  userName: josh
+user:
+  bestAccuracy: 1
+  highScore: 3
+  userName: a
