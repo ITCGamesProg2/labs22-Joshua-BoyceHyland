@@ -11,8 +11,9 @@ public:
 	/// <summary>
 	/// sets the starting position and rotation of the sprite while the bullet has not been already shot
 	/// </summary>
-	/// <param name="t_playerPosition"> the position of the tank</param>
+	/// <param name="t_playerPosition"> the </param>
 	/// <param name="t_playerRotation"> current rotation of the tank</param>
+	///	<returns>whether the bullet was able to be shot</returns>
 	bool canSetStart(sf::Vector2f t_playerPosition, float t_playerRotation);
 	
 	/// <summary>

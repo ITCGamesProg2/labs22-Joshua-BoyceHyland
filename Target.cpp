@@ -42,7 +42,7 @@ void Target::despawn()
 void Target::respawn()
 {
 	alive = true;
-	int randOffset = 20;//rand()%100 + 1;
+	int randOffset = rand()%100 + 1;
 	if (randOffset <=40)
 	{
 		m_position.x = m_position.x + m_offSet;

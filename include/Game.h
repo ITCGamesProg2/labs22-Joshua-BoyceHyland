@@ -101,7 +101,7 @@ protected:
 	/// </summary>
 	void generateTargets(); 
 	/// <summary>
-	/// updates the timer
+	/// updates the timer and checks if the game has timed out 
 	/// </summary>
 	void timerUpdate();
 
@@ -112,6 +112,7 @@ protected:
 
 	/// <summary>
 	/// checks if a target has been shot and whether to spawn another one 
+	/// if all targets have been killed then end game also
 	/// </summary>
 	void chechForTargetRespawn();
 
@@ -164,7 +165,7 @@ protected:
 	sf::Text m_scoreText; 
 
 	// displayed time variables
-	sf::Time m_timer = sf::seconds(2);
+	sf::Time m_timer = sf::seconds(60);
 	sf::Clock m_clock;
 
 	GameState m_currentGameState{ Gameplay };

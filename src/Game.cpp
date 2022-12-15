@@ -63,16 +63,12 @@ void Game::init()
 		throw std::exception(errorMsg.c_str()); 
 	}
 
-	if (!m_font.loadFromFile("./resources/fonts/BAD_GRUNGE.ttf"))
+	if (!m_font.loadFromFile("./resources/fonts/Merc.ttf"))
 	{
 		std::string fontErrorMsg("Error loading font");
 		throw std::exception(fontErrorMsg.c_str());
 	}
 	setUpText();
-	/*for (Target& target : m_targets)
-	{
-		target.respawn();
-	}*/
 	generateWalls(); 
 	generateTargets(); 
 #ifdef TEST_FPS
@@ -182,27 +178,29 @@ void Game::generateTargets()
 
 void Game::timerUpdate()
 {
-	sf::Time elapsedTime = m_clock.getElapsedTime();
+	sf::Time elapsedTime = m_clock.getElapsedTime(); // gets time passed
 	int displayedTime = m_timer.asSeconds() - elapsedTime.asSeconds(); // truncates to int for display 
-	m_timerText.setString("Timer " + std::to_string(displayedTime));
+	m_timerText.setString("Timer: " + std::to_string(displayedTime));
 
+	// game over criteria 
 	if (displayedTime < 1)
 	{
 		m_currentGameState = GameOver;
 	}
 }
+	
 
 void Game::setUpText()
 {
 	m_timerText.setFont(m_font);
 	m_timerText.setFillColor(sf::Color::White);
 	m_timerText.setCharacterSize(80u);
-	m_timerText.setPosition(20, 10);
+	m_timerText.setPosition(20, 0);
 
 	m_scoreText.setFont(m_font);
 	m_scoreText.setFillColor(sf::Color::White);
 	m_scoreText.setCharacterSize(80u);
-	m_scoreText.setPosition(20, 90);
+	m_scoreText.setPosition(20, 80);
 
 	m_repairNotification.setFont(m_font);
 	m_repairNotification.setFillColor(sf::Color::Red);
@@ -228,7 +226,7 @@ void Game::setUpText()
 	m_gameResult.setFont(m_font);
 	m_gameResult.setFillColor(sf::Color::White);
 	m_gameResult.setCharacterSize(90u);
-	m_gameResult.setPosition( 360 , 50);
+	m_gameResult.setPosition( 430 , 50);
 
 	
 
@@ -238,7 +236,8 @@ void Game::setUpText()
 void Game::chechForTargetRespawn()
 {
 	bool aTargetIsActive = false; 
-	 
+	int targetsAvailable = m_targets.size() - m_tank.getScore(); 
+
 	for (Target& target : m_targets)
 	{
 		//target.respawn();
@@ -257,6 +256,11 @@ void Game::chechForTargetRespawn()
 		{
 			m_targets[randSpawn].respawn();
 		}
+	}
+	
+	if (targetsAvailable == 0)
+	{
+		m_currentGameState = GameOver;
 	}
 }
 
@@ -277,10 +281,10 @@ void Game::gameSummary()
 {
 	
 	int targetsShot = m_tank.getScore(); 
-	
+	int hitAccuracy = m_tank.getAccuracy() * 100; // truncated int for percentage
 	if (targetsShot == m_targets.size())
 	{
-		m_gameResult.setString("            WINNER! \n You shot all the targets in");
+		m_gameResult.setString("            WINNER! \n You shot all the targets");
 	}
 	else
 	{
@@ -289,7 +293,8 @@ void Game::gameSummary()
 
 	m_highScore.setString("High Score: " + std::to_string(m_level.m_scores.m_highScore));
 	m_score.setString("Game Score: " + std::to_string(m_tank.getScore()));
-	m_accuracy.setString("Game Average: " + std::to_string(m_tank.getAccuracy()));
+	m_accuracy.setString("Hit Accuracy: " + std::to_string(hitAccuracy)+"%");
+
 }
 
 void Game::updateYAML()

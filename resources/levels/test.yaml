@@ -122,8 +122,8 @@ obstacles:
     rotation: 0
     type: wall
 scores:
-  bestAccuracy: 0.5
-  highScore: 2
+  bestAccuracy: 1
+  highScore: 13
 tank:
   - position:
       x: 79
@@ -147,9 +147,9 @@ target:
       x: 1200
       y: 350
   - position:
-      offSet: 100
+      offSet: 50
       x: 1270
-      y: 50
+      y: 80
   - position:
       offSet: 50
       x: 600
@@ -180,8 +180,8 @@ target:
       y: 700
   - position:
       offSet: 50
-      x: 150
-      y: 650
+      x: 80
+      y: 620
   - position:
       offSet: 50
       x: 1250
