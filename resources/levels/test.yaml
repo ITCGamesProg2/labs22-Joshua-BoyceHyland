@@ -148,62 +148,62 @@ tank:
       y: 867
 target:
   - position:
-      offSet: 50
+      offSet: 35
       x: 950
       y: 200
   - position:
-      offSet: 50
+      offSet: 35
       x: 1200
       y: 350
   - position:
-      offSet: 50
+      offSet: 35
       x: 1270
       y: 80
   - position:
-      offSet: 50
+      offSet: 35
       x: 600
       y: 250
   - position:
-      offSet: 50
+      offSet: 35
       x: 750
       y: 400
   - position:
-      offSet: 50
+      offSet: 35
       x: 700
       y: 50
   - position:
-      offSet: 50
+      offSet: 35
       x: 150
       y: 100
   - position:
-      offSet: 50
+      offSet: 35
       x: 200
       y: 350
   - position:
-      offSet: 50
+      offSet: 35
       x: 400
       y: 600
   - position:
-      offSet: 50
+      offSet: 35
       x: 800
       y: 700
   - position:
-      offSet: 50
+      offSet: 35
       x: 80
       y: 620
   - position:
-      offSet: 50
+      offSet: 35
       x: 1250
       y: 650
   - position:
-      offSet: 50
+      offSet: 35
       x: 400
       y: 50
 thirdPlace:
-  bestAccuracy: 0.5
-  highScore: 2
+  bestAccuracy: 0.4285714
+  highScore: 3
   userName: josh
 user:
   bestAccuracy: 1
   highScore: 3
-  userName: a
+  userName: josh

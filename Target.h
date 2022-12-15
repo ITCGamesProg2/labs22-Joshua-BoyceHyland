@@ -89,8 +89,8 @@ private:
 
 	// tagrets variables for management of it screen time 
 	sf::Clock m_timedLife;
-	sf::Time  m_lifeSpan{ sf::seconds(6) };
-	sf::Time m_blinkingTime{ sf::seconds(3) };
+	sf::Time  m_lifeSpan{ sf::seconds(5) };
+	sf::Time m_blinkingTime{ sf::seconds(2) };
 	bool m_blinkingState{ false };
 	static int m_leftOverTime;
 };
