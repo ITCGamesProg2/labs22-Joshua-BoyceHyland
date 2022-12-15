@@ -231,6 +231,11 @@ void Game::setUpText()
 	m_gameResult.setCharacterSize(90u);
 	m_gameResult.setPosition( 430 , 50);
 
+	m_scoreBoard.setFont(m_font);
+	m_scoreBoard.setFillColor(sf::Color::White); 
+	m_scoreBoard.setCharacterSize(50u); 
+	m_scoreBoard.setPosition(ScreenSize::s_width / 2 - 200, (ScreenSize::s_height / 2) - 100);
+
 
 }
 
@@ -306,31 +311,48 @@ void Game::gameSummary()
 
 void Game::updateYAML()
 {
-	bool write = false; 
- 
+	
+	m_baseNode["user"]["userName"] = m_level.m_currentUser.m_userName;
 
 	// chechs if it should write to the file or not based on whther the scores are higher
 	if (m_tank.getScore() > m_level.m_currentUser.m_highScore)
 	{
 		m_level.m_currentUser.m_highScore = m_tank.getScore();
-		m_baseNode["scores"]["highScore"] = m_level.m_currentUser.m_highScore;
-		write = true;
+		m_baseNode["user"]["highScore"] = m_level.m_currentUser.m_highScore;
+	
 	}
 	else if (m_tank.getAccuracy() > m_level.m_currentUser.m_highAccuracy)
 	{
 		m_level.m_currentUser.m_highAccuracy = m_tank.getAccuracy();
-		m_baseNode["scores"]["bestAccuracy"] = m_level.m_currentUser.m_highAccuracy;
-		write = true;
+		m_baseNode["user"]["bestAccuracy"] = m_level.m_currentUser.m_highAccuracy;
+		
 	}
+
+	for (int i = 0; i < m_level.m_scoreboard.size();i++)
+	{
+		
+		
+		// prioritizes high score over accuracy
+		if (m_tank.getScore() > m_level.m_scoreboard[i].m_highScore)
+		{
+			std::string place ="t";
+			place.at(0)= m_level.m_scoreboard[i].place;
+
+			m_baseNode["scoreboard"][place]["bestAccuracy"] = m_tank.getAccuracy();
+			m_baseNode["scoreboard"][place]["highScore"] = m_tank.getScore();
+			m_baseNode["scoreboard"][place]["username"] = m_level.m_currentUser.m_userName;
+		}
+	}
+
+
 	
 	// if true write new vairables to the file 
-	if (write)
-	{
-		std::string fileName = "./resources/levels/test.yaml";
-		std::ofstream fout(fileName);
-		YAMLWriter::writeYamlOrderedMaps(fout, m_baseNode);
-		fout.close(); // close the file 
-	}
+	
+	std::string fileName = "./resources/levels/test.yaml";
+	std::ofstream fout(fileName);
+	YAMLWriter::writeYamlOrderedMaps(fout, m_baseNode);
+	fout.close(); // close the file 
+	
 
 	
 }
@@ -368,6 +390,13 @@ void Game::switchToScoreboardCheck()
 	
 }
 
+void Game::updateScoreBoard()
+{
+	m_scoreBoard.setString("1. Username: " + m_level.m_scoreboard[0].m_userName + "\n High Score: " + std::to_string(m_level.m_scoreboard[0].m_highScore) + "\n Best Accuracy: " + std::to_string(static_cast<int>(m_level.m_scoreboard[0].m_highAccuracy * 100)) + "%" +
+		"\n2. Username: " + m_level.m_scoreboard[1].m_userName + "\n High Score: " + std::to_string(m_level.m_scoreboard[1].m_highScore) + "\n Best Accuracy: " + std::to_string(static_cast<int>(m_level.m_scoreboard[1].m_highAccuracy*100)) + "%" +
+		"\n3. Username: " + m_level.m_scoreboard[2].m_userName + "\n High Score: " + std::to_string(m_level.m_scoreboard[2].m_highScore) + "\n Best Accuracy: " + std::to_string(static_cast<int>(m_level.m_scoreboard[2].m_highAccuracy * 100)) + "%");
+}
+
 ////////////////////////////////////////////////////////////
 void Game::update(double dt)
 {
@@ -391,7 +420,7 @@ void Game::update(double dt)
 			break; 
 
 		case Scoreboard:
-
+			updateScoreBoard();
 
 			break; 
 
@@ -447,7 +476,7 @@ void Game::render()
 
 	if (m_currentGameState == Scoreboard)
 	{
-
+		m_window.draw(m_scoreBoard); 
 	}
 	
 	

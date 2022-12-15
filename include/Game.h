@@ -147,7 +147,12 @@ protected:
 	/// <summary>
 	/// checks if user wants to switch to score boards
 	/// </summary>
-	void switchToScoreboardCheck(); ;
+	void switchToScoreboardCheck(); 
+
+	/// <summary>
+	/// sets score board text and upadtes the yaml to new positions
+	/// </summary>
+	void updateScoreBoard(); 
 
 
 	// Font used for all text
@@ -179,7 +184,7 @@ protected:
 	
 
 	// displayed time variables
-	sf::Time m_timer = sf::seconds(60);
+	sf::Time m_timer = sf::seconds(15);
 	sf::Clock m_clock;
 
 	// switches between gameplay and menu etc

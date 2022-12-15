@@ -56,9 +56,10 @@ void operator>>(const YAML::Node& t_targetNode, TargetData& t_targetPos)
 
 void operator>>(const YAML::Node& t_baseNode, ScoreBoardData& t_scores)
 {
-	t_scores.m_highAccuracy = t_baseNode["stats"]["bestAccuracy"].as<float>();
-	t_scores.m_highScore = t_baseNode["stats"]["highScore"].as<int>();
-	t_scores.m_userName = t_baseNode["stats"]["userName"].as<std::string>();
+
+	t_scores.m_highAccuracy = t_baseNode[t_scores.place]["bestAccuracy"].as<float>();
+	t_scores.m_highScore = t_baseNode[t_scores.place]["highScore"].as<int>();
+	t_scores.m_userName = t_baseNode[t_scores.place]["userName"].as<std::string>();
 }
 
 void operator>>(const YAML::Node& t_baseNode, UserData& t_user)
@@ -81,7 +82,6 @@ void operator>>(const YAML::Node& t_baseNode, UserData& t_user)
 void operator >> (const YAML::Node& t_levelNode, LevelData& t_level)
 {
 	t_levelNode["background"] >> t_level.m_background;
-
 	t_levelNode["user"] >> t_level.m_currentUser;
 
 	const YAML::Node& tanksNode = t_levelNode["tank"].as<YAML::Node>();
@@ -113,6 +113,7 @@ void operator >> (const YAML::Node& t_levelNode, LevelData& t_level)
 	for (unsigned i = 0; i < targetNodeScoreboard.size(); ++i)
 	{
 		ScoreBoardData score; 
+		score.place = score.place+ i; 
 		targetNodeScoreboard[i] >> score;
 		t_level.m_scoreboard.push_back(score); 
 	}

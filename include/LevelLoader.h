@@ -53,7 +53,7 @@ struct ScoreBoardData
 	int m_highScore;
 	float m_highAccuracy;
 	std::string m_userName;
-
+	char place = 'a';
 	void operator = (UserData user)
 	{
 		m_highScore = user.m_highScore;

@@ -189,15 +189,15 @@ target:
       y: 50
 user: {bestAccuracy: 0, highScore: 0, userName: "" }
 scoreboard:
-  - stats:
+  - a:
       bestAccuracy: 0
       highScore: 0
-      userName: ""
-  - stats:
+      userName: player
+  - b:
       bestAccuracy: 0
       highScore: 0
-      userName: ""
-  - stats:
+      userName: player
+  - c:
       bestAccuracy: 0
       highScore: 0
-      userName: ""
+      userName: player
