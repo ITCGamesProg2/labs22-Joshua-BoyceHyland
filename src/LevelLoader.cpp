@@ -1,5 +1,6 @@
 #include "LevelLoader.h"
 
+YAML::Node LevelLoader::yamlFile; 
 /// The various operator >> overloads below are non-member functions used to extract
 ///  the game data from the YAML data structure.
 
@@ -51,6 +52,11 @@ void operator>>(const YAML::Node& t_targetNode, TargetData& t_targetPos)
 	t_targetPos.m_position.x = t_targetNode["position"]["x"].as<float>(); 
 	t_targetPos.m_position.y = t_targetNode["position"]["y"].as<float>();
 }
+//void operator>>(const YAML::Node& t_scoreNode, scoreData& t_scores)
+//{
+//	t_scores.m_highAccuracy = t_scoreNode["bestScore"].as<int>(); 
+//	t_scores.m_highAccuracy = t_scoreNode["bestAccuracy"].as<float>(); 
+//}
 
 /// <summary>
 /// @brief Top level function that extracts various game data from the YAML data stucture.
@@ -64,7 +70,7 @@ void operator>>(const YAML::Node& t_targetNode, TargetData& t_targetPos)
 void operator >> (const YAML::Node& t_levelNode, LevelData& t_level)
 {
 	t_levelNode["background"] >> t_level.m_background;
-
+	//t_levelNode["scores"] >> t_level.m_scores;
 	//t_levelNode["tank"] >> t_level.m_tank;
 
 	const YAML::Node& tanksNode = t_levelNode["tank"].as<YAML::Node>();
@@ -91,6 +97,10 @@ void operator >> (const YAML::Node& t_levelNode, LevelData& t_level)
 		targetNode[i] >> position;
 		t_level.m_targetData.push_back(position);
 	}
+	
+	
+
+	
 
 }
 
@@ -98,7 +108,7 @@ void operator >> (const YAML::Node& t_levelNode, LevelData& t_level)
 void LevelLoader::load(int t_levelNr, LevelData& t_level)
 {
 	std::string filename = "./resources/levels/level" + std::to_string(t_levelNr) + ".yaml";
-
+	
 	try
 	{
 		YAML::Node baseNode = YAML::LoadFile(filename);
@@ -122,5 +132,14 @@ void LevelLoader::load(int t_levelNr, LevelData& t_level)
 		throw std::exception(message.c_str());
 	}
 }
+
+YAML::Node LevelLoader::getNode()
+{
+	yamlFile = YAML::LoadFile("./resources/levels/level1.yaml");
+	return yamlFile;
+}
+
+
+ 
 
 

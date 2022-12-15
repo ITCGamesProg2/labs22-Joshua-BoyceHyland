@@ -32,7 +32,7 @@ void YAMLWriter::writeNode(const YAML::Node& node, YAML::Emitter& emmitter)
 		int key_it = 0; 
 		for (YAML::const_iterator it = node.begin(); it != node.end(); ++it)
 		{
-			keys[key_it++] == it->first.as<std::string>(); 
+			keys[key_it++] = it->first.as<std::string>(); 
 		}
 
 		// then sort them 

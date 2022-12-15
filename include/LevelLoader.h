@@ -41,6 +41,13 @@ struct TargetData
 	sf::Vector2f m_position; 
 };
 
+struct ScoreData
+{
+	int m_highScore; 
+	float m_highAccuracy; 
+
+};
+
 /// <summary>
 /// @brief A struct representing all the Level Data.
 /// 
@@ -50,6 +57,7 @@ struct LevelData
 {
 	BackgroundData m_background;
 	TankData m_tank;
+	ScoreData m_scores; 
 	std::vector<ObstacleData> m_obstacles;
 	std::vector<TargetData> m_targetData; 
 };
@@ -82,5 +90,6 @@ public:
 	/// <param name="t_level">A reference to the LevelData object</param>
 	static void load(int t_levelNr, LevelData& t_level);
 
-
+	static YAML::Node getNode();
+	static YAML::Node yamlFile;
 };

@@ -10,6 +10,7 @@
 #include <string>
 #include "ScreenSize.h"
 #include "LevelLoader.h"
+#include "YAMLWrite.h"
 #include "Tank.h"
 #include "Target.h"
 /// <summary>
@@ -121,6 +122,12 @@ protected:
 	/// manages the scores and accuracy and sets the strings so they can be displayed
 	/// </summary>
 	void gameSummary();
+
+	/// <summary>
+	/// updates the scores in yaml file
+	/// </summary>
+	void updateYAML();
+
 	// Font used for all text
 	sf::Font m_arialFont;
 	// main window
@@ -152,7 +159,7 @@ protected:
 	sf::Time m_timer = sf::seconds(60);
 	sf::Clock m_clock;
 
-	GameState m_currentGameState{ Gameplay };
+	GameState m_currentGameState{ GameOver };
 	
 	// game over screen
 	sf::Text m_highScore; 
@@ -165,6 +172,7 @@ protected:
 	// text depends on whether they won or not 
 	sf::Text m_gameResult; 
 	
+	YAML::Node& m_baseNode = LevelLoader::getNode();
 
 #ifdef TEST_FPS
 	sf::Text x_updateFPS;					// text used to display updates per second.

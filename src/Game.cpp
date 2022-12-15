@@ -275,6 +275,7 @@ void Game::manageTargetTimers()
 
 void Game::gameSummary()
 {
+	
 	int targetsShot = m_tank.getScore(); 
 	
 	if (targetsShot == m_targets.size())
@@ -291,6 +292,19 @@ void Game::gameSummary()
 	m_accuracy.setString("Game Average: " + std::to_string(m_tank.calculateAverage()));
 }
 
+void Game::updateYAML()
+{
+	m_level.m_scores.m_highScore =2;
+	std::string fileName = "./resources/levels/level1.yaml";
+	
+	m_baseNode["scores"]["bestScore"] = m_level.m_scores.m_highScore;
+	//baseNode["scores"] = m_level.m_scores.m_highAccuracy;
+	std::ofstream fout(fileName);
+
+	YAMLWriter::writeOrderedMaps(fout, m_baseNode);
+	//YAMLW
+}
+
 ////////////////////////////////////////////////////////////
 void Game::update(double dt)
 {
@@ -304,6 +318,7 @@ void Game::update(double dt)
 			chechForTargetRespawn();
 			break;
 		case GameOver:
+			updateYAML(); 
 			gameSummary();
 			break; 
 
