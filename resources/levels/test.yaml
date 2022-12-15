@@ -1,13 +1,13 @@
 "":
   bestAccuracy: 0
   highScore: 0
-  userName: player
+  userName: Mary
 background:
   file: ./resource/images/Background.jpg
 firstPlace:
   bestAccuracy: 0
   highScore: 0
-  userName: player
+  userName: Mary
 obstacles:
   - position:
       x: 100
@@ -132,7 +132,7 @@ obstacles:
 secondPlace:
   bestAccuracy: 0
   highScore: 0
-  userName: player
+  userName: Mary
 tank:
   - position:
       x: 79
@@ -188,9 +188,9 @@ target:
       x: 800
       y: 700
   - position:
-      offSet: 35
-      x: 80
-      y: 620
+      offSet: 25
+      x: 70
+      y: 675
   - position:
       offSet: 35
       x: 1250
@@ -200,10 +200,10 @@ target:
       x: 400
       y: 50
 thirdPlace:
-  bestAccuracy: 0.4285714
-  highScore: 3
-  userName: josh
+  bestAccuracy: 0
+  highScore: 0
+  userName: Jerry
 user:
-  bestAccuracy: 1
-  highScore: 3
-  userName: josh
+  bestAccuracy: 0.9
+  highScore: 12
+  userName: player

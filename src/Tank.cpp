@@ -148,10 +148,10 @@ void Tank::handleKeyInput()
 		{
 			centering = true; 
 		}
-		else if (centering)
+		/*else if (centering)
 		{
 			centering = false; 
-		}
+		}*/
 		
 	}
 	

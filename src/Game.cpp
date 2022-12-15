@@ -202,8 +202,8 @@ void Game::setUpText()
 	m_userInput.setFont(m_font);
 	m_userInput.setFillColor(sf::Color::White);
 	m_userInput.setCharacterSize(80u);
-	m_userInput.setPosition(ScreenSize::s_width / 2 - 200, (ScreenSize::s_height / 2) - 100);
-	m_userInput.setString("Name: ");
+	m_userInput.setPosition(100, (ScreenSize::s_height / 2) - 100);
+	m_userInput.setString("Please enter username: ");
 
 	m_timerText.setFont(m_font);
 	m_timerText.setFillColor(sf::Color::White);
@@ -368,7 +368,7 @@ void Game::enterUserInfo(sf::Event& event)
 	}
 
 	m_userName =  m_userName + currentKey; 
-	m_userInput.setString("Name: " + m_userName);
+	m_userInput.setString("Please enter username: " + m_userName);
 }
 
 void Game::switchToScoreboardCheck()
