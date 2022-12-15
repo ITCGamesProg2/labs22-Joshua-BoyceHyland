@@ -182,13 +182,17 @@ protected:
 	sf::Time m_timer = sf::seconds(60);
 	sf::Clock m_clock;
 
+	// switches between gameplay and menu etc
 	GameState m_currentGameState{ Menu };
 	
 	// menu text
 	sf::Text m_userInput; 
 	std::string m_userName;
+
 	//personal stats text
 	sf::Text m_personalStats; 
+
+	sf::Text m_scoreBoard; 
 
 	// repairs text
 	sf::Text m_repairNotification;

@@ -41,14 +41,27 @@ struct TargetData
 	sf::Vector2f m_position; 
 };
 
-struct ScoreData
+struct UserData
 {
 	int m_highScore; 
 	float m_highAccuracy; 
-	std::string m_userName; 
-
+	std::string m_userName;  
 };
 
+struct ScoreBoardData
+{
+	int m_highScore;
+	float m_highAccuracy;
+	std::string m_userName;
+
+	void operator = (UserData user)
+	{
+		m_highScore = user.m_highScore;
+		m_highAccuracy = user.m_highAccuracy;
+		m_userName = user.m_userName;
+	};
+
+};
 /// <summary>
 /// @brief A struct representing all the Level Data.
 /// 
@@ -58,7 +71,9 @@ struct LevelData
 {
 	BackgroundData m_background;
 	TankData m_tank;
-	ScoreData m_scores; 
+	UserData m_currentUser; 
+
+	std::vector<ScoreBoardData> m_scoreboard; 
 	std::vector<ObstacleData> m_obstacles;
 	std::vector<TargetData> m_targetData; 
 };

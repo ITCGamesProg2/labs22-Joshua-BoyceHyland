@@ -121,10 +121,6 @@ obstacles:
       y: 632
     rotation: 0
     type: wall
-scores:
-  bestAccuracy: 1
-  highScore: 13
-  userName: ""
 tank:
   - position:
       x: 79
@@ -191,3 +187,17 @@ target:
       offSet: 50
       x: 400
       y: 50
+user: {bestAccuracy: 0, highScore: 0, userName: "" }
+scoreboard:
+  - stats:
+      bestAccuracy: 0
+      highScore: 0
+      userName: ""
+  - stats:
+      bestAccuracy: 0
+      highScore: 0
+      userName: ""
+  - stats:
+      bestAccuracy: 0
+      highScore: 0
+      userName: ""

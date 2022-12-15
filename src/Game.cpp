@@ -232,10 +232,6 @@ void Game::setUpText()
 	m_gameResult.setPosition( 430 , 50);
 
 
-
-	
-
-
 }
 
 void Game::chechForTargetRespawn()
@@ -243,9 +239,9 @@ void Game::chechForTargetRespawn()
 	bool aTargetIsActive = false; 
 	int targetsAvailable = m_targets.size() - m_tank.getScore(); 
 
+	// checks if any targets are on the screen
 	for (Target& target : m_targets)
 	{
-		//target.respawn();
 		if (target.isAlive())
 		{
 			aTargetIsActive = true;
@@ -253,9 +249,9 @@ void Game::chechForTargetRespawn()
 		}
 	}
 
+	// activate when there isnt a single target active on the screen
 	if (!aTargetIsActive)
 	{
-		
 		int randSpawn = rand() % m_targets.size();
 		if (!m_targets[randSpawn].beenShot())
 		{
@@ -263,6 +259,7 @@ void Game::chechForTargetRespawn()
 		}
 	}
 	
+	// all target have been destroyed
 	if (targetsAvailable == 0)
 	{
 		m_currentGameState = PersonalStats;
@@ -287,7 +284,7 @@ void Game::gameSummary()
 	
 	int targetsShot = m_tank.getScore(); 
 	int hitAccuracy = m_tank.getAccuracy() * 100; // truncated int for percentage
-	int highestAccuracy = m_level.m_scores.m_highAccuracy * 100; 
+	int highestAccuracy = m_level.m_currentUser.m_highAccuracy * 100; 
 
 	if (targetsShot == m_targets.size())
 	{
@@ -298,7 +295,7 @@ void Game::gameSummary()
 		m_gameResult.setString("            LOSER! \n There was still " + std::to_string((m_targets.size()) - targetsShot) + " left");
 	}
 
-	m_personalStats.setString("High Score: " + std::to_string(m_level.m_scores.m_highScore) 
+	m_personalStats.setString("High Score: " + std::to_string(m_level.m_currentUser.m_highScore)
 		+"\nGame Score: " + std::to_string(m_tank.getScore()) 
 		+ "\nHit Accuracy: " + std::to_string(hitAccuracy) + "%" 
 		+ "\n Your Best Accuracy: " + std::to_string(highestAccuracy) + "%" 
@@ -313,16 +310,16 @@ void Game::updateYAML()
  
 
 	// chechs if it should write to the file or not based on whther the scores are higher
-	if (m_tank.getScore() > m_level.m_scores.m_highScore)
+	if (m_tank.getScore() > m_level.m_currentUser.m_highScore)
 	{
-		m_level.m_scores.m_highScore = m_tank.getScore(); 
-		m_baseNode["scores"]["highScore"] = m_level.m_scores.m_highScore;
+		m_level.m_currentUser.m_highScore = m_tank.getScore();
+		m_baseNode["scores"]["highScore"] = m_level.m_currentUser.m_highScore;
 		write = true;
 	}
-	else if (m_tank.getAccuracy() > m_level.m_scores.m_highAccuracy)
+	else if (m_tank.getAccuracy() > m_level.m_currentUser.m_highAccuracy)
 	{
-		m_level.m_scores.m_highAccuracy = m_tank.getAccuracy(); 
-		m_baseNode["scores"]["bestAccuracy"] = m_level.m_scores.m_highAccuracy;
+		m_level.m_currentUser.m_highAccuracy = m_tank.getAccuracy();
+		m_baseNode["scores"]["bestAccuracy"] = m_level.m_currentUser.m_highAccuracy;
 		write = true;
 	}
 	
@@ -341,7 +338,7 @@ void Game::updateYAML()
 void Game::enterUserInfo(sf::Event& event)
 {
 	sf::String currentKey;
-	m_userName = m_level.m_scores.m_userName;
+	
 	if (event.type == sf::Event::TextEntered)
 	{
 		currentKey = event.text.unicode;
@@ -352,11 +349,14 @@ void Game::enterUserInfo(sf::Event& event)
 	{
 		m_userName.pop_back(); 
 	}
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter))
+	{
+	    m_level.m_currentUser.m_userName = m_userName;
+		m_currentGameState = Gameplay; 
+	}
 
 	m_userName =  m_userName + currentKey; 
 	m_userInput.setString("Name: " + m_userName);
-	m_level.m_scores.m_userName = m_userName; 
-	std::cout << m_level.m_scores.m_userName << std::endl; 
 }
 
 void Game::switchToScoreboardCheck()
