@@ -35,6 +35,11 @@ struct TankData
 	std::vector<sf::Vector2f> m_tankPositions;
 };
 
+struct AITankData
+{
+	sf::Vector2f m_position; 
+};
+
 struct TargetData
 {
 	float m_offset; 
@@ -67,6 +72,7 @@ struct LevelData
 
 	BackgroundData m_background;
 	TankData m_tank;
+	AITankData m_aiTank;
 	UserData m_currentUser; 
 	UserData m_scoreBoard[3];
 	std::vector<ObstacleData> m_obstacles;

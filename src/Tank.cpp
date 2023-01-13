@@ -323,7 +323,7 @@ int Tank::getScore()
 	return m_score;
 }
 
-float Tank::getAccuracy()
+float Tank::getAccuracy() const
 {
 	return m_score/m_bulletsFired;
 }
@@ -333,19 +333,25 @@ bool Tank::needsRepair()
 	return m_turretRequiresRepair;
 }
 
+sf::Vector2f Tank::getPosition() const
+{
+	return m_position;
+}
+
 void Tank::initSprites()
 {
 	sf::IntRect baseRect(2, 43, 79, 43);
 
-	if (m_position.x >700 )
-	{
-		m_tankRotation = 0;
-		m_turretRotation = 0; 
-	}
-	else
+	if (m_position.x != 79)
 	{
 		m_tankRotation = 180;
 		m_turretRotation = 180;
+	}
+	else
+	{
+
+		m_tankRotation = 0;
+		m_turretRotation = 0;
 	}
 	// initial is
 	m_tankBase.setTexture(m_texture);

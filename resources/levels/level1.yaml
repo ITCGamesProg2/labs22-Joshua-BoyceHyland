@@ -1,98 +1,213 @@
+"":
+  bestAccuracy: 0
+  highScore: 0
+  userName: Jerry
 background:
-   file: ./resource/images/Background.jpg # Sample comment
+  file: ./resource/images/Background.jpg
+firstPlace:
+  bestAccuracy: 0
+  highScore: 0
+  userName: Mary
+obstacles:
+  - position:
+      x: 100
+      y: 660
+    rotation: 0
+    type: wall
+  - position:
+      x: 134
+      y: 662
+    rotation: 10
+    type: wall
+  - position:
+      x: 167
+      y: 670
+    rotation: 20
+    type: wall
+  - position:
+      x: 198
+      y: 685
+    rotation: 30
+    type: wall
+  - position:
+      x: 227
+      y: 704
+    rotation: 40
+    type: wall
+  - position:
+      x: 251
+      y: 729
+    rotation: 50
+    type: wall
+  - position:
+      x: 272
+      y: 757
+    rotation: 60
+    type: wall
+  - position:
+      x: 1340
+      y: 240
+    rotation: 0
+    type: wall
+  - position:
+      x: 1306
+      y: 238
+    rotation: 10
+    type: wall
+  - position:
+      x: 1273
+      y: 230
+    rotation: 20
+    type: wall
+  - position:
+      x: 1242
+      y: 215
+    rotation: 30
+    type: wall
+  - position:
+      x: 1213
+      y: 196
+    rotation: 40
+    type: wall
+  - position:
+      x: 1189
+      y: 171
+    rotation: 50
+    type: wall
+  - position:
+      x: 1168
+      y: 143
+    rotation: 60
+    type: wall
+  - position:
+      x: 400
+      y: 200
+    rotation: 90
+    type: wall
+  - position:
+      x: 400
+      y: 233
+    rotation: 90
+    type: wall
+  - position:
+      x: 400
+      y: 266
+    rotation: 90
+    type: wall
+  - position:
+      x: 400
+      y: 299
+    rotation: 90
+    type: wall
+  - position:
+      x: 400
+      y: 332
+    rotation: 90
+    type: wall
+  - position:
+      x: 900
+      y: 632
+    rotation: 0
+    type: wall
+  - position:
+      x: 933
+      y: 632
+    rotation: 0
+    type: wall
+  - position:
+      x: 966
+      y: 632
+    rotation: 0
+    type: wall
+  - position:
+      x: 999
+      y: 632
+    rotation: 0
+    type: wall
+  - position:
+      x: 1032
+      y: 632
+    rotation: 0
+    type: wall
+secondPlace:
+  bestAccuracy: 0
+  highScore: 0
+  userName: Mary
 tank:
-   - position: {x: 79, y: 43}
-   - position: {x: 79, y: 867}
-   - position: {x: 1361, y: 43 }
-   - position: {x: 1361, y: 867}
-
-obstacles: 
-   - type: wall
-     position: {x: 100, y: 660}
-     rotation: 0
-   - type: wall
-     position: {x: 134, y: 662}
-     rotation: 10
-   - type: wall
-     position: {x: 167, y: 670}
-     rotation: 20
-   - type: wall
-     position: {x: 198, y: 685}
-     rotation: 30
-   - type: wall
-     position: {x: 227, y: 704}
-     rotation: 40
-   - type: wall
-     position: {x: 251, y: 729}
-     rotation: 50
-   - type: wall
-     position: {x: 272, y: 757}
-     rotation: 60
-   - type: wall
-     position: {x: 1340, y: 240}
-     rotation: 0
-   - type: wall
-     position: {x: 1306, y: 238}
-     rotation: 10
-   - type: wall
-     position: {x: 1273, y: 230}
-     rotation: 20
-   - type: wall
-     position: {x: 1242, y: 215}
-     rotation: 30
-   - type: wall
-     position: {x: 1213, y: 196}
-     rotation: 40
-   - type: wall
-     position: {x: 1189, y: 171}
-     rotation: 50
-   - type: wall
-     position: {x: 1168, y: 143}
-     rotation: 60
-   - type: wall
-     position: {x: 400, y: 200}
-     rotation: 90
-   - type: wall
-     position: {x: 400, y: 233}
-     rotation: 90
-   - type: wall
-     position: {x: 400, y: 266}
-     rotation: 90
-   - type: wall
-     position: {x: 400, y: 299}
-     rotation: 90
-   - type: wall
-     position: {x: 400, y: 332}
-     rotation: 90
-   - type: wall
-     position: {x: 900, y: 632}
-     rotation: 0
-   - type: wall
-     position: {x: 933, y: 632}
-     rotation: 0
-   - type: wall
-     position: {x: 966, y: 632}
-     rotation: 0
-   - type: wall
-     position: {x: 999, y: 632}
-     rotation: 0
-   - type: wall
-     position: {x: 1032, y: 632}
-     rotation: 0
+  - position:
+      x: 79
+      y: 43
+  - position:
+      x: 79
+      y: 867
+  - position:
+      x: 1361
+      y: 43
+  - position:
+      x: 1361
+      y: 867
 target:
-    - position: {x: 950, y: 200, offSet: 50 }
-    - position: {x: 1200, y: 350, offSet: 50}
-    - position: {x: 1270, y: 50, offSet: 100 }
-    - position: {x: 600, y: 250, offSet: 50 }
-    - position: {x: 750, y: 400, offSet: 50}
-    - position: {x: 700, y: 50, offSet: 50 }
-    - position: {x: 150, y: 100, offSet: 50}
-    - position: {x: 200, y: 350, offSet: 50 }
-    - position: {x: 400, y: 600, offSet: 50}
-    - position: {x: 800, y: 700, offSet: 50 }
-    - position: {x: 150, y: 650, offSet: 50}
-    - position: {x: 1250, y: 650, offSet: 50}
-    - position: {x: 400, y: 50, offSet: 50}
-scores:
-  - bestScore: 0
-    bestAccurracy: 0 
+  - position:
+      offSet: 35
+      x: 950
+      y: 200
+  - position:
+      offSet: 35
+      x: 1200
+      y: 350
+  - position:
+      offSet: 35
+      x: 1270
+      y: 80
+  - position:
+      offSet: 35
+      x: 600
+      y: 250
+  - position:
+      offSet: 35
+      x: 750
+      y: 400
+  - position:
+      offSet: 35
+      x: 700
+      y: 50
+  - position:
+      offSet: 35
+      x: 150
+      y: 100
+  - position:
+      offSet: 35
+      x: 200
+      y: 350
+  - position:
+      offSet: 35
+      x: 400
+      y: 600
+  - position:
+      offSet: 35
+      x: 800
+      y: 700
+  - position:
+      offSet: 25
+      x: 70
+      y: 675
+  - position:
+      offSet: 35
+      x: 1250
+      y: 650
+  - position:
+      offSet: 35
+      x: 400
+      y: 50
+thirdPlace:
+  bestAccuracy: 0
+  highScore: 0
+  userName: Mary
+user:
+  bestAccuracy: 0.9
+  highScore: 12
+  userName: "j\bosh"
+ai_tank:
+    position: {x: 400, y: 700}
+    max_projectiles: 10 
+    reload_time : 1000

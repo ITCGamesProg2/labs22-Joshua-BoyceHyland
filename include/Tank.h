@@ -98,12 +98,18 @@ public:
 	/// returns the average of bullets shot to targets hit
 	/// </summary>
 	/// <returns></returns>
-	float getAccuracy();
+	float getAccuracy() const;
 
 	/// <summary>
 	/// tells game to display text notiffying player to repair turret
 	/// </summary>
 	bool needsRepair(); 
+
+	/// <summary>
+	/// reads the position of the tank
+	/// </summary>
+	/// <returns>tank current position</returns>
+	sf::Vector2f getPosition() const; 
 
 private:
 	void initSprites();

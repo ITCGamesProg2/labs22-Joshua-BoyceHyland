@@ -43,7 +43,18 @@ void operator >> (const YAML::Node& t_tankNode, sf::Vector2f & t_tankPos)
 	
 	t_tankPos.x = t_tankNode["position"]["x"].as<float>();
 	t_tankPos.y = t_tankNode["position"]["y"].as<float>();
+
 	
+}
+
+
+void operator >> (const YAML::Node& t_aiTankNode, AITankData& t_aiTank)
+{
+	const YAML::Node& posNode = t_aiTankNode["position"];
+	t_aiTank.m_position.x = t_aiTankNode["position"]["x"].as<float>();
+	t_aiTank.m_position.y = t_aiTankNode["position"]["y"].as<float>();
+
+
 }
 
 void operator>>(const YAML::Node& t_targetNode, TargetData& t_targetPos)
@@ -76,6 +87,8 @@ void operator >> (const YAML::Node& t_levelNode, LevelData& t_level)
 	t_levelNode["background"] >> t_level.m_background;
 	t_levelNode["user"] >> t_level.m_currentUser;
 
+	t_levelNode["ai_tank"] >> t_level.m_aiTank;
+
 	t_levelNode["firstPlace"] >> t_level.m_scoreBoard[0]; 
 	t_level.m_scoreBoard[0].m_place = "firstPlace";
 
@@ -89,10 +102,10 @@ void operator >> (const YAML::Node& t_levelNode, LevelData& t_level)
 	for (unsigned i = 0; i < tanksNode.size(); ++i)
 	{
 		sf::Vector2f position;
-
 		tanksNode[i] >> position;
 		t_level.m_tank.m_tankPositions.push_back(position);	
 	}
+
 
 	const YAML::Node& obstaclesNode = t_levelNode["obstacles"].as<YAML::Node>();
 	for (unsigned i = 0; i < obstaclesNode.size(); ++i)
@@ -122,7 +135,7 @@ void operator >> (const YAML::Node& t_levelNode, LevelData& t_level)
 void LevelLoader::load(int t_levelNr, LevelData& t_level)
 {
 	/*std::string filename = "./resources/levels/level" + std::to_string(t_levelNr) + ".yaml";*/
-	std::string filename = "./resources/levels/test.yaml"; 
+	std::string filename = "./resources/levels/level1.yaml"; 
 	try
 	{
 		YAML::Node baseNode = YAML::LoadFile(filename);
@@ -149,7 +162,7 @@ void LevelLoader::load(int t_levelNr, LevelData& t_level)
 
 YAML::Node LevelLoader::getNode()
 {
-	yamlFile = YAML::LoadFile("./resources/levels/test.yaml");
+	yamlFile = YAML::LoadFile("./resources/levels/level1.yaml");
 	return yamlFile;
 }
 

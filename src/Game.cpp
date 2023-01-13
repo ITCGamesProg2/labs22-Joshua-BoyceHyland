@@ -5,9 +5,12 @@
 static double const FPS{ 60.0f };
 ////////////////////////////////////////////////////////////
 Game::Game()
-	: m_window(sf::VideoMode(ScreenSize::s_width, ScreenSize::s_height, 32), "SFML Playground", sf::Style::Default), m_tank(m_tankTexture,m_wallSprites,m_targets)
+	: m_window(sf::VideoMode(ScreenSize::s_width, ScreenSize::s_height, 32), "SFML Playground", sf::Style::Default), 
+	  m_tank(m_tankTexture,m_wallSprites,m_targets), 
+	 m_aiTank(m_tankTexture, m_wallSprites)
 {
 	init();
+	m_aiTank.init(m_level.m_aiTank.m_position);
 }
 
 ////////////////////////////////////////////////////////////
@@ -364,7 +367,7 @@ void Game::enterUserInfo(sf::Event& event)
 	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter))
 	{
 	    m_level.m_currentUser.m_userName = m_userName;
-		m_currentGameState = Gameplay; 
+		m_currentGameState = EnemyGamePlay; 
 	}
 
 	m_userName =  m_userName + currentKey; 
@@ -438,12 +441,17 @@ void Game::update(double dt)
 		case Menu:
 			break; 
 
-		case Gameplay:
+		case TargetPractice:
 			m_tank.update(dt);
 			timerUpdate();
 			scoreUpdate();
 			manageTargetTimers();
 			chechForTargetRespawn();
+			break;
+
+		case EnemyGamePlay:
+			m_tank.update(dt);
+			m_aiTank.update(m_tank, dt);
 			break;
 
 		case UpdateYAML:
@@ -481,7 +489,7 @@ void Game::render()
 		m_window.draw(m_userInput);
 	}
 
-	if (m_currentGameState == Gameplay)
+	if (m_currentGameState == TargetPractice)
 	{
 		// Render your sprites here....
 		
@@ -504,6 +512,16 @@ void Game::render()
 		}
 	}
 
+	if (m_currentGameState == EnemyGamePlay)
+	{
+		m_tank.render(m_window);
+		m_aiTank.render(m_window);
+		for (sf::Sprite sprite : m_wallSprites)
+		{
+			m_window.draw(sprite);
+		}
+
+	}
 	if (m_currentGameState == GameStats)
 	{
 		m_window.draw(m_gameResult);

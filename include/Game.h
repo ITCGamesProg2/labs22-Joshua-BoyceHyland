@@ -13,6 +13,7 @@
 #include "YAMLWrite.h"
 #include "Tank.h"
 #include "Target.h"
+#include "TankAI.h"
 /// <summary>
 /// @author RP
 /// @date September 2022
@@ -25,7 +26,7 @@
 /// Gameplay: player inputs for tank, controlling respawn of targets
 /// Gameover: checks whether to update yaml file and displays stats
 /// </summary>
-enum GameState { Menu, Gameplay, UpdateYAML,GameStats, Scoreboard };
+enum GameState { Menu, EnemyGamePlay,TargetPractice, UpdateYAML,GameStats, Scoreboard };
 
 /// <summary>
 /// @brief Main class for the SFML Playground project.
@@ -183,6 +184,7 @@ protected:
 
 	// tanks 
 	Tank m_tank; 
+	TankAi m_aiTank;
 	sf::Texture m_tankTexture; 
 
 	// target
