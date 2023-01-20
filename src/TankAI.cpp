@@ -77,6 +77,10 @@ void TankAi::render(sf::RenderWindow & window)
 	// TODO: Don't draw if off-screen...
 	window.draw(m_tankBase);
 	window.draw(m_turret);
+	for (sf::CircleShape circle : m_obstacles)
+	{
+		window.draw(circle);
+	}
 }
 
 ////////////////////////////////////////////////////////////
@@ -97,8 +101,7 @@ void TankAi::init(sf::Vector2f position)
 ////////////////////////////////////////////////////////////
 sf::Vector2f TankAi::seek(sf::Vector2f playerPosition) const
 {
-	// This line is simply a placeholder...
-	return sf::Vector2f(0, 1);
+	return playerPosition - m_tankBase.getPosition();
 }
 
 ////////////////////////////////////////////////////////////
@@ -127,8 +130,23 @@ sf::Vector2f TankAi::collisionAvoidance()
 ////////////////////////////////////////////////////////////
 const sf::CircleShape TankAi::findMostThreateningObstacle()
 {
+	sf::CircleShape mostThreatening(0);
+	//mostThreatening.setPosition(1000, 1000); 
+
+	for (int i = 0; i < m_obstacles.size(); i++)
+	{
+		
+		if ((MathUtility::lineIntersectsCircle(m_ahead, m_halfAhead, m_obstacles[i]) && (mostThreatening.getRadius() == 0 || MathUtility::distance(m_tankBase.getPosition(), m_obstacles[i].getPosition()) <
+			(MathUtility::distance(m_tankBase.getPosition(), mostThreatening.getPosition())))))
+		{
+			{
+				mostThreatening = m_obstacles[i];
+			}
+		}
+
+	}
 	// The initialisation of mostThreatening is just a placeholder...
-	sf::CircleShape mostThreatening = m_obstacles.at(0);
+	
 
 	return mostThreatening;
 }
@@ -155,7 +173,7 @@ void TankAi::updateMovement(double dt)
 {
 	double speed = thor::length(m_velocity);
 	sf::Vector2f newPos(m_tankBase.getPosition().x + std::cos(MathUtility::DEG_TO_RAD  * m_rotation) * speed * (dt / 1000),
-		m_tankBase.getPosition().y + std::sin(MathUtility::DEG_TO_RAD  * m_rotation) * speed * (dt / 1000));
+						m_tankBase.getPosition().y + std::sin(MathUtility::DEG_TO_RAD  * m_rotation) * speed * (dt / 1000));
 	m_tankBase.setPosition(newPos.x, newPos.y);
 	m_tankBase.setRotation(m_rotation);
 	m_turret.setPosition(m_tankBase.getPosition());
