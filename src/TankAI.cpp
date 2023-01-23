@@ -15,15 +15,17 @@ TankAi::TankAi(sf::Texture const & texture, std::vector<sf::Sprite> & wallSprite
 void TankAi::update(Tank const & playerTank, double dt)
 {
 	sf::Vector2f vectorToPlayer = seek(playerTank.getPosition());
-
+	sf::Vector2f acceleration; 
 	switch (m_aiBehaviour)
 	{
 	case AiBehaviour::SEEK_PLAYER:
 		m_steering += thor::unitVector(vectorToPlayer);
 		m_steering += collisionAvoidance();
 		m_steering = MathUtility::truncate(m_steering, MAX_FORCE);
+		
+		acceleration = m_steering / MASS;
 		m_velocity = MathUtility::truncate(m_velocity + m_steering, MAX_SPEED);
-
+		//m_velocity = MathUtility::truncate(m_velocity + acceleration, MAX_SPEED);
 		break;
 	case AiBehaviour::STOP:
 		m_velocity = sf::Vector2f(0, 0);
@@ -75,12 +77,26 @@ void TankAi::update(Tank const & playerTank, double dt)
 void TankAi::render(sf::RenderWindow & window)
 {
 	// TODO: Don't draw if off-screen...
-	window.draw(m_tankBase);
-	window.draw(m_turret);
 	for (sf::CircleShape circle : m_obstacles)
 	{
 		window.draw(circle);
 	}
+	sf::CircleShape ahead(10);
+	ahead.setPosition(m_aheadFront);
+	window.draw(ahead);
+
+	sf::CircleShape aheadRight(10);
+	aheadRight.setPosition(m_aheadRight);
+	window.draw(aheadRight);
+
+	sf::CircleShape aheadLeft(10);
+	aheadRight.setPosition(m_aheadLeft);
+	window.draw(aheadLeft);
+	
+
+	window.draw(m_tankBase);
+	window.draw(m_turret);
+	
 }
 
 ////////////////////////////////////////////////////////////
@@ -108,15 +124,29 @@ sf::Vector2f TankAi::seek(sf::Vector2f playerPosition) const
 sf::Vector2f TankAi::collisionAvoidance()
 {
 	auto headingRadians = thor::toRadian(m_rotation);
-	sf::Vector2f headingVector(std::cos(headingRadians) * MAX_SEE_AHEAD, std::sin(headingRadians) * MAX_SEE_AHEAD);
-	m_ahead = m_tankBase.getPosition() + headingVector;
-	m_halfAhead = m_tankBase.getPosition() + (headingVector * 0.5f);
+	float headDifferences = 1.57079633;
+
+	sf::Vector2f headingVectorFront(std::cos(headingRadians) * MAX_SEE_AHEAD, std::sin(headingRadians) * MAX_SEE_AHEAD);
+	m_aheadFront = m_tankBase.getPosition() + headingVectorFront;
+	m_halfAheadFront = m_tankBase.getPosition() + (headingVectorFront * 0.5f);
+
+	sf::Vector2f headingVectorRight(std::cos(headingRadians + headDifferences) * MAX_SEE_AHEAD, std::sin(headingRadians + headDifferences) * MAX_SEE_AHEAD);
+	m_aheadRight = m_tankBase.getPosition() + headingVectorRight;
+	m_halfAheadRight = m_tankBase.getPosition() + (headingVectorRight * 0.5f);
+
+	sf::Vector2f headingVectorLeft(std::cos(headingRadians - headDifferences) * MAX_SEE_AHEAD, std::sin(headingRadians - headDifferences) * MAX_SEE_AHEAD);
+	m_aheadLeft = m_tankBase.getPosition() + headingVectorLeft;
+	m_halfAheadLeft = m_tankBase.getPosition() - (headingVectorLeft * 0.5f);
+
 	const sf::CircleShape mostThreatening = findMostThreateningObstacle();
 	sf::Vector2f avoidance(0, 0);
+	
+	
+	
 	if (mostThreatening.getRadius() != 0.0)
 	{		
-		avoidance.x = m_ahead.x - mostThreatening.getPosition().x;
-		avoidance.y = m_ahead.y - mostThreatening.getPosition().y;
+		avoidance.x = m_aheadFront.x - mostThreatening.getPosition().x;
+		avoidance.y = m_aheadFront.y - mostThreatening.getPosition().y;
 		avoidance = thor::unitVector(avoidance);
 		avoidance *= MAX_AVOID_FORCE;
 	}
@@ -124,30 +154,40 @@ sf::Vector2f TankAi::collisionAvoidance()
 	{
 		avoidance *= 0.0f;
 	}
+
+
 	return avoidance;
 }
 
 ////////////////////////////////////////////////////////////
 const sf::CircleShape TankAi::findMostThreateningObstacle()
 {
+	// default is zero to differate from an actual obstacle that may present, anything with a radius of zero wont be considered a obstacle
 	sf::CircleShape mostThreatening(0);
-	//mostThreatening.setPosition(1000, 1000); 
 
 	for (int i = 0; i < m_obstacles.size(); i++)
 	{
-		
-		if ((MathUtility::lineIntersectsCircle(m_ahead, m_halfAhead, m_obstacles[i]) && (mostThreatening.getRadius() == 0 || MathUtility::distance(m_tankBase.getPosition(), m_obstacles[i].getPosition()) <
-			(MathUtility::distance(m_tankBase.getPosition(), mostThreatening.getPosition())))))
+		//float interpolation = m_tankBase.getPosition().y + ( m_obstacles[i].getPosition().y - m_tankBase.getPosition().y) * ()
+
+		float distanceBetweenCurrent = MathUtility::distance(m_tankBase.getPosition(), m_obstacles[i].getPosition());
+
+		// only checks to assign if the obstacle is close to it  or if buy chanch has gone over it
+		if (distanceBetweenCurrent > m_obstacles[i].getRadius()*0.95 || distanceBetweenCurrent < m_obstacles[i].getRadius() * 1.05)
 		{
+			bool headIntersectsCircle = MathUtility::lineIntersectsCircle(m_aheadFront, m_halfAheadFront, m_obstacles[i]);
+			bool radiusisZero = mostThreatening.getRadius() == 0;
+			bool isCloserThanPreviousObstacle = distanceBetweenCurrent < (MathUtility::distance(m_tankBase.getPosition(), mostThreatening.getPosition()));
+
+			if (headIntersectsCircle && (radiusisZero || isCloserThanPreviousObstacle))
 			{
-				mostThreatening = m_obstacles[i];
+				{
+					mostThreatening = m_obstacles[i];
+				}
 			}
 		}
 
 	}
-	// The initialisation of mostThreatening is just a placeholder...
 	
-
 	return mostThreatening;
 }
 

@@ -81,11 +81,23 @@ private:
 	// Steering vector.
 	sf::Vector2f m_steering;
 
-	// The ahead vector.
-	sf::Vector2f m_ahead;
+	// The ahead vector for front of tank.
+	sf::Vector2f m_aheadFront;
 
-	// The half-ahead vector.
-	sf::Vector2f m_halfAhead;
+	// The half-ahead vector  for front of tank.
+	sf::Vector2f m_halfAheadFront;
+
+	// The ahead vector  for Right of tank.
+	sf::Vector2f m_aheadRight; 
+
+	// The half-ahead vector  for Right of tank.
+	sf::Vector2f m_halfAheadRight; 
+
+	// The ahead vector  for Right of tank.
+	sf::Vector2f m_aheadLeft;
+
+	// The half-ahead vector  for Right of tank.
+	sf::Vector2f m_halfAheadLeft;
 
 	// The maximum see ahead range.
 	static float constexpr MAX_SEE_AHEAD{ 50.0f };
@@ -102,6 +114,9 @@ private:
 	// A container of circles that represent the obstacles to avoid.
 	std::vector<sf::CircleShape> m_obstacles;
 
+
+	// mass of the tank to add to the turning 
+	const float MASS{ 5.0f };
 	enum class AiBehaviour
 	{
 		SEEK_PLAYER,
