@@ -60,6 +60,8 @@ private:
 
 	const sf::CircleShape findMostThreateningObstacle();
 
+	const sf::CircleShape findMostThreateningObstacle2(sf::Vector2f t_ahead, sf::Vector2f t_halfAhead);
+
 	// A reference to the sprite sheet texture.
 	sf::Texture const & m_texture;
 
@@ -99,6 +101,9 @@ private:
 	// The half-ahead vector  for Right of tank.
 	sf::Vector2f m_halfAheadLeft;
 
+	sf::Vector2f heads[3][2]; 
+
+	sf::Vector2f avoidance;
 	// The maximum see ahead range.
 	static float constexpr MAX_SEE_AHEAD{ 50.0f };
 

@@ -90,7 +90,7 @@ void TankAi::render(sf::RenderWindow & window)
 	window.draw(aheadRight);
 
 	sf::CircleShape aheadLeft(10);
-	aheadRight.setPosition(m_aheadLeft);
+	aheadLeft.setPosition(m_aheadLeft);
 	window.draw(aheadLeft);
 	
 
@@ -139,7 +139,7 @@ sf::Vector2f TankAi::collisionAvoidance()
 	m_halfAheadLeft = m_tankBase.getPosition() - (headingVectorLeft * 0.5f);
 
 	const sf::CircleShape mostThreatening = findMostThreateningObstacle();
-	sf::Vector2f avoidance(0, 0);
+	avoidance = { 0, 0 };
 	
 	
 	
@@ -162,6 +162,27 @@ sf::Vector2f TankAi::collisionAvoidance()
 ////////////////////////////////////////////////////////////
 const sf::CircleShape TankAi::findMostThreateningObstacle()
 {
+	sf::CircleShape mostThreatening(0);
+
+	sf::CircleShape front = findMostThreateningObstacle2(m_aheadFront, m_halfAheadFront);
+	sf::CircleShape right = findMostThreateningObstacle2(m_aheadRight, m_halfAheadRight);
+	sf::CircleShape left = findMostThreateningObstacle2(m_aheadLeft, m_halfAheadLeft);
+	
+	if (front.getRadius() != 0)// && (left.getRadius() == 0 && right.getRadius() == 0))
+	{
+		return front;
+	}
+
+	if (left.getRadius() != 0)
+	{
+		return left; 
+	}
+	
+	return mostThreatening;
+}
+
+const sf::CircleShape TankAi::findMostThreateningObstacle2(sf::Vector2f t_ahead, sf::Vector2f t_halfAhead)
+{
 	// default is zero to differate from an actual obstacle that may present, anything with a radius of zero wont be considered a obstacle
 	sf::CircleShape mostThreatening(0);
 
@@ -172,9 +193,9 @@ const sf::CircleShape TankAi::findMostThreateningObstacle()
 		float distanceBetweenCurrent = MathUtility::distance(m_tankBase.getPosition(), m_obstacles[i].getPosition());
 
 		// only checks to assign if the obstacle is close to it  or if buy chanch has gone over it
-		if (distanceBetweenCurrent > m_obstacles[i].getRadius()*0.95 || distanceBetweenCurrent < m_obstacles[i].getRadius() * 1.05)
+		if (distanceBetweenCurrent > m_obstacles[i].getRadius() * 0.95 || distanceBetweenCurrent < m_obstacles[i].getRadius() * 1.05)
 		{
-			bool headIntersectsCircle = MathUtility::lineIntersectsCircle(m_aheadFront, m_halfAheadFront, m_obstacles[i]);
+			bool headIntersectsCircle = MathUtility::lineIntersectsCircle(t_ahead, t_halfAhead, m_obstacles[i]);
 			bool radiusisZero = mostThreatening.getRadius() == 0;
 			bool isCloserThanPreviousObstacle = distanceBetweenCurrent < (MathUtility::distance(m_tankBase.getPosition(), mostThreatening.getPosition()));
 
@@ -187,7 +208,7 @@ const sf::CircleShape TankAi::findMostThreateningObstacle()
 		}
 
 	}
-	
+
 	return mostThreatening;
 }
 
