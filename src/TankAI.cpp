@@ -16,27 +16,48 @@ void TankAi::update(Tank const & playerTank, double dt)
 {
 	sf::Vector2f vectorToPlayer = seek(playerTank.getPosition());
 	sf::Vector2f acceleration; 
+	bool rightCollision;
+	bool leftCollision;
 	switch (m_aiBehaviour)
 	{
 	case AiBehaviour::SEEK_PLAYER:
 
 		
+		
 		m_avoidance = collisionAvoidance();
 		m_steering += thor::unitVector(vectorToPlayer);
 		m_steering += m_avoidance;
-		if (isCollidingAjacent)
-		{
-			m_steering -= m_avoidance;
-		}
-
 		m_steering = MathUtility::truncate(m_steering, MAX_FORCE);
 		
-
 		acceleration = m_steering / MASS;
 		m_velocity = MathUtility::truncate(m_velocity + m_steering, MAX_SPEED);
-
-
 		//m_velocity = MathUtility::truncate(m_velocity + acceleration, MAX_SPEED);
+
+		rightCollision = isColliding(m_aheadRight, m_aheadRight);
+		leftCollision = isColliding(m_aheadLeft, m_aheadLeft);
+
+		std::cout << "seeking " << std::endl;
+		if ((rightCollision || leftCollision)) // privided decent
+		{
+			
+			m_aiBehaviour = AiBehaviour::STRAIGHTEN;
+		}
+		break;
+
+	case AiBehaviour::STRAIGHTEN:
+		updateHeads();
+
+		rightCollision = isColliding(m_aheadRight, m_aheadRight);
+		leftCollision = isColliding(m_aheadLeft, m_aheadLeft);
+		m_headOnCollision = isColliding(m_aheadFront, m_halfAheadFront);
+
+		std::cout << "Straighting " << std::endl; 
+
+		if (!m_headOnCollision && !rightCollision && !leftCollision)   // m_headOnCollision provide decen
+		{
+			m_aiBehaviour = AiBehaviour::SEEK_PLAYER;
+		}
+
 		break;
 	case AiBehaviour::STOP:
 		m_velocity = sf::Vector2f(0, 0);
@@ -75,6 +96,10 @@ void TankAi::update(Tank const & playerTank, double dt)
 	if (thor::length(vectorToPlayer) < MAX_SEE_AHEAD)
 	{
 		m_aiBehaviour = AiBehaviour::STOP;
+	}
+	else if (m_aiBehaviour == AiBehaviour::STRAIGHTEN)
+	{
+
 	}
 	else
 	{
@@ -134,6 +159,33 @@ sf::Vector2f TankAi::seek(sf::Vector2f playerPosition) const
 ////////////////////////////////////////////////////////////
 sf::Vector2f TankAi::collisionAvoidance()
 {
+	updateHeads();
+
+	const sf::CircleShape mostThreatening = findMostThreateningObstacle();
+	
+	sf::Vector2f avoidance = { 0, 0 };
+	
+	
+	if ((mostThreatening.getRadius() != 0.0))
+	{
+		avoidance.x = m_aheadFront.x - mostThreatening.getPosition().x;
+		avoidance.y = m_aheadFront.y - mostThreatening.getPosition().y;
+		avoidance = thor::unitVector(avoidance);
+		avoidance *= MAX_AVOID_FORCE;
+		m_headOnCollision = true;
+	}
+	else
+	{
+		m_headOnCollision = false;
+		avoidance *= 0.0f;
+	}
+
+
+	return avoidance;
+}
+
+void TankAi::updateHeads()
+{
 	auto headingRadians = thor::toRadian(m_rotation);
 	float headDifferences = 1.57079633;
 
@@ -148,31 +200,6 @@ sf::Vector2f TankAi::collisionAvoidance()
 	sf::Vector2f headingVectorLeft(std::cos(headingRadians - headDifferences) * MAX_SEE_AHEAD, std::sin(headingRadians - headDifferences) * MAX_SEE_AHEAD);
 	m_aheadLeft = m_tankBase.getPosition() + headingVectorLeft;
 	m_halfAheadLeft = m_tankBase.getPosition() - (headingVectorLeft * 0.5f);
-
-	const sf::CircleShape mostThreatening = findMostThreateningObstacle();
-	
-	sf::Vector2f avoidance = { 0, 0 };
-	bool leftHeadIsCollising = isColliding(m_aheadLeft, m_halfAheadLeft);
-	bool rightHeadIsColliding = isColliding(m_aheadRight, m_halfAheadRight); 
-	
-	
-
-
-	if ((mostThreatening.getRadius() != 0.0))
-	{
-		avoidance.x = m_aheadFront.x - mostThreatening.getPosition().x;
-		avoidance.y = m_aheadFront.y - mostThreatening.getPosition().y;
-		avoidance = thor::unitVector(avoidance);
-		avoidance *= MAX_AVOID_FORCE;
-		isCollidingAjacent = false;
-	}
-	else
-	{
-		avoidance *= 0.0f;
-	}
-
-
-	return avoidance;
 }
 
 ////////////////////////////////////////////////////////////
@@ -207,26 +234,17 @@ const sf::CircleShape TankAi::findMostThreateningObstacle()
 
 const bool TankAi::isColliding(sf::Vector2f t_ahead, sf::Vector2f t_halfAhead)
 {
-	// default is zero to differate from an actual obstacle that may present, anything with a radius of zero wont be considered a obstacle
-	sf::CircleShape mostThreatening(0);
-
 	for (int i = 0; i < m_obstacles.size(); i++)
 	{
-		//float interpolation = m_tankBase.getPosition().y + ( m_obstacles[i].getPosition().y - m_tankBase.getPosition().y) * ()
-
 		float distanceBetweenCurrent = MathUtility::distance(m_tankBase.getPosition(), m_obstacles[i].getPosition());
-
 		// only checks to assign if the obstacle is close to it  or if buy chanch has gone over it
 		if (distanceBetweenCurrent > m_obstacles[i].getRadius() * 0.95 || distanceBetweenCurrent < m_obstacles[i].getRadius() * 1.05)
 		{
 			bool headIntersectsCircle = MathUtility::lineIntersectsCircle(t_ahead, t_halfAhead, m_obstacles[i]);
-			bool radiusisZero = mostThreatening.getRadius() == 0;
-			bool isCloserThanPreviousObstacle = distanceBetweenCurrent < (MathUtility::distance(m_tankBase.getPosition(), mostThreatening.getPosition()));
-
-			if (headIntersectsCircle && (radiusisZero || isCloserThanPreviousObstacle))
+			
+			if (headIntersectsCircle )
 			{
 				{
-					isCollidingAjacent = true;
 					return true;
 				}
 			}

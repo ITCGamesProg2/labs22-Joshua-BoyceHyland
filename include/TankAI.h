@@ -58,10 +58,13 @@ private:
 
 	sf::Vector2f collisionAvoidance();
 
+	void updateHeads();
+
 	const sf::CircleShape findMostThreateningObstacle();
 
 	const bool isColliding(sf::Vector2f t_ahead, sf::Vector2f t_halfAhead);
 
+	
 	// A reference to the sprite sheet texture.
 	sf::Texture const & m_texture;
 
@@ -117,10 +120,12 @@ private:
 
 	// A container of circles that represent the obstacles to avoid.
 	std::vector<sf::CircleShape> m_obstacles;
-	
-	sf::Vector2f m_straightenVelocity; 
 
-	bool isCollidingAjacent{ false };
+	
+	
+	bool m_headOnCollision{ false };
+
+	
 
 	sf::Vector2f m_avoidance{ 0,0 };
 	// mass of the tank to add to the turning 
@@ -128,6 +133,7 @@ private:
 	enum class AiBehaviour
 	{
 		SEEK_PLAYER,
+		STRAIGHTEN,
 		STOP,
 		RETREAT
 	} m_aiBehaviour;
