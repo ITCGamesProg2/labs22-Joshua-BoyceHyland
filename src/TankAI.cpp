@@ -37,11 +37,16 @@ void TankAi::update(Tank const & playerTank, double dt)
 		leftCollision = isColliding(m_aheadLeft, m_aheadLeft);
 
 		std::cout << "seeking " << std::endl;
-		if ((rightCollision || leftCollision)) // privided decent
-		{
+
+
+		//if (!m_headOnCollision) // privided decent
+		//{
+			if ((rightCollision || leftCollision))
+			{
+				m_aiBehaviour = AiBehaviour::STRAIGHTEN;
+			}
 			
-			m_aiBehaviour = AiBehaviour::STRAIGHTEN;
-		}
+		//}
 		break;
 
 	case AiBehaviour::STRAIGHTEN:
@@ -54,6 +59,10 @@ void TankAi::update(Tank const & playerTank, double dt)
 		std::cout << "Straighting " << std::endl; 
 
 		if (!m_headOnCollision && !rightCollision && !leftCollision)   // m_headOnCollision provide decen
+		{
+			m_aiBehaviour = AiBehaviour::SEEK_PLAYER;
+		}
+		else if( m_headOnCollision)
 		{
 			m_aiBehaviour = AiBehaviour::SEEK_PLAYER;
 		}
@@ -143,7 +152,7 @@ void TankAi::init(sf::Vector2f position)
 
 	for (sf::Sprite const wallSprite : m_wallSprites)
 	{
-		sf::CircleShape circle(wallSprite.getTextureRect().width * 1.5f);
+		sf::CircleShape circle(wallSprite.getTextureRect().width * 1.0f);
 		circle.setOrigin(circle.getRadius(), circle.getRadius());
 		circle.setPosition(wallSprite.getPosition());
 		m_obstacles.push_back(circle);
