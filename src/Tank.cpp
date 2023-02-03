@@ -46,10 +46,7 @@ void Tank::update(double dt)
 	
     m_speed = m_speed * 0.99; 
 	
-	for (int  i = 0; i < NUM_OF_BULLETS; i++)
-	{
-		bullets[i].move();
-	}
+	m_bulletPool.update();
 	
 }
 
@@ -57,10 +54,7 @@ void Tank::render(sf::RenderWindow & window)
 {
 	window.draw(m_tankBase);
 	window.draw(m_turret);
-	for (int i = 0; i < NUM_OF_BULLETS; i++)
-	{
-		bullets[i].draw(window);
-	}
+	m_bulletPool.draw(window);
 	
 }
 
@@ -165,34 +159,21 @@ void Tank::handleKeyInput()
 		m_repairsMade--; 
 	}
 
-	if ((sf::Mouse::isButtonPressed(sf::Mouse::Left))&&(m_readyToShoot))
+	if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
 	{
 		std::cout << "~~~~~~~shhhhhhooot" << std::endl;
-		for (int i = 0; i < NUM_OF_BULLETS; i++)
+
+		if (m_bulletPool.setStartOfNextAvailableBullet(m_position, m_turretRotation))
 		{
-			if (bullets[i].canSetStart(m_position, m_turretRotation))
-			{
-				m_speed = m_speed - 8;
-				m_tillCanBeShot = 40;
-				m_readyToShoot = false;
-				m_bulletsFired++; 
+			m_bulletsFired++;
 				if (m_bulletsFired % 10 == 0)
 				{
 					m_turretRequiresRepair = true;
 				}
-				std::cout << m_bulletsFired << std::endl; 
-				break;
-			}
 		}
+		
 	}
-	else
-	{
-		m_tillCanBeShot--; 
-		if (m_tillCanBeShot < 0)
-		{
-			m_readyToShoot = true;
-		}
-	}
+
 }
 
 void Tank::increaseTurretRotation()
@@ -265,10 +246,10 @@ void Tank::checkBulletCollisions()
 	{
 		for (sf::Sprite const& wall : m_wallSprites)
 		{
-			if (CollisionDetector::collision(bullets[i].getBody(), wall))
+			if (CollisionDetector::collision(m_bulletPool.getBullet(i).getBody(), wall))
 			{
 				std::cout << "BULLET HIT THE WALAL" << std::endl; 
-				bullets[i].despawn();
+				m_bulletPool.getBullet(i).despawn();
 			}
 		}
 	}
@@ -277,11 +258,11 @@ void Tank::checkBulletCollisions()
 	{
 		for (Target  &target : m_target)
 		{
-			if ((CollisionDetector::collision(bullets[i].getBody(), target.getBody()))&&target.isAlive())
+			if ((CollisionDetector::collision(m_bulletPool.getBullet(i).getBody(), target.getBody()))&&target.isAlive())
 			{
 				std::cout << "You hit the target" << std::endl; 
 				target.despawn();
-				bullets[i].despawn();
+				m_bulletPool.getBullet(i).despawn();
 				m_score++;
 			}
 		}

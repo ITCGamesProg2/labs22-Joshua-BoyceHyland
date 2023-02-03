@@ -4,6 +4,7 @@
 #include "CollisionDetector.h"
 #include "Bullet.h"
 #include "Target.h"
+#include "Pool.h"
 /// <summary>
 /// @brief A simple tank controller.
 /// 
@@ -140,10 +141,8 @@ private:
 	double const MAX_REVERSE_SPEED{- 100};
 
 	// shooting variables
+	Pool m_bulletPool;
 	int const NUM_OF_BULLETS = 12;
-	Bullet bullets[12];
-	bool m_readyToShoot{ true };
-	int m_tillCanBeShot = 20;
 
 	// targets 
 	std::vector<Target> &m_target;

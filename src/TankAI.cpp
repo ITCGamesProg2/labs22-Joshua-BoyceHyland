@@ -39,14 +39,15 @@ void TankAi::update(Tank const & playerTank, double dt)
 		std::cout << "seeking " << std::endl;
 
 
-		//if (!m_headOnCollision) // privided decent
-		//{
-			if ((rightCollision || leftCollision))
-			{
-				m_aiBehaviour = AiBehaviour::STRAIGHTEN;
-			}
-			
-		//}
+		
+		if ((rightCollision || leftCollision))
+		{
+			m_steering = thor::unitVector(vectorToPlayer);
+			m_steering = MathUtility::truncate(m_steering, MAX_FORCE);
+			m_velocity = MathUtility::truncate(m_velocity + m_steering, MAX_SPEED);
+			m_aiBehaviour = AiBehaviour::STRAIGHTEN;
+		}
+	
 		break;
 
 	case AiBehaviour::STRAIGHTEN:
@@ -56,7 +57,13 @@ void TankAi::update(Tank const & playerTank, double dt)
 		leftCollision = isColliding(m_aheadLeft, m_aheadLeft);
 		m_headOnCollision = isColliding(m_aheadFront, m_halfAheadFront);
 
-		std::cout << "Straighting " << std::endl; 
+		std::cout << "Straighting " << std::endl; 	
+
+
+		//if (!m_headOnCollision ||(!rightCollision && !leftCollision) )   // m_headOnCollision provide decen
+		//{
+		//	m_aiBehaviour = AiBehaviour::SEEK_PLAYER;
+		//}
 
 		if (!m_headOnCollision && !rightCollision && !leftCollision)   // m_headOnCollision provide decen
 		{

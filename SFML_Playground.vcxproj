@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Pool.cpp" />
     <ClCompile Include="src\Bullet.cpp" />
     <ClCompile Include="src\CollisionDetector.cpp" />
     <ClCompile Include="src\Game.cpp" />
@@ -41,6 +42,7 @@
     <ClInclude Include="include\ScreenSize.h" />
     <ClInclude Include="include\Tank.h" />
     <ClInclude Include="include\TankAI.h" />
+    <ClInclude Include="Pool.h" />
     <ClInclude Include="Target.h" />
     <ClInclude Include="YAMLWrite.h" />
   </ItemGroup>
