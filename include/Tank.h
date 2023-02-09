@@ -5,6 +5,7 @@
 #include "Bullet.h"
 #include "Target.h"
 #include "Pool.h"
+#include "SpatialParticion.h"
 /// <summary>
 /// @brief A simple tank controller.
 /// 
@@ -155,4 +156,5 @@ private:
 	bool m_turretRequiresRepair{ false };
 	int m_repairsMade = 30; 
 
+	SpatialParticion grid;
 };

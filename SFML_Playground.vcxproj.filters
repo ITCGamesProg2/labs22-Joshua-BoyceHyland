@@ -51,6 +51,9 @@
     <ClCompile Include="Pool.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="SpatialParticion.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Game.h">
@@ -87,6 +90,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Pool.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SpatialParticion.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

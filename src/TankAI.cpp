@@ -36,7 +36,7 @@ void TankAi::update(Tank const & playerTank, double dt)
 		rightCollision = isColliding(m_aheadRight, m_aheadRight);
 		leftCollision = isColliding(m_aheadLeft, m_aheadLeft);
 
-		std::cout << "seeking " << std::endl;
+		//std::cout << "seeking " << std::endl;
 
 
 		
@@ -57,7 +57,7 @@ void TankAi::update(Tank const & playerTank, double dt)
 		leftCollision = isColliding(m_aheadLeft, m_aheadLeft);
 		m_headOnCollision = isColliding(m_aheadFront, m_halfAheadFront);
 
-		std::cout << "Straighting " << std::endl; 	
+		//std::cout << "Straighting " << std::endl; 	
 
 
 		//if (!m_headOnCollision ||(!rightCollision && !leftCollision) )   // m_headOnCollision provide decen
@@ -129,21 +129,21 @@ void TankAi::update(Tank const & playerTank, double dt)
 void TankAi::render(sf::RenderWindow & window)
 {
 	// TODO: Don't draw if off-screen...
-	for (sf::CircleShape circle : m_obstacles)
-	{
-		window.draw(circle);
-	}
-	sf::CircleShape ahead(10);
-	ahead.setPosition(m_aheadFront);
-	window.draw(ahead);
+	//for (sf::CircleShape circle : m_obstacles)
+	//{
+	//	window.draw(circle);
+	//}
+	//sf::CircleShape ahead(10);
+	//ahead.setPosition(m_aheadFront);
+	//window.draw(ahead);
 
-	sf::CircleShape aheadRight(10);
-	aheadRight.setPosition(m_aheadRight);
-	window.draw(aheadRight);
+	//sf::CircleShape aheadRight(10);
+	//aheadRight.setPosition(m_aheadRight);
+	//window.draw(aheadRight);
 
-	sf::CircleShape aheadLeft(10);
-	aheadLeft.setPosition(m_aheadLeft);
-	window.draw(aheadLeft);
+	//sf::CircleShape aheadLeft(10);
+	//aheadLeft.setPosition(m_aheadLeft);
+	//window.draw(aheadLeft);
 	
 
 	window.draw(m_tankBase);

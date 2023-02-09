@@ -5,8 +5,8 @@
 Tank::Tank(sf::Texture const & texture, std::vector<sf::Sprite>& t_wallSprites,std::vector<Target>& t_target)
 : m_texture(texture),
   m_wallSprites(t_wallSprites),
-  m_target(t_target)
-	
+  m_target(t_target), 
+  grid(1440, 900)  
 {
 	initSprites();
 }
@@ -52,6 +52,7 @@ void Tank::update(double dt)
 
 void Tank::render(sf::RenderWindow & window) 
 {
+	grid.draw(window);
 	window.draw(m_tankBase);
 	window.draw(m_turret);
 	m_bulletPool.draw(window);
@@ -229,6 +230,15 @@ void Tank::centreTurret()
 
 bool Tank::checkCWallCollision()
 {
+	if (m_tankBase.getGlobalBounds().intersects(grid.getRect(8).getGlobalBounds()))
+	{
+		grid.getRect(8).setFillColor(sf::Color::Red);
+	}
+	else
+	{
+		grid.getRect(8).setFillColor(sf::Color::Transparent);
+	}
+
 	for (sf::Sprite const& wall : m_wallSprites)
 	{
 		if((CollisionDetector::collision(m_turret, wall))||(CollisionDetector::collision(m_tankBase, wall)))

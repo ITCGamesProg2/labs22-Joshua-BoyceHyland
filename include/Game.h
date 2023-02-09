@@ -14,6 +14,7 @@
 #include "Tank.h"
 #include "Target.h"
 #include "TankAI.h"
+#include "SpatialParticion.h"
 /// <summary>
 /// @author RP
 /// @date September 2022
@@ -220,6 +221,9 @@ protected:
 	
 	YAML::Node& m_baseNode = LevelLoader::getNode();
 
+
+
+	//SpatialParticion grid; 
 #ifdef TEST_FPS
 	sf::Text x_updateFPS;					// text used to display updates per second.
 	sf::Text x_drawFPS;						// text used to display draw calls per second.

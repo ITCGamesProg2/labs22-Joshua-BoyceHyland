@@ -7,7 +7,8 @@ static double const FPS{ 60.0f };
 Game::Game()
 	: m_window(sf::VideoMode(ScreenSize::s_width, ScreenSize::s_height, 32), "SFML Playground", sf::Style::Default), 
 	  m_tank(m_tankTexture,m_wallSprites,m_targets), 
-	 m_aiTank(m_tankTexture, m_wallSprites)
+	 m_aiTank(m_tankTexture, m_wallSprites)//, 
+	//grid(ScreenSize::s_width, ScreenSize::s_height)
 {
 	init();
 	m_aiTank.init(m_level.m_aiTank.m_position);
@@ -483,7 +484,7 @@ void Game::render()
 
 	m_window.draw(m_bgSpritee);
 
-
+	//grid.draw(m_window);
 	if (m_currentGameState == Menu)
 	{
 		m_window.draw(m_userInput);
