@@ -240,7 +240,12 @@ void Game::setUpText()
 	m_scoreBoard.setCharacterSize(50u); 
 	m_scoreBoard.setPosition(ScreenSize::s_width / 2 - 200, (ScreenSize::s_height / 2) - 100);
 
-
+	m_gameStateText.setFont(m_font);
+	m_gameStateText.setFillColor(sf::Color::White);
+	m_gameStateText.setCharacterSize(50u);
+	m_gameStateText.setPosition(ScreenSize::s_width / 2 - 200 , ScreenSize::s_height - 100);
+	m_gameStateText.setString("Gamestate: " + m_gameStateStrings[m_currentGameState]);
+	m_gameStateText.setFillColor(sf::Color::Red);
 }
 
 void Game::chechForTargetRespawn()
@@ -368,7 +373,7 @@ void Game::enterUserInfo(sf::Event& event)
 	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter))
 	{
 	    m_level.m_currentUser.m_userName = m_userName;
-		m_currentGameState = EnemyGamePlay; 
+		m_currentGameState = TargetPractice; 
 	}
 
 	m_userName =  m_userName + currentKey; 
@@ -470,7 +475,7 @@ void Game::update(double dt)
 			break; 
 
 	}
-	
+	m_gameStateText.setString("Gamestate: " + m_gameStateStrings[m_currentGameState]);
 }
 
 ////////////////////////////////////////////////////////////
@@ -534,7 +539,7 @@ void Game::render()
 		m_window.draw(m_scoreBoard); 
 	}
 	
-	
+	m_window.draw(m_gameStateText);
 
 	m_window.display();
 }

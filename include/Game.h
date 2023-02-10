@@ -27,7 +27,7 @@
 /// Gameplay: player inputs for tank, controlling respawn of targets
 /// Gameover: checks whether to update yaml file and displays stats
 /// </summary>
-enum GameState { Menu, EnemyGamePlay,TargetPractice, UpdateYAML,GameStats, Scoreboard };
+enum GameState { Menu, TargetPractice, EnemyGamePlay, UpdateYAML,GameStats, Scoreboard };
 
 /// <summary>
 /// @brief Main class for the SFML Playground project.
@@ -198,11 +198,11 @@ protected:
 	
 
 	// displayed time variables
-	sf::Time m_timer = sf::seconds(60);
+	sf::Time m_timer = sf::seconds(5);
 	sf::Clock m_clock;
 
 	// switches between gameplay and menu etc
-	GameState m_currentGameState{ Menu };
+	GameState m_currentGameState{Menu };
 	
 	// menu text
 	sf::Text m_userInput; 
@@ -219,9 +219,21 @@ protected:
 	// text depends on whether they won or not 
 	sf::Text m_gameResult; 
 	
+	// Game state text 
+	sf::Text m_gameStateText; 
+	std::string m_gameStateStrings[6] = {
+		"Menu",
+		"Target Practice",
+		"Enemy Gameplay",
+		"UpdateYAML",
+		"GameStats",
+		"Scoreboard"
+	};
+
+
 	YAML::Node& m_baseNode = LevelLoader::getNode();
 
-
+	
 
 	//SpatialParticion grid; 
 #ifdef TEST_FPS
