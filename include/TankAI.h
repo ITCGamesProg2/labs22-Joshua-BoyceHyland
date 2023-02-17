@@ -43,6 +43,18 @@ public:
 	/// </summary>
 	void init(sf::Vector2f position);
 
+
+	/// <summary>
+/// @brief Checks for collision between the AI and player tanks.
+///
+/// </summary>
+/// <param name="player">The player tank instance</param>
+/// <returns>True if collision detected between AI and player tanks.</returns>
+	bool collidesWithPlayer(Tank const& playerTank) const;
+
+
+
+
 	enum class AiType
 	{
 		AI_ID_NONE,

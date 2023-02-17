@@ -329,6 +329,16 @@ sf::Vector2f Tank::getPosition() const
 	return m_position;
 }
 
+sf::Sprite Tank::getTurret() const
+{
+	return m_turret;
+}
+
+sf::Sprite Tank::getBase() const
+{
+	return m_tankBase;
+}
+
 void Tank::initSprites()
 {
 	sf::IntRect baseRect(2, 43, 79, 43);

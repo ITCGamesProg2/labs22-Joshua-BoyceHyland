@@ -206,10 +206,10 @@ target:
       x: 400
       y: 50
 thirdPlace:
-  bestAccuracy: 0.3103448
-  highScore: 9
-  userName: "j\bosh"
+  bestAccuracy: 0
+  highScore: 0
+  userName: Mary
 user:
   bestAccuracy: 0.9
   highScore: 12
-  userName: !<!> "j\bosh"
+  userName: !<!> l

@@ -113,6 +113,13 @@ public:
 	/// <returns>tank current position</returns>
 	sf::Vector2f getPosition() const; 
 
+	/// <summary>
+	/// get fucntions get parts of the tank for ai tank collision
+	/// </summary>
+	/// <returns> each sprite for tank</returns>
+	sf::Sprite getTurret() const;
+	sf::Sprite getBase() const;
+
 private:
 	void initSprites();
 

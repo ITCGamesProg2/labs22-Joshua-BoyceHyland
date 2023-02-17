@@ -15,6 +15,7 @@
 #include "Target.h"
 #include "TankAI.h"
 #include "SpatialParticion.h"
+#include "GameStates.h"
 /// <summary>
 /// @author RP
 /// @date September 2022
@@ -27,7 +28,7 @@
 /// Gameplay: player inputs for tank, controlling respawn of targets
 /// Gameover: checks whether to update yaml file and displays stats
 /// </summary>
-enum GameState { Menu, TargetPractice, EnemyGamePlay, UpdateYAML,GameStats, Scoreboard };
+
 
 /// <summary>
 /// @brief Main class for the SFML Playground project.
@@ -202,7 +203,7 @@ protected:
 	sf::Clock m_clock;
 
 	// switches between gameplay and menu etc
-	GameState m_currentGameState{Menu };
+	GameState m_currentGameState{ Menu };
 	
 	// menu text
 	sf::Text m_userInput; 

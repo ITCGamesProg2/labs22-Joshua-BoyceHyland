@@ -166,6 +166,17 @@ void TankAi::init(sf::Vector2f position)
 	}
 }
 
+bool TankAi::collidesWithPlayer(Tank const& playerTank) const
+{
+	// checks if the AI tank has collided with the player tank
+	if (CollisionDetector::collision(m_turret, playerTank.getTurret()) ||
+		CollisionDetector::collision(m_tankBase, playerTank.getBase()))
+	{
+		return true;
+	}
+	return false;
+}
+
 ////////////////////////////////////////////////////////////
 sf::Vector2f TankAi::seek(sf::Vector2f playerPosition) const
 {

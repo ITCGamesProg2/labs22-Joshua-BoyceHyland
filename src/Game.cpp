@@ -373,7 +373,7 @@ void Game::enterUserInfo(sf::Event& event)
 	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter))
 	{
 	    m_level.m_currentUser.m_userName = m_userName;
-		m_currentGameState = TargetPractice; 
+		m_currentGameState = EnemyGamePlay; 
 	}
 
 	m_userName =  m_userName + currentKey; 

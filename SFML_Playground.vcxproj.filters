@@ -95,6 +95,9 @@
     <ClInclude Include="SpatialParticion.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="GameStates.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="resources\levels\level1.yaml">

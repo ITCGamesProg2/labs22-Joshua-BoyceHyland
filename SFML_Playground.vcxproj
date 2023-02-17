@@ -34,6 +34,7 @@
     <ClCompile Include="YAMLWrite.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="GameStates.h" />
     <ClInclude Include="include\Bullet.h" />
     <ClInclude Include="include\CollisionDetector.h" />
     <ClInclude Include="include\Game.h" />
