@@ -7,11 +7,20 @@ static double const FPS{ 60.0f };
 Game::Game()
 	: m_window(sf::VideoMode(ScreenSize::s_width, ScreenSize::s_height, 32), "SFML Playground", sf::Style::Default), 
 	  m_tank(m_tankTexture,m_wallSprites,m_targets), 
-	 m_aiTank(m_tankTexture, m_wallSprites)//, 
+	 m_aiTank(m_tankTexture, m_wallSprites),
+	m_hud(m_font)//, 
 	//grid(ScreenSize::s_width, ScreenSize::s_height)
 {
 	init();
 	m_aiTank.init(m_level.m_aiTank.m_position);
+
+	// Point at TankAI::applyDamage()...this function expects 1 argument(damage amount), but that argument
+		//  will be supplied later when we call the function inside Projectile::udpate()
+		// So we use what is called a placeholder argument and this will be substituted later with the damage amount
+		using std::placeholders::_1;
+	// The parameters of bind are the function to be called, followed by the address of the target instance, 
+	//  followed by the placeholder argument.
+	m_funcApplyDamge = std::bind(&TankAi::applyDamage, &m_aiTank, _1);
 }
 
 ////////////////////////////////////////////////////////////
@@ -240,12 +249,6 @@ void Game::setUpText()
 	m_scoreBoard.setCharacterSize(50u); 
 	m_scoreBoard.setPosition(ScreenSize::s_width / 2 - 200, (ScreenSize::s_height / 2) - 100);
 
-	m_gameStateText.setFont(m_font);
-	m_gameStateText.setFillColor(sf::Color::White);
-	m_gameStateText.setCharacterSize(50u);
-	m_gameStateText.setPosition(ScreenSize::s_width / 2 - 200 , ScreenSize::s_height - 100);
-	m_gameStateText.setString("Gamestate: " + m_gameStateStrings[m_currentGameState]);
-	m_gameStateText.setFillColor(sf::Color::Red);
 }
 
 void Game::chechForTargetRespawn()
@@ -442,22 +445,19 @@ void Game::addPlayerToLeaderBoard()
 ////////////////////////////////////////////////////////////
 void Game::update(double dt)
 {
+	m_hud.update(m_currentGameState);
+	
 	switch (m_currentGameState)
 	{
 		case Menu:
 			break; 
 
 		case TargetPractice:
-			m_tank.update(dt);
+			m_tank.update(dt, m_funcApplyDamge, m_aiTank.getTankBase());
 			timerUpdate();
 			scoreUpdate();
 			manageTargetTimers();
 			chechForTargetRespawn();
-			break;
-
-		case EnemyGamePlay:
-			m_tank.update(dt);
-			m_aiTank.update(m_tank, dt);
 			break;
 
 		case UpdateYAML:
@@ -471,11 +471,39 @@ void Game::update(double dt)
 
 		case Scoreboard:
 			updateScoreBoard();
-
 			break; 
 
+		case EnemyGamePlay:
+			m_tank.update(dt, m_funcApplyDamge, m_aiTank.getTankBase());
+			m_aiTank.update(m_tank, dt);
+			if (m_aiTank.collidesWithPlayer(m_tank))
+			{
+				m_currentGameState = EnemyGamePlayLose;
+				m_clock.restart();
+			}
+			if (!m_aiTank.IsAlive())
+			{
+				m_currentGameState = EnemyGamePlayWin;
+				m_clock.restart();
+			}
+			break;
+
+		case EnemyGamePlayLose:
+			if (m_clock.getElapsedTime().asSeconds() > 5)
+			{
+				m_currentGameState = Menu;
+			}
+			break;
+
+		case EnemyGamePlayWin:
+			if (m_clock.getElapsedTime().asSeconds() > 5)
+			{
+				m_currentGameState = Menu;
+			}
+			break; 
+
+
 	}
-	m_gameStateText.setString("Gamestate: " + m_gameStateStrings[m_currentGameState]);
 }
 
 ////////////////////////////////////////////////////////////
@@ -509,7 +537,7 @@ void Game::render()
 		{
 			m_window.draw(sprite);
 		}
-
+		
 		m_window.draw(m_timerText);
 		m_window.draw(m_scoreText);
 		if (m_tank.needsRepair())
@@ -539,8 +567,8 @@ void Game::render()
 		m_window.draw(m_scoreBoard); 
 	}
 	
-	m_window.draw(m_gameStateText);
-
+	//m_window.draw(m_gameStateText);
+	m_hud.render(m_window);
 	m_window.display();
 }
 

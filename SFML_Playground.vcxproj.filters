@@ -54,6 +54,9 @@
     <ClCompile Include="SpatialParticion.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="HUD.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Game.h">
@@ -96,6 +99,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="GameStates.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="HUD.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -11,7 +11,7 @@ Tank::Tank(sf::Texture const & texture, std::vector<sf::Sprite>& t_wallSprites,s
 	initSprites();
 }
 
-void Tank::update(double dt)
+void Tank::update(double dt, std::function<void(int)>& t_funcApplyDamage, sf::Sprite t_tankBaseAI)
 {	
 	handleKeyInput(); 
 
@@ -24,7 +24,7 @@ void Tank::update(double dt)
 	{
 		deflect(); 
 	}
-	checkBulletCollisions();
+	checkBulletCollisions(t_funcApplyDamage, t_tankBaseAI);
 
 	m_previousPosition = m_position; 
 	float radianRotation = m_tankRotation * DEG_TO_RAD; 
@@ -250,7 +250,7 @@ bool Tank::checkCWallCollision()
 	return false;
 }
 
-void Tank::checkBulletCollisions()
+void Tank::checkBulletCollisions(std::function<void(int)>& t_funcApplyDamage, sf::Sprite t_tankBase)
 {
 	for (int i = 0; i < NUM_OF_BULLETS; i++)
 	{
@@ -278,7 +278,18 @@ void Tank::checkBulletCollisions()
 		}
 		
 	}
-	
+
+	for (int i = 0; i < NUM_OF_BULLETS; i++)
+	{
+		
+		if ((CollisionDetector::collision(m_bulletPool.getBullet(i).getBody(), t_tankBase)) )
+		{
+			std::cout << "You hit the Enemy" << std::endl;
+			t_funcApplyDamage(1);
+			m_bulletPool.getBullet(i).despawn();
+		}
+
+	}
 }
 
 void Tank::deflect()

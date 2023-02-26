@@ -2,8 +2,11 @@
 enum GameState { 
 	Menu, 
 	TargetPractice, 
-	EnemyGamePlay,
 	UpdateYAML, 
 	GameStats, 
-	Scoreboard 
+	Scoreboard , 
+	/*player vs ai states*/
+	EnemyGamePlay,
+	EnemyGamePlayLose, 
+	EnemyGamePlayWin
 };

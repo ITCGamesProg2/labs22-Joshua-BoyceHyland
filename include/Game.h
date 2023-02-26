@@ -16,6 +16,7 @@
 #include "TankAI.h"
 #include "SpatialParticion.h"
 #include "GameStates.h"
+#include "HUD.h"
 /// <summary>
 /// @author RP
 /// @date September 2022
@@ -168,6 +169,8 @@ protected:
 	void addPlayerToLeaderBoard(); 
 
 
+	std::function<void(int)>m_funcApplyDamge;
+
 
 	// Font used for all text
 	sf::Font m_arialFont;
@@ -220,22 +223,10 @@ protected:
 	// text depends on whether they won or not 
 	sf::Text m_gameResult; 
 	
-	// Game state text 
-	sf::Text m_gameStateText; 
-	std::string m_gameStateStrings[6] = {
-		"Menu",
-		"Target Practice",
-		"Enemy Gameplay",
-		"UpdateYAML",
-		"GameStats",
-		"Scoreboard"
-	};
-
 
 	YAML::Node& m_baseNode = LevelLoader::getNode();
-
 	
-
+	HUD m_hud;
 	//SpatialParticion grid; 
 #ifdef TEST_FPS
 	sf::Text x_updateFPS;					// text used to display updates per second.

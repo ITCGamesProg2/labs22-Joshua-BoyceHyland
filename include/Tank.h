@@ -22,7 +22,7 @@ public:
 /// <param name="t_texture">A reference to the sprite sheet texture</param>
 ///< param name="t_wallSprites">A reference to the container of wall sprites</param>  
 	Tank(sf::Texture const& texture, std::vector<sf::Sprite>& t_wallSprites, std::vector<Target>& t_target);
-	void update(double dt);
+	void update(double dt, std::function<void(int)>& t_funcApplyDamage, sf::Sprite t_tankBase);
 	void render(sf::RenderWindow& window);
 	void setPosition(sf::Vector2f t_position);
 
@@ -76,7 +76,7 @@ public:
 	/// <summary>
 	/// handles the collisions between bullets and sprites
 	/// </summary>
-	void checkBulletCollisions();
+	void checkBulletCollisions(std::function<void(int)>& t_funcApplyDamage, sf::Sprite t_tankBase);
 
 	/// <summary>
 	/// /// @brief Stops the tank if moving and applies a small increase in speed in the opposite direction of travel.

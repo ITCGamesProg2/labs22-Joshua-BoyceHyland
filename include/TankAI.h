@@ -53,8 +53,11 @@ public:
 	bool collidesWithPlayer(Tank const& playerTank) const;
 
 
+	void applyDamage(int t_damageAmount);
 
+	sf::Sprite getTankBase();
 
+	bool IsAlive();
 	enum class AiType
 	{
 		AI_ID_NONE,
@@ -75,6 +78,9 @@ private:
 	const sf::CircleShape findMostThreateningObstacle();
 
 	const bool isColliding(sf::Vector2f t_ahead, sf::Vector2f t_halfAhead);
+
+	
+	
 
 	
 	// A reference to the sprite sheet texture.
@@ -150,6 +156,6 @@ private:
 		RETREAT
 	} m_aiBehaviour;
 
-
+	int health = 5;
 };
 

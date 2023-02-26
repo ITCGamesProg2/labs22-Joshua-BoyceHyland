@@ -282,6 +282,21 @@ const bool TankAi::isColliding(sf::Vector2f t_ahead, sf::Vector2f t_halfAhead)
 	return false;
 }
 
+void TankAi::applyDamage(int t_damageAmount)
+{
+	health -= t_damageAmount;
+}
+
+sf::Sprite TankAi::getTankBase()
+{
+	return m_tankBase;
+}
+
+bool TankAi::IsAlive()
+{
+	return health>=0;
+}
+
 ////////////////////////////////////////////////////////////
 void TankAi::initSprites()
 {

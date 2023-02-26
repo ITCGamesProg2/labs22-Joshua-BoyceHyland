@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="HUD.cpp" />
     <ClCompile Include="Pool.cpp" />
     <ClCompile Include="SpatialParticion.cpp" />
     <ClCompile Include="src\Bullet.cpp" />
@@ -35,6 +36,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameStates.h" />
+    <ClInclude Include="HUD.h" />
     <ClInclude Include="include\Bullet.h" />
     <ClInclude Include="include\CollisionDetector.h" />
     <ClInclude Include="include\Game.h" />
