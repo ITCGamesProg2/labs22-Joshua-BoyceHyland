@@ -57,6 +57,8 @@ public:
 
 	sf::Sprite getTankBase();
 
+	void reset();
+
 	bool IsAlive();
 	enum class AiType
 	{

@@ -285,8 +285,9 @@ void Tank::checkBulletCollisions(std::function<void(int)>& t_funcApplyDamage, sf
 		if ((CollisionDetector::collision(m_bulletPool.getBullet(i).getBody(), t_tankBase)) )
 		{
 			std::cout << "You hit the Enemy" << std::endl;
-			t_funcApplyDamage(1);
 			m_bulletPool.getBullet(i).despawn();
+			t_funcApplyDamage(1);
+			
 		}
 
 	}

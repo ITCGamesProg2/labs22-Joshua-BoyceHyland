@@ -168,8 +168,22 @@ protected:
 	/// </summary>
 	void addPlayerToLeaderBoard(); 
 
+	/// <summary>
+	/// initialisation of window to camera
+	/// </summary>
+	void camerSetUp();
 
+	/// <summary>
+	/// updates the camera depending on gamestate
+	/// </summary>
+	void updateCamera();
+	
+	/// <summary>
+	///tank ai function to be usable within the tank class when a bullet has collided with an ai tank
+	/// </summary>
 	std::function<void(int)>m_funcApplyDamge;
+
+
 
 
 	// Font used for all text
@@ -177,13 +191,12 @@ protected:
 	// main window
 	sf::RenderWindow m_window;
 
-	
+	// level data
 	LevelData m_level; 
 
-
+	// sprites
 	sf::Sprite m_bgSpritee; 
 	sf::Texture m_bgTexture;
-
 	std::vector<sf::Sprite> m_wallSprites; 
 	sf::Texture m_spriteSheetTexture; 
 
@@ -222,11 +235,15 @@ protected:
 
 	// text depends on whether they won or not 
 	sf::Text m_gameResult; 
-	
 
 	YAML::Node& m_baseNode = LevelLoader::getNode();
 	
+	// hud system
 	HUD m_hud;
+
+	// moving camera for map
+	sf::View m_camera;
+	
 	//SpatialParticion grid; 
 #ifdef TEST_FPS
 	sf::Text x_updateFPS;					// text used to display updates per second.

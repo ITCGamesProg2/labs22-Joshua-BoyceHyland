@@ -12,6 +12,7 @@ Game::Game()
 	//grid(ScreenSize::s_width, ScreenSize::s_height)
 {
 	init();
+	camerSetUp();
 	m_aiTank.init(m_level.m_aiTank.m_position);
 
 	// Point at TankAI::applyDamage()...this function expects 1 argument(damage amount), but that argument
@@ -27,7 +28,7 @@ Game::Game()
 void Game::init()
 {
 	int currentLevel = 1;
-
+	
 	// generates a exception if level loading fails.
 	try
 	{
@@ -51,7 +52,9 @@ void Game::init()
 	{
 		std::cout << "Can not load background" << std::endl;
 	}
+	m_bgTexture.setRepeated(true);
 	m_bgSpritee.setTexture(m_bgTexture);
+	m_bgSpritee.setTextureRect(sf::IntRect(0, 0, ScreenSize::s_width,4000 ));
 
 	// Load the player tank
 	if (!m_tankTexture.loadFromFile("./resources/images/SpriteSheet.png"))
@@ -66,7 +69,7 @@ void Game::init()
 
 
 	int randSpawn = rand() % m_level.m_tank.m_tankPositions.size();
-	m_tank.setPosition(m_level.m_tank.m_tankPositions[randSpawn]);
+	m_tank.setPosition(m_level.m_tank.m_tankPositions[0]);
 	
 	
 
@@ -112,6 +115,7 @@ void Game::run()
 			timeSinceLastUpdate -= timePerFrame;
 			processEvents(); // at least 60 fps
 			update(timePerFrame.asMilliseconds()); //60 fps
+			
 #ifdef TEST_FPS
 			x_secondTime += timePerFrame;
 			x_updateFrameCount++;
@@ -442,10 +446,49 @@ void Game::addPlayerToLeaderBoard()
 	}
 }
 
+void Game::camerSetUp()
+{
+	sf::FloatRect defaultMenuView{ 0,0, ScreenSize::s_width, ScreenSize::s_height };
+	m_camera.reset(sf::FloatRect(defaultMenuView));
+	m_window.setView(m_camera);
+}
+
+void Game::updateCamera()
+{
+
+
+	switch (m_currentGameState)
+	{
+		case EnemyGamePlay:
+			
+			float mapLength = 4000;
+
+			bool tankAtTopOfScreen = m_tank.getPosition().y < (ScreenSize::s_height / 2);
+			bool tankAtBottomOfScreen = m_tank.getPosition().y > (mapLength - ScreenSize::s_height / 2);
+
+			if (!tankAtTopOfScreen && !tankAtBottomOfScreen )
+			{
+				m_camera.setCenter({ ScreenSize::s_width / 2,m_tank.getPosition().y });
+			}
+			// check if it should set the limit to the top of the screen
+			else if(m_tank.getPosition().y < ScreenSize::s_height)
+			{
+				m_camera.reset(sf::FloatRect(sf::FloatRect { 0,0, ScreenSize::s_width, ScreenSize::s_height }));
+			}
+			// or the bottom of the screen
+			else
+			{
+				m_camera.reset(sf::FloatRect(sf::FloatRect{ 0,mapLength - ScreenSize::s_height, ScreenSize::s_width, ScreenSize::s_height }));
+			}
+		
+			m_window.setView(m_camera);
+			break;
+		}
+}
+
 ////////////////////////////////////////////////////////////
 void Game::update(double dt)
 {
-	m_hud.update(m_currentGameState);
 	
 	switch (m_currentGameState)
 	{
@@ -492,6 +535,9 @@ void Game::update(double dt)
 			if (m_clock.getElapsedTime().asSeconds() > 5)
 			{
 				m_currentGameState = Menu;
+				m_aiTank.reset();
+				int randSpawn = rand() % m_level.m_tank.m_tankPositions.size();
+				m_tank.setPosition(m_level.m_tank.m_tankPositions[randSpawn]);
 			}
 			break;
 
@@ -499,11 +545,17 @@ void Game::update(double dt)
 			if (m_clock.getElapsedTime().asSeconds() > 5)
 			{
 				m_currentGameState = Menu;
+				m_aiTank.reset();
+				int randSpawn = rand() % m_level.m_tank.m_tankPositions.size();
+				m_tank.setPosition(m_level.m_tank.m_tankPositions[randSpawn]);
 			}
 			break; 
 
 
 	}
+
+	m_hud.update(m_currentGameState);
+	updateCamera();
 }
 
 ////////////////////////////////////////////////////////////
@@ -569,6 +621,8 @@ void Game::render()
 	
 	//m_window.draw(m_gameStateText);
 	m_hud.render(m_window);
+	
+	
 	m_window.display();
 }
 

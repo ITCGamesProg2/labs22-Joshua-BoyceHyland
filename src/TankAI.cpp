@@ -292,6 +292,11 @@ sf::Sprite TankAi::getTankBase()
 	return m_tankBase;
 }
 
+void TankAi::reset()
+{
+	health = 5;
+}
+
 bool TankAi::IsAlive()
 {
 	return health>=0;
