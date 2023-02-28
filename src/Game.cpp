@@ -480,8 +480,11 @@ void Game::updateCamera()
 			{
 				m_camera.reset(sf::FloatRect(sf::FloatRect{ 0,mapLength - ScreenSize::s_height, ScreenSize::s_width, ScreenSize::s_height }));
 			}
-		
+			
+			std::cout << "Top: " << m_camera.getViewport().top << std::endl; 
+			m_hud.updatePositions({ 0, m_camera.getCenter().y - ScreenSize::s_height / 2 }); // updates hud to top of screen as it moves
 			m_window.setView(m_camera);
+
 			break;
 		}
 }

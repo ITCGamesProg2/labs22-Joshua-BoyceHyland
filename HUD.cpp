@@ -83,3 +83,9 @@ void HUD::render(sf::RenderWindow& window)
 
 }
 
+void HUD::updatePositions(sf::Vector2f t_pos)
+{
+    m_hudOutline.setPosition( t_pos );
+    m_gameStateText.setPosition({ m_gameStateText.getPosition().x,t_pos.y});
+}
+

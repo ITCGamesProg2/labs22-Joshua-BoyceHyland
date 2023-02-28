@@ -29,6 +29,11 @@ public:
     /// <param name="window">The SFML Render window</param>
     void render(sf::RenderWindow& window);
 
+    /// <summary>
+    /// updates position of relevant hud text
+    /// </summary>
+    void updatePositions(sf::Vector2f t_pos);
+
 
 private:
     // The font for this HUD.
