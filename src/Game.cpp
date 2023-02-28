@@ -522,7 +522,7 @@ void Game::update(double dt)
 		case EnemyGamePlay:
 			m_tank.update(dt, m_funcApplyDamge, m_aiTank.getTankBase());
 			m_aiTank.update(m_tank, dt);
-			if (m_aiTank.collidesWithPlayer(m_tank))
+			/*if (m_aiTank.collidesWithPlayer(m_tank))
 			{
 				m_currentGameState = EnemyGamePlayLose;
 				m_clock.restart();
@@ -531,7 +531,7 @@ void Game::update(double dt)
 			{
 				m_currentGameState = EnemyGamePlayWin;
 				m_clock.restart();
-			}
+			}*/
 			break;
 
 		case EnemyGamePlayLose:

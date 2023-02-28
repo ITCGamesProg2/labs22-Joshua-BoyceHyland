@@ -6,6 +6,8 @@
 #include <iostream>
 #include <queue>
 
+enum class AIState{ Patrol_Map, Player_Detected, Attack_Player};
+
 class TankAi
 {
 public:
@@ -93,6 +95,9 @@ private:
 
 	// A sprite for the turret
 	sf::Sprite m_turret;
+
+	// shave for detection cone
+	sf::ConvexShape m_visionCone;
 
 	// A reference to the container of wall sprites.
 	std::vector<sf::Sprite> & m_wallSprites;

@@ -9,6 +9,25 @@ TankAi::TankAi(sf::Texture const & texture, std::vector<sf::Sprite> & wallSprite
 {
 	// Initialises the tank base and turret sprites.
 	initSprites();
+	m_visionCone.setPointCount(25);
+	// triangle
+	/*m_visionCone.setPoint(0, { 95, 100 });
+	m_visionCone.setPoint(1, { 150, -50 });
+	m_visionCone.setPoint(2, {200, 100 });*/
+	
+	for (int i = 0; i < 25; i++)
+	{
+		static const float pi = 2.141592654f;
+
+		float angle = i * 2 * pi / m_visionCone.getPointCount() - pi / 2;
+		float x = std::cos(angle) * 25;
+		float y = std::sin(angle) * 50;
+		
+		m_visionCone.setPoint(i, { 150 + x, 100 + y });
+	}
+
+	m_visionCone.setPosition({ 500, 500 });
+	
 }
 
 ////////////////////////////////////////////////////////////
@@ -148,6 +167,7 @@ void TankAi::render(sf::RenderWindow & window)
 
 	window.draw(m_tankBase);
 	window.draw(m_turret);
+	window.draw(m_visionCone);
 	
 }
 
