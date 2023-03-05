@@ -1,0 +1,50 @@
+Cone:
+Patrol:
+- mediam cone
+- rotate 30 degrees either side of face
+- patrrol random locations of map
+
+Player detect:
+- longer range vision cone but narrower
+- does 360 sweep
+- ai will move in direction of player
+- when in reasonable firing range will shoot
+
+ABOVE: [30]
+
+Attack: [30]
+- cone changes to shorter but widder range
+- will try keep player in this cone
+- if player moves outside enemy will revert back to patrol
+
+
+fuel/ stamina pick ups: [15]
+- will leak fuel if shot
+- is a single repar pickup map to get to 
+- player will be destroyed if they run out
+
+HUD: [10]
+- for pick ups/ ammo
+
+BOUNDS: [10]
+- checking for enemy so they dont leave map
+
+Bounus: [20]
+- stop player being detected behind vision cone 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
