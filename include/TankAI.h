@@ -1,16 +1,21 @@
 #pragma once
 #include "MathUtility.h"
 #include "Tank.h"
+#include "EnemyStates.h"
+#include "VisionCone.h"
 #include <SFML/Graphics.hpp>
 #include <Thor/Vectors.hpp>
 #include <iostream>
 #include <queue>
 
-enum class AIState{ Patrol_Map, Player_Detected, Attack_Player};
+
 
 class TankAi
 {
 public:
+
+	
+
 	/// <summary>
 	/// @brief Constructor that stores a reference to the obstacle container.
 	/// Initialises steering behaviour to seek (player) mode, sets the AI tank position and
@@ -73,6 +78,8 @@ private:
 
 	void updateMovement(double dt);
 
+
+
 	sf::Vector2f seek(sf::Vector2f playerPosition) const;
 
 	sf::Vector2f collisionAvoidance();
@@ -83,7 +90,7 @@ private:
 
 	const bool isColliding(sf::Vector2f t_ahead, sf::Vector2f t_halfAhead);
 
-	
+	void manageCone();
 	
 
 	
@@ -97,7 +104,7 @@ private:
 	sf::Sprite m_turret;
 
 	// shave for detection cone
-	sf::ConvexShape m_visionCone;
+	
 
 	// A reference to the container of wall sprites.
 	std::vector<sf::Sprite> & m_wallSprites;
@@ -163,6 +170,15 @@ private:
 		RETREAT
 	} m_aiBehaviour;
 
+
+	AIState currentState;
+
+	VisionCone visionCone;
+	
 	int health = 5;
+
+
+
+	
 };
 

@@ -6,48 +6,37 @@ TankAi::TankAi(sf::Texture const & texture, std::vector<sf::Sprite> & wallSprite
 	, m_texture(texture)
 	, m_wallSprites(wallSprites)
 	, m_steering(0, 0)
+	, visionCone()
 {
 	// Initialises the tank base and turret sprites.
 	initSprites();
-	m_visionCone.setPointCount(25);
-	// triangle
-	/*m_visionCone.setPoint(0, { 95, 100 });
-	m_visionCone.setPoint(1, { 150, -50 });
-	m_visionCone.setPoint(2, {200, 100 });*/
 	
-	for (int i = 0; i < 25; i++)
-	{
-		static const float pi = 2.141592654f;
+	
 
-		float angle = i * 2 * pi / m_visionCone.getPointCount() - pi / 2;
-		float x = std::cos(angle) * 25;
-		float y = std::sin(angle) * 50;
-		
-		m_visionCone.setPoint(i, { 150 + x, 100 + y });
-	}
-
-	m_visionCone.setPosition({ 500, 500 });
+	currentState = AIState::Patrol_Map;
 	
 }
 
 ////////////////////////////////////////////////////////////
 void TankAi::update(Tank const & playerTank, double dt)
 {
+
+	visionCone.update(currentState, m_tankBase.getPosition(), m_tankBase.getRotation());
 	sf::Vector2f vectorToPlayer = seek(playerTank.getPosition());
-	sf::Vector2f acceleration; 
+	sf::Vector2f acceleration;
 	bool rightCollision;
 	bool leftCollision;
 	switch (m_aiBehaviour)
 	{
 	case AiBehaviour::SEEK_PLAYER:
 
-		
-		
+
+
 		m_avoidance = collisionAvoidance();
 		m_steering += thor::unitVector(vectorToPlayer);
 		m_steering += m_avoidance;
 		m_steering = MathUtility::truncate(m_steering, MAX_FORCE);
-		
+
 		acceleration = m_steering / MASS;
 		m_velocity = MathUtility::truncate(m_velocity + m_steering, MAX_SPEED);
 		//m_velocity = MathUtility::truncate(m_velocity + acceleration, MAX_SPEED);
@@ -58,7 +47,7 @@ void TankAi::update(Tank const & playerTank, double dt)
 		//std::cout << "seeking " << std::endl;
 
 
-		
+
 		if ((rightCollision || leftCollision))
 		{
 			m_steering = thor::unitVector(vectorToPlayer);
@@ -66,7 +55,7 @@ void TankAi::update(Tank const & playerTank, double dt)
 			m_velocity = MathUtility::truncate(m_velocity + m_steering, MAX_SPEED);
 			m_aiBehaviour = AiBehaviour::STRAIGHTEN;
 		}
-	
+
 		break;
 
 	case AiBehaviour::STRAIGHTEN:
@@ -88,7 +77,7 @@ void TankAi::update(Tank const & playerTank, double dt)
 		{
 			m_aiBehaviour = AiBehaviour::SEEK_PLAYER;
 		}
-		else if( m_headOnCollision)
+		else if (m_headOnCollision)
 		{
 			m_aiBehaviour = AiBehaviour::SEEK_PLAYER;
 		}
@@ -100,6 +89,7 @@ void TankAi::update(Tank const & playerTank, double dt)
 	default:
 		break;
 	}
+	
 
 	// Now we need to convert our velocity vector into a rotation angle between 0 and 359 degrees.
 	// The m_velocity vector works like this: vector(1,0) is 0 degrees, while vector(0, 1) is 90 degrees.
@@ -142,8 +132,14 @@ void TankAi::update(Tank const & playerTank, double dt)
 	}
 
 	updateMovement(dt);
+	manageCone();
 }
 
+void TankAi::manageCone()
+{
+
+	
+}
 ////////////////////////////////////////////////////////////
 void TankAi::render(sf::RenderWindow & window)
 {
@@ -164,10 +160,10 @@ void TankAi::render(sf::RenderWindow & window)
 	//aheadLeft.setPosition(m_aheadLeft);
 	//window.draw(aheadLeft);
 	
-
+	visionCone.draw(window);
 	window.draw(m_tankBase);
 	window.draw(m_turret);
-	window.draw(m_visionCone);
+	
 	
 }
 

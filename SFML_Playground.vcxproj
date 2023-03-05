@@ -32,9 +32,11 @@
     <ClCompile Include="src\Tank.cpp" />
     <ClCompile Include="src\TankAI.cpp" />
     <ClCompile Include="Target.cpp" />
+    <ClCompile Include="VisionCone.cpp" />
     <ClCompile Include="YAMLWrite.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="EnemyStates.h" />
     <ClInclude Include="GameStates.h" />
     <ClInclude Include="HUD.h" />
     <ClInclude Include="include\Bullet.h" />
@@ -49,6 +51,7 @@
     <ClInclude Include="Pool.h" />
     <ClInclude Include="SpatialParticion.h" />
     <ClInclude Include="Target.h" />
+    <ClInclude Include="VisionCone.h" />
     <ClInclude Include="YAMLWrite.h" />
   </ItemGroup>
   <ItemGroup>
