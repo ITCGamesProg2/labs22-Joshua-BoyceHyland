@@ -49,6 +49,17 @@ void VisionCone::update(AIState& t_aiState,sf::Vector2f t_tankPosition, float t_
 			}
 			m_visionCone.setRotation(m_visionCone.getRotation() + 1);
 			break;
-		case AISTATE::
+		case AIState::Attack_Player:
+			for (int i = 0; i < 3; i++)
+			{
+				m_visionCone.setPoint(i, attackCone[i]);
+			}
+
+		//case AISTATE::
 	}
+}
+
+sf::ConvexShape VisionCone::getShape()
+{
+	return m_visionCone;
 }

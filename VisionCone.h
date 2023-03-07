@@ -8,23 +8,26 @@ class VisionCone
 		VisionCone();
 		void draw(sf::RenderWindow& t_window);
 		void update(AIState& t_aiState, sf::Vector2f t_tankPosition, float t_tankCenter);
+		sf::ConvexShape getShape();
 	private:
 		sf::ConvexShape m_visionCone;
 
 		sf::Vector2f patrolCone[3] = {
 			{ 0,0 },
-			{ 200, -50 },
-			{ 200, 50 }
+			{ 200, -75 },
+			{ 200, 75 }
 		};
 
 		sf::Vector2f detectionCone[3] = {
 			{ 0,0 },
-			{ 280, -50 },
-			{ 280, 50 }
+			{ 300, -50 },
+			{ 300, 50 }
 		};
 
 		sf::Vector2f attackCone[3] = {
-
+			{ 0,0 },
+			{ 125, -125 },
+			{ 125, 125}
 		};
 		float coneRotation;
 

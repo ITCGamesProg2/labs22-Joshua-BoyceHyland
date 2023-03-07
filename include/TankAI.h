@@ -78,21 +78,42 @@ private:
 
 	void updateMovement(double dt);
 
-
-
 	sf::Vector2f seek(sf::Vector2f playerPosition) const;
 
 	sf::Vector2f collisionAvoidance();
 
+	/// <summary>
+	/// updates all 3 of the tanks heads which what out for collisions 
+	/// </summary>
 	void updateHeads();
 
+	/// <summary>
+	/// find the most threating circle shape (wall) so it can avoid it
+	/// </summary>
+	/// <returns></returns>
 	const sf::CircleShape findMostThreateningObstacle();
 
+	/// <summary>
+	/// lets the ai tank know that there is a collision happening on its left or right side
+	/// </summary>
+	/// <param name="t_ahead"></param>
+	/// <param name="t_halfAhead"></param>
+	/// <returns></returns>
 	const bool isColliding(sf::Vector2f t_ahead, sf::Vector2f t_halfAhead);
 
-	
-	
+	/// <summary>
+	/// generates a location within the a range of the tanks designated area
+	/// all tanks will have a start area to which they will be somewhat be bound to 
+	/// to avoid a cluster of tanks in one part of the map
+	/// </summary>
+	/// <returns></returns>
 	sf::Vector2f randomPatrolLocation();
+
+	/// <summary>
+	/// checks if the tank has come into range of its randomly generated patrol target
+	/// </summary>
+	/// <returns>whether it has reached target</returns>
+	bool checkForTargetReached();
 	
 	// A reference to the sprite sheet texture.
 	sf::Texture const & m_texture;
@@ -154,28 +175,33 @@ private:
 	std::vector<sf::CircleShape> m_obstacles;
 
 	
-	
 	bool m_headOnCollision{ false };
 
 	
 
 	sf::Vector2f m_avoidance{ 0,0 };
+
 	// mass of the tank to add to the turning 
 	const float MASS{ 5.0f };
 	
-	
+	// the location tank sstarts at, member variable for use of generating random targets in a range
 	sf::Vector2f m_startLocation;
 
-	AIState currentState;
+	// tanks current state
+	AIState m_currentState;
 
-	VisionCone visionCone;
+	// the tanks range of detection
+	VisionCone m_visionCone;
 	
 	int health = 5;
 
-	sf::Vector2f m_patrolTarget;
+	// variables for patrolling 
+	sf::Vector2f m_patrolDestination;
 	bool m_reachedPatrolTarget{true};
 
-	bool checkForTargetReached();
+
+
+	
 
 	
 };

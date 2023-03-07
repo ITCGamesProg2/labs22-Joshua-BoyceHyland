@@ -2,11 +2,11 @@
 
 ////////////////////////////////////////////////////////////
 TankAi::TankAi(sf::Texture const & texture, std::vector<sf::Sprite> & wallSprites)
-	: currentState(AIState::Patrol_Map)
+	: m_currentState(AIState::Attack_Player)
 	, m_texture(texture)
 	, m_wallSprites(wallSprites)
 	, m_steering(0, 0)
-	, visionCone()
+	, m_visionCone()
 {
 	// Initialises the tank base and turret sprites.
 	initSprites();
@@ -23,27 +23,27 @@ void TankAi::update(Tank const & playerTank, double dt)
 
 
 
-	visionCone.update(currentState, m_tankBase.getPosition(), m_tankBase.getRotation());
+	m_visionCone.update(m_currentState, m_tankBase.getPosition(), m_tankBase.getRotation());
 	
 	sf::Vector2f vectorToPlayer = seek(playerTank.getPosition());
 	sf::Vector2f acceleration;
 	bool rightCollision;
 	bool leftCollision;
 
-	switch (currentState)
+	switch (m_currentState)
 	{
 	case AIState::Patrol_Map:
 		
 
 		if (m_reachedPatrolTarget)
 		{
-			m_patrolTarget = randomPatrolLocation();
+			m_patrolDestination = randomPatrolLocation();
 			m_reachedPatrolTarget = false;
 		}
 		
 
 		m_avoidance = collisionAvoidance();
-		m_steering += thor::unitVector(m_patrolTarget - m_tankBase.getPosition());
+		m_steering += thor::unitVector(m_patrolDestination - m_tankBase.getPosition());
 		m_steering += m_avoidance;
 		m_steering = MathUtility::truncate(m_steering, MAX_FORCE);
 
@@ -53,6 +53,11 @@ void TankAi::update(Tank const & playerTank, double dt)
 		if (checkForTargetReached())
 		{
 			m_reachedPatrolTarget = true;
+		}
+
+		if (m_visionCone.getShape().getGlobalBounds().intersects(playerTank.getBase().getGlobalBounds()))
+		{
+			m_currentState = AIState::Player_Detected;
 		}
 		
 	/*	std::cout << "AI X: " << m_tankBase.getPosition().x << " Y: " << m_tankBase.getPosition().y << std::endl; 
@@ -83,7 +88,7 @@ void TankAi::update(Tank const & playerTank, double dt)
 			m_steering = thor::unitVector(vectorToPlayer);
 			m_steering = MathUtility::truncate(m_steering, MAX_FORCE);
 			m_velocity = MathUtility::truncate(m_velocity + m_steering, MAX_SPEED);
-			currentState = AIState::STRAIGHTEN;
+			m_currentState = AIState::STRAIGHTEN;
 		}
 
 		break;
@@ -152,7 +157,7 @@ void TankAi::update(Tank const & playerTank, double dt)
 
 	if (thor::length(vectorToPlayer) < MAX_SEE_AHEAD)
 	{
-		currentState = AIState::STOP;
+		m_currentState = AIState::STOP;
 	}
 	/*se if (currentState == AIState::STRAIGHTEN)
 	{
@@ -164,6 +169,8 @@ void TankAi::update(Tank const & playerTank, double dt)
 	}*/
 
 	updateMovement(dt);
+
+	
 	
 }
 
@@ -185,8 +192,8 @@ sf::Vector2f TankAi::randomPatrolLocation()
 }
 bool TankAi::checkForTargetReached()
 {
-	float differenceX = m_patrolTarget.x - m_tankBase.getPosition().x;
-	float differenceY = m_patrolTarget.y - m_tankBase.getPosition().y;
+	float differenceX = m_patrolDestination.x - m_tankBase.getPosition().x;
+	float differenceY = m_patrolDestination.y - m_tankBase.getPosition().y;
 
 	if (differenceX < 10 && differenceY < 10)
 	{
@@ -214,7 +221,7 @@ void TankAi::render(sf::RenderWindow & window)
 	//aheadLeft.setPosition(m_aheadLeft);
 	//window.draw(aheadLeft);
 	
-	visionCone.draw(window);
+	m_visionCone.draw(window);
 	window.draw(m_tankBase);
 	window.draw(m_turret);
 	
