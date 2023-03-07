@@ -18,7 +18,9 @@ class VisionCone
 		};
 
 		sf::Vector2f detectionCone[3] = {
-
+			{ 0,0 },
+			{ 280, -50 },
+			{ 280, 50 }
 		};
 
 		sf::Vector2f attackCone[3] = {
@@ -26,6 +28,6 @@ class VisionCone
 		};
 		float coneRotation;
 
-		float tankCenter;
+		int tankCenter;
 		bool rotateRight{ true };
 };

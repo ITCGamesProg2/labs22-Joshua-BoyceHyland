@@ -90,9 +90,9 @@ private:
 
 	const bool isColliding(sf::Vector2f t_ahead, sf::Vector2f t_halfAhead);
 
-	void manageCone();
 	
-
+	
+	sf::Vector2f randomPatrolLocation();
 	
 	// A reference to the sprite sheet texture.
 	sf::Texture const & m_texture;
@@ -162,14 +162,9 @@ private:
 	sf::Vector2f m_avoidance{ 0,0 };
 	// mass of the tank to add to the turning 
 	const float MASS{ 5.0f };
-	enum class AiBehaviour
-	{
-		SEEK_PLAYER,
-		STRAIGHTEN,
-		STOP,
-		RETREAT
-	} m_aiBehaviour;
-
+	
+	
+	sf::Vector2f m_startLocation;
 
 	AIState currentState;
 
@@ -177,7 +172,10 @@ private:
 	
 	int health = 5;
 
+	sf::Vector2f m_patrolTarget;
+	bool m_reachedPatrolTarget{true};
 
+	bool checkForTargetReached();
 
 	
 };

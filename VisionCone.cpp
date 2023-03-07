@@ -1,5 +1,5 @@
 #include "VisionCone.h"
-
+#include <iostream>
 VisionCone::VisionCone()
 {
 	m_visionCone.setPointCount(8);
@@ -7,10 +7,10 @@ VisionCone::VisionCone()
 
 
 	m_visionCone.setPoint(0, { 0,0 });
-	m_visionCone.setPoint(1, { 200, -50 });
-	m_visionCone.setPoint(2, { 200, 50 });
+	m_visionCone.setPoint(1, { 200, -50 -30 });
+	m_visionCone.setPoint(2, { 200, 50 + 30 });
 
-
+	
 	sf::Color transparentRed = sf::Color::Red;
 	transparentRed.a = 50;
 	m_visionCone.setFillColor(transparentRed);
@@ -27,39 +27,28 @@ void VisionCone::update(AIState& t_aiState,sf::Vector2f t_tankPosition, float t_
 {
 	tankCenter = t_tankCenter;
 	m_visionCone.setPosition({ t_tankPosition});
-	//m_visionCone.setRotation(tankCenter);
-
-
-	if (m_visionCone.getRotation() == 0)
-	{
-		m_visionCone.setRotation(359);
-	}
+	
 	switch (t_aiState)
 	{
-	case AIState::Patrol_Map:
-		
-		float coneRotation = m_visionCone.getRotation();
-		
-			
-		if ( coneRotation > tankCenter + 30)// && m_visionCone.getRotation() > tankCenter + 30)
-		{
-			rotateRight = false;
-		}
-		else if (coneRotation < tankCenter - 30)
-		{
-			rotateRight = true;
-		}
+		case AIState::Patrol_Map:
+			for (int i = 0; i < 3; i++)
+			{
+				m_visionCone.setPoint(i, patrolCone[i]);
+			}
+			if (m_visionCone.getRotation() > t_tankCenter)
+			{
+				m_visionCone.setRotation(m_visionCone.getRotation() + 1);
+			}
+			m_visionCone.setRotation({ t_tankCenter });
 
-		if (rotateRight)
-		{
-			m_visionCone.setRotation(m_visionCone.getRotation() + 0.5);
-		}
-		else
-		{
-			m_visionCone.setRotation(m_visionCone.getRotation() - 0.5);
-		}
-
-
-		break;
+			break;
+		case AIState::Player_Detected:
+			for (int i = 0; i < 3; i++)
+			{
+				m_visionCone.setPoint(i, detectionCone[i]);
+			}
+			m_visionCone.setRotation(m_visionCone.getRotation() + 1);
+			break;
+		case AISTATE::
 	}
 }

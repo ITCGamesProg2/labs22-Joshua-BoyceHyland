@@ -2,7 +2,7 @@
 
 ////////////////////////////////////////////////////////////
 TankAi::TankAi(sf::Texture const & texture, std::vector<sf::Sprite> & wallSprites)
-	: m_aiBehaviour(AiBehaviour::SEEK_PLAYER)
+	: currentState(AIState::Patrol_Map)
 	, m_texture(texture)
 	, m_wallSprites(wallSprites)
 	, m_steering(0, 0)
@@ -11,9 +11,9 @@ TankAi::TankAi(sf::Texture const & texture, std::vector<sf::Sprite> & wallSprite
 	// Initialises the tank base and turret sprites.
 	initSprites();
 	
-	
+	m_startLocation = m_tankBase.getPosition();
 
-	currentState = AIState::Patrol_Map;
+	//currentState = AIState::Patrol_Map;
 	
 }
 
@@ -21,14 +21,44 @@ TankAi::TankAi(sf::Texture const & texture, std::vector<sf::Sprite> & wallSprite
 void TankAi::update(Tank const & playerTank, double dt)
 {
 
+
+
 	visionCone.update(currentState, m_tankBase.getPosition(), m_tankBase.getRotation());
+	
 	sf::Vector2f vectorToPlayer = seek(playerTank.getPosition());
 	sf::Vector2f acceleration;
 	bool rightCollision;
 	bool leftCollision;
-	switch (m_aiBehaviour)
+
+	switch (currentState)
 	{
-	case AiBehaviour::SEEK_PLAYER:
+	case AIState::Patrol_Map:
+		
+
+		if (m_reachedPatrolTarget)
+		{
+			m_patrolTarget = randomPatrolLocation();
+			m_reachedPatrolTarget = false;
+		}
+		
+
+		m_avoidance = collisionAvoidance();
+		m_steering += thor::unitVector(m_patrolTarget - m_tankBase.getPosition());
+		m_steering += m_avoidance;
+		m_steering = MathUtility::truncate(m_steering, MAX_FORCE);
+
+		acceleration = m_steering / MASS;
+		m_velocity = MathUtility::truncate(m_velocity + m_steering, MAX_SPEED);
+
+		if (checkForTargetReached())
+		{
+			m_reachedPatrolTarget = true;
+		}
+		
+	/*	std::cout << "AI X: " << m_tankBase.getPosition().x << " Y: " << m_tankBase.getPosition().y << std::endl; 
+		std::cout << "Target X: " << m_patrolTarget.x << " Y: " << m_patrolTarget.y << std::endl;*/
+		break;
+	case AIState::SEEK_PLAYER:
 
 
 
@@ -53,12 +83,12 @@ void TankAi::update(Tank const & playerTank, double dt)
 			m_steering = thor::unitVector(vectorToPlayer);
 			m_steering = MathUtility::truncate(m_steering, MAX_FORCE);
 			m_velocity = MathUtility::truncate(m_velocity + m_steering, MAX_SPEED);
-			m_aiBehaviour = AiBehaviour::STRAIGHTEN;
+			currentState = AIState::STRAIGHTEN;
 		}
 
 		break;
 
-	case AiBehaviour::STRAIGHTEN:
+	case AIState::STRAIGHTEN:
 		updateHeads();
 
 		rightCollision = isColliding(m_aheadRight, m_aheadRight);
@@ -75,17 +105,19 @@ void TankAi::update(Tank const & playerTank, double dt)
 
 		if (!m_headOnCollision && !rightCollision && !leftCollision)   // m_headOnCollision provide decen
 		{
-			m_aiBehaviour = AiBehaviour::SEEK_PLAYER;
+			//currentState = AIState::SEEK_PLAYER;
 		}
 		else if (m_headOnCollision)
 		{
-			m_aiBehaviour = AiBehaviour::SEEK_PLAYER;
+			//currentState = AIState::SEEK_PLAYER;
 		}
 
 		break;
-	case AiBehaviour::STOP:
+	case AIState::STOP:
 		m_velocity = sf::Vector2f(0, 0);
+		
 		//motion->m_speed = 0;
+		break; 
 	default:
 		break;
 	}
@@ -120,25 +152,47 @@ void TankAi::update(Tank const & playerTank, double dt)
 
 	if (thor::length(vectorToPlayer) < MAX_SEE_AHEAD)
 	{
-		m_aiBehaviour = AiBehaviour::STOP;
+		currentState = AIState::STOP;
 	}
-	else if (m_aiBehaviour == AiBehaviour::STRAIGHTEN)
+	/*se if (currentState == AIState::STRAIGHTEN)
 	{
 
-	}
-	else
+	}*/
+	/*else
 	{
-		m_aiBehaviour = AiBehaviour::SEEK_PLAYER;
-	}
+		currentState = AIState::SEEK_PLAYER;
+	}*/
 
 	updateMovement(dt);
-	manageCone();
+	
 }
 
-void TankAi::manageCone()
-{
 
-	
+sf::Vector2f TankAi::randomPatrolLocation()
+{
+	int screenWidth = 1440 ;
+
+	int screenHeight =  900 ;
+
+	int randYStartRange = m_startLocation.y - screenHeight / 2;
+	int randYEndRange = m_startLocation.y + screenHeight / 2;
+
+
+	int randX = rand() % screenWidth + 1 ;
+	int randY = rand() % randYStartRange + randYEndRange;
+
+	return sf::Vector2f(randX, randY);
+}
+bool TankAi::checkForTargetReached()
+{
+	float differenceX = m_patrolTarget.x - m_tankBase.getPosition().x;
+	float differenceY = m_patrolTarget.y - m_tankBase.getPosition().y;
+
+	if (differenceX < 10 && differenceY < 10)
+	{
+		return true;
+	}
+	return false;
 }
 ////////////////////////////////////////////////////////////
 void TankAi::render(sf::RenderWindow & window)
