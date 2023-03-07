@@ -2,7 +2,8 @@
 
 ////////////////////////////////////////////////////////////
 TankAi::TankAi(sf::Texture const & texture, std::vector<sf::Sprite> & wallSprites)
-	: m_currentState(AIState::Attack_Player)
+	: m_currentState(AIState::Patrol_Map
+)
 	, m_texture(texture)
 	, m_wallSprites(wallSprites)
 	, m_steering(0, 0)
