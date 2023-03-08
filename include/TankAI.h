@@ -207,7 +207,7 @@ private:
 
 
 
-	
+	sf::CircleShape dave;
 
 	
 };

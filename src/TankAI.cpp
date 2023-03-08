@@ -13,7 +13,8 @@ TankAi::TankAi(sf::Texture const & texture, std::vector<sf::Sprite> & wallSprite
 	initSprites();
 	
 	m_startLocation = m_tankBase.getPosition();
-
+	dave.setRadius(10);
+	dave.setFillColor(sf::Color::Green);
 	//currentState = AIState::Patrol_Map;
 	
 }
@@ -170,7 +171,10 @@ void TankAi::update(Tank const & playerTank, double dt)
 	}*/
 
 	updateMovement(dt);
-	coneCollisionWithPlayer(playerTank);
+	if (coneCollisionWithPlayer(playerTank))
+	{
+		std::cout << "You do be colliding tho" << std::endl;
+	}
 	
 	
 }
@@ -211,16 +215,24 @@ bool TankAi::coneCollisionWithPlayer(Tank const& playerTank)
 
 	sf::Vector2f leftPoint = m_tankBase.getPosition() + (thor::rotatedVector(m_visionCone.getCurrentPoint(m_currentState, left), m_tankBase.getRotation()));
 	sf::Vector2f rightPoint = (thor::rotatedVector(m_visionCone.getCurrentPoint(m_currentState, right), m_tankBase.getRotation()));
+	dave.setPosition(leftPoint);
 
 
-	if (((leftPoint.x - m_visionCone.getCurrentPoint(m_currentState, basePoint).x) *
-		(t_playerPosition.y - m_visionCone.getCurrentPoint(m_currentState, basePoint).y) -
+	/*std::cout << ((leftPoint.x - m_visionCone.getCurrentPoint(m_currentState, basePoint).x) *
+		(playerTank.getPosition().y - m_visionCone.getCurrentPoint(m_currentState, basePoint).y) -
 		(leftPoint.y - m_visionCone.getCurrentPoint(m_currentState, basePoint).y) *
-		t_playerPosition.x - m_visionCone.getCurrentPoint(m_currentState, basePoint).x) < 0)
-	{
-		std::cout << "Colliding with left" << std::endl;
-	}
+		playerTank.getPosition().x - m_visionCone.getCurrentPoint(m_currentState, basePoint).x) << std::endl;*/
+	
+	bool hasPassLeftLine = (leftPoint.x - m_tankBase.getPosition().x) * (playerTank.getPosition().y - m_tankBase.getPosition().y) -
+						   (leftPoint.y - m_tankBase.getPosition().y) * (playerTank.getPosition().x - m_tankBase.getPosition().x) > 0;
 
+	bool hasPassedRightLine = (rightPoint.x - m_tankBase.getPosition().x) * (playerTank.getPosition().y - m_tankBase.getPosition().y) -
+							  (rightPoint.y - m_tankBase.getPosition().y) * (playerTank.getPosition().x - m_tankBase.getPosition().x) < 0;
+	
+	if (hasPassLeftLine && hasPassedRightLine)
+	{
+		return true;
+	}
 	
 	return false;
 }
@@ -247,7 +259,7 @@ void TankAi::render(sf::RenderWindow & window)
 	m_visionCone.draw(window);
 	window.draw(m_tankBase);
 	window.draw(m_turret);
-	
+	window.draw(dave);
 	
 }
 
