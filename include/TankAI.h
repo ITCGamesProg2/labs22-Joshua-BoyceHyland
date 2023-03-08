@@ -119,7 +119,7 @@ private:
 	/// checks if vision cone has collided with player
 	/// </summary>
 	/// <returns>whether the cone has collided</returns>
-	bool coneCollisionWithPlayer(sf::Vector2f t_playerPosition);
+	bool coneCollisionWithPlayer(Tank const& playerTank);
 
 	// A reference to the sprite sheet texture.
 	sf::Texture const & m_texture;

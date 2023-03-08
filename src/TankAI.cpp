@@ -170,7 +170,7 @@ void TankAi::update(Tank const & playerTank, double dt)
 	}*/
 
 	updateMovement(dt);
-	coneCollisionWithPlayer(playerTank.getPosition());
+	coneCollisionWithPlayer(playerTank);
 	
 	
 }
@@ -203,7 +203,7 @@ bool TankAi::checkForTargetReached()
 	}
 	return false;
 }
-bool TankAi::coneCollisionWithPlayer(sf::Vector2f t_playerPosition)
+bool TankAi::coneCollisionWithPlayer(Tank const& playerTank)
 {
 	int basePoint = 0;
 	int left = 1;
@@ -221,6 +221,7 @@ bool TankAi::coneCollisionWithPlayer(sf::Vector2f t_playerPosition)
 		std::cout << "Colliding with left" << std::endl;
 	}
 
+	
 	return false;
 }
 ////////////////////////////////////////////////////////////
