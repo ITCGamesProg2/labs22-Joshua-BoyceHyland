@@ -56,10 +56,10 @@ void TankAi::update(Tank const & playerTank, double dt)
 			m_reachedPatrolTarget = true;
 		}
 
-		if (m_visionCone.getShape().getGlobalBounds().intersects(playerTank.getBase().getGlobalBounds()))
+		/*if (m_visionCone.getShape().getGlobalBounds().intersects(playerTank.getBase().getGlobalBounds()))
 		{
 			m_currentState = AIState::Player_Detected;
-		}
+		}*/
 		
 	/*	std::cout << "AI X: " << m_tankBase.getPosition().x << " Y: " << m_tankBase.getPosition().y << std::endl; 
 		std::cout << "Target X: " << m_patrolTarget.x << " Y: " << m_patrolTarget.y << std::endl;*/
@@ -170,7 +170,7 @@ void TankAi::update(Tank const & playerTank, double dt)
 	}*/
 
 	updateMovement(dt);
-	coneCollisionWithPlayer(playerTank.getPosition());
+	coneCollisionWithPlayer(playerTank);
 	
 	
 }
@@ -203,20 +203,20 @@ bool TankAi::checkForTargetReached()
 	}
 	return false;
 }
-bool TankAi::coneCollisionWithPlayer(sf::Vector2f t_playerPosition)
+bool TankAi::coneCollisionWithPlayer(Tank const& playerTank)
 {
-	int basePoint = 0; 
-	int left = 1; 
-	int right = 2; 
+	sf::Vector2f leftPoint = m_visionCone.getCurrentPoint(m_currentState, 1);
+	thor::rotate(leftPoint,playerTank.getBase().getRotation());
 
-	if (((m_visionCone.getCurrentPoint(m_currentState, left).x - m_visionCone.getCurrentPoint(m_currentState, basePoint).x) *
+	/*if (((m_visionCone.getCurrentPoint(m_currentState, basePoint).x - m_visionCone.getCurrentPoint(m_currentState, left).x) *
 		(t_playerPosition.y - m_visionCone.getCurrentPoint(m_currentState, basePoint).y) -
-		(m_visionCone.getCurrentPoint(m_currentState, left).y - m_visionCone.getCurrentPoint(m_currentState, basePoint).y) *
+		(m_visionCone.getCurrentPoint(m_currentState, basePoint).y - m_visionCone.getCurrentPoint(m_currentState, left).y) *
 		t_playerPosition.x - m_visionCone.getCurrentPoint(m_currentState, basePoint).x) < 0)
 	{
 		std::cout << "Colliding with left" << std::endl; 
-	}
+	}*/
 
+	
 	return false;
 }
 ////////////////////////////////////////////////////////////
