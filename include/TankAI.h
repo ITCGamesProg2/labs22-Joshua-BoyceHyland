@@ -115,6 +115,12 @@ private:
 	/// <returns>whether it has reached target</returns>
 	bool checkForTargetReached();
 	
+	/// <summary>
+	/// checks if vision cone has collided with player
+	/// </summary>
+	/// <returns>whether the cone has collided</returns>
+	bool coneCollisionWithPlayer(sf::Vector2f t_playerPosition);
+
 	// A reference to the sprite sheet texture.
 	sf::Texture const & m_texture;
 

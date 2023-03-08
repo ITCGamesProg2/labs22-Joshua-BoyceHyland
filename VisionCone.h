@@ -9,6 +9,8 @@ class VisionCone
 		void draw(sf::RenderWindow& t_window);
 		void update(AIState& t_aiState, sf::Vector2f t_tankPosition, float t_tankCenter);
 		sf::ConvexShape getShape();
+		sf::Vector2f getCurrentPoint(AIState t_aiState, int t_desiredPoint);
+
 	private:
 		sf::ConvexShape m_visionCone;
 

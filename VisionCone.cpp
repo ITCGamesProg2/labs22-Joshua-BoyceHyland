@@ -63,3 +63,21 @@ sf::ConvexShape VisionCone::getShape()
 {
 	return m_visionCone;
 }
+
+sf::Vector2f VisionCone::getCurrentPoint(AIState t_aiState, int t_desiredPoint)
+{
+	if (t_aiState == AIState::Patrol_Map)
+	{
+		return patrolCone[t_desiredPoint];
+	}
+	else if(t_aiState == AIState::Player_Detected)
+	{
+		return detectionCone[t_desiredPoint];
+	}
+	else
+	{
+		return attackCone[t_desiredPoint];
+	}
+	
+	
+}
