@@ -49,7 +49,7 @@ public:
 	/// <param name="position">An x,y position</param>
 	/// </summary>
 	void init(sf::Vector2f position);
-
+	//sf::Tr
 
 	/// <summary>
 /// @brief Checks for collision between the AI and player tanks.
