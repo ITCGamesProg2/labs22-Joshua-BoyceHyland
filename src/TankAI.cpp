@@ -7,15 +7,14 @@ TankAi::TankAi(sf::Texture const & texture, std::vector<sf::Sprite> & wallSprite
 	, m_texture(texture)
 	, m_wallSprites(wallSprites)
 	, m_steering(0, 0)
-	, m_visionCone()
+	, m_visionCone(), 
+	m_bullets( 150)
 {
 	// Initialises the tank base and turret sprites.
 	initSprites();
 	
 	m_startLocation = m_tankBase.getPosition();
-	dave.setRadius(10);
-	dave.setFillColor(sf::Color::Green);
-	//currentState = AIState::Patrol_Map;
+	m_currentState = AIState::Attack_Player;
 	
 }
 
@@ -26,156 +25,203 @@ void TankAi::update(Tank const & playerTank, double dt)
 
 
 	m_visionCone.update(m_currentState, m_tankBase.getPosition(), m_tankBase.getRotation());
-	
-	//sf::Vector2f vectorToPlayer = seek(playerTank.getPosition());
-	//sf::Vector2f acceleration;
-	//bool rightCollision;
-	//bool leftCollision;
+	m_bullets.update();
+	sf::Vector2f vectorToPlayer = seek(playerTank.getPosition());
+	sf::Vector2f acceleration;
+	bool rightCollision;
+	bool leftCollision;
 
-	//switch (m_currentState)
-	//{
-	//case AIState::Patrol_Map:
-	//	
-
-	//	if (m_reachedPatrolTarget)
-	//	{
-	//		m_patrolDestination = randomPatrolLocation();
-	//		m_reachedPatrolTarget = false;
-	//	}
-	//	
-
-	//	m_avoidance = collisionAvoidance();
-	//	m_steering += thor::unitVector(m_patrolDestination - m_tankBase.getPosition());
-	//	m_steering += m_avoidance;
-	//	m_steering = MathUtility::truncate(m_steering, MAX_FORCE);
-
-	//	acceleration = m_steering / MASS;
-	//	m_velocity = MathUtility::truncate(m_velocity + m_steering, MAX_SPEED);
-
-	//	if (checkForTargetReached())
-	//	{
-	//		m_reachedPatrolTarget = true;
-	//	}
-
-	//	/*if (m_visionCone.getShape().getGlobalBounds().intersects(playerTank.getBase().getGlobalBounds()))
-	//	{
-	//		m_currentState = AIState::Player_Detected;
-	//	}*/
-	//	
-	///*	std::cout << "AI X: " << m_tankBase.getPosition().x << " Y: " << m_tankBase.getPosition().y << std::endl; 
-	//	std::cout << "Target X: " << m_patrolTarget.x << " Y: " << m_patrolTarget.y << std::endl;*/
-	//	break;
-	//case AIState::SEEK_PLAYER:
-
-
-
-	//	m_avoidance = collisionAvoidance();
-	//	m_steering += thor::unitVector(vectorToPlayer);
-	//	m_steering += m_avoidance;
-	//	m_steering = MathUtility::truncate(m_steering, MAX_FORCE);
-
-	//	acceleration = m_steering / MASS;
-	//	m_velocity = MathUtility::truncate(m_velocity + m_steering, MAX_SPEED);
-	//	//m_velocity = MathUtility::truncate(m_velocity + acceleration, MAX_SPEED);
-
-	//	rightCollision = isColliding(m_aheadRight, m_aheadRight);
-	//	leftCollision = isColliding(m_aheadLeft, m_aheadLeft);
-
-	//	//std::cout << "seeking " << std::endl;
-
-
-
-	//	if ((rightCollision || leftCollision))
-	//	{
-	//		m_steering = thor::unitVector(vectorToPlayer);
-	//		m_steering = MathUtility::truncate(m_steering, MAX_FORCE);
-	//		m_velocity = MathUtility::truncate(m_velocity + m_steering, MAX_SPEED);
-	//		m_currentState = AIState::STRAIGHTEN;
-	//	}
-
-	//	break;
-
-	//case AIState::STRAIGHTEN:
-	//	updateHeads();
-
-	//	rightCollision = isColliding(m_aheadRight, m_aheadRight);
-	//	leftCollision = isColliding(m_aheadLeft, m_aheadLeft);
-	//	m_headOnCollision = isColliding(m_aheadFront, m_halfAheadFront);
-
-	//	//std::cout << "Straighting " << std::endl; 	
-
-
-	//	//if (!m_headOnCollision ||(!rightCollision && !leftCollision) )   // m_headOnCollision provide decen
-	//	//{
-	//	//	m_aiBehaviour = AiBehaviour::SEEK_PLAYER;
-	//	//}
-
-	//	if (!m_headOnCollision && !rightCollision && !leftCollision)   // m_headOnCollision provide decen
-	//	{
-	//		//currentState = AIState::SEEK_PLAYER;
-	//	}
-	//	else if (m_headOnCollision)
-	//	{
-	//		//currentState = AIState::SEEK_PLAYER;
-	//	}
-
-	//	break;
-	//case AIState::STOP:
-	//	m_velocity = sf::Vector2f(0, 0);
-	//	
-	//	//motion->m_speed = 0;
-	//	break; 
-	//default:
-	//	break;
-	//}
-	//
-
-	//// Now we need to convert our velocity vector into a rotation angle between 0 and 359 degrees.
-	//// The m_velocity vector works like this: vector(1,0) is 0 degrees, while vector(0, 1) is 90 degrees.
-	//// So for example, 223 degrees would be a clockwise offset from 0 degrees (i.e. along x axis).
-	//// Note: we add 180 degrees below to convert the final angle into a range 0 to 359 instead of -PI to +PI
-	//auto dest = atan2(-1 * m_velocity.y, -1 * m_velocity.x) / thor::Pi * 180 + 180;
-
-	//auto currentRotation = m_rotation;
-
-	//// Find the shortest way to rotate towards the player (clockwise or anti-clockwise)
-	//if (std::round(currentRotation - dest) == 0.0)
-	//{
-	//	m_steering.x = 0;
-	//	m_steering.y = 0;
-	//}
-
-	//else if ((static_cast<int>(std::round(dest - currentRotation + 360))) % 360 < 180)
-	//{
-	//	// rotate clockwise
-	//	m_rotation = static_cast<int>((m_rotation) + 1) % 360;
-	//}
-	//else
-	//{
-	//	// rotate anti-clockwise
-	//	m_rotation = static_cast<int>((m_rotation) - 1) % 360;
-	//}
-
-
-	//if (thor::length(vectorToPlayer) < MAX_SEE_AHEAD)
-	//{
-	//	m_currentState = AIState::STOP;
-	//}
-	///*se if (currentState == AIState::STRAIGHTEN)
-	//{
-
-	//}*/
-	///*else
-	//{
-	//	currentState = AIState::SEEK_PLAYER;
-	//}*/
-
-	updateMovement(dt);
-	if (coneCollisionWithPlayer(playerTank))
+	switch (m_currentState)
 	{
-		std::cout << "You do be colliding tho" << std::endl;
+	case AIState::Patrol_Map:
+		
+
+		if (m_reachedPatrolTarget)
+		{
+			m_patrolDestination = randomPatrolLocation();
+			m_reachedPatrolTarget = false;
+		}
+		
+
+		m_avoidance = collisionAvoidance();
+		m_steering += thor::unitVector(m_patrolDestination - m_tankBase.getPosition());
+		m_steering += m_avoidance;
+		m_steering = MathUtility::truncate(m_steering, MAX_FORCE);
+
+		acceleration = m_steering / MASS;
+		m_velocity = MathUtility::truncate(m_velocity + m_steering, MAX_SPEED);
+
+		if (checkForTargetReached())
+		{
+			m_reachedPatrolTarget = true;
+		}
+
+		
+		if (coneCollisionWithPlayer(playerTank))
+		{
+			std::cout << "You do be colliding tho" << std::endl;
+			m_currentState = AIState::Player_Detected;
+			m_statesTransitionTimer.restart();
+		}
+	/*	std::cout << "AI X: " << m_tankBase.getPosition().x << " Y: " << m_tankBase.getPosition().y << std::endl; 
+		std::cout << "Target X: " << m_patrolTarget.x << " Y: " << m_patrolTarget.y << std::endl;*/
+		break;
+
+	case AIState::Player_Detected:
+
+
+
+		m_avoidance = collisionAvoidance();
+		m_steering += thor::unitVector(vectorToPlayer);
+		m_steering += m_avoidance;
+		m_steering = MathUtility::truncate(m_steering, MAX_FORCE);
+
+		acceleration = m_steering / MASS;
+		m_velocity = MathUtility::truncate(m_velocity + m_steering, MAX_SPEED);
+		//m_velocity = MathUtility::truncate(m_velocity + acceleration, MAX_SPEED);
+
+		rightCollision = isColliding(m_aheadRight, m_aheadRight);
+		leftCollision = isColliding(m_aheadLeft, m_aheadLeft);
+
+
+
+		if (!coneCollisionWithPlayer(playerTank) && m_statesTransitionTimer.getElapsedTime().asSeconds() > 2)
+		{
+			std::cout << "You do be colliding tho" << std::endl;
+			m_currentState = AIState::Patrol_Map;
+		}
+
+		/*if ((rightCollision || leftCollision))
+		{
+			m_steering = thor::unitVector(vectorToPlayer);
+			m_steering = MathUtility::truncate(m_steering, MAX_FORCE);
+			m_velocity = MathUtility::truncate(m_velocity + m_steering, MAX_SPEED);
+			m_currentState = AIState::STRAIGHTEN;
+		}*/
+
+
+		break;
+		case AIState::Attack_Player:
+			m_avoidance = collisionAvoidance();
+			m_steering += thor::unitVector(vectorToPlayer);
+			m_steering += m_avoidance;
+			m_steering = MathUtility::truncate(m_steering, MAX_FORCE);
+
+			acceleration = m_steering / MASS;
+			m_velocity = MathUtility::truncate(m_velocity + m_steering, MAX_SPEED);
+			//m_velocity = MathUtility::truncate(m_velocity + acceleration, MAX_SPEED);
+
+			rightCollision = isColliding(m_aheadRight, m_aheadRight);
+			leftCollision = isColliding(m_aheadLeft, m_aheadLeft);
+
+			if (!coneCollisionWithPlayer(playerTank) && m_statesTransitionTimer.getElapsedTime().asSeconds() > 2)
+			{
+				std::cout << "You do be colliding tho" << std::endl;
+				m_currentState = AIState::Patrol_Map;
+			}
+
+			m_bullets.setStartOfNextAvailableBullet(m_tankBase.getPosition(), m_turret.getRotation());
+
+			/*if ((rightCollision || leftCollision))
+			{
+				m_steering = thor::unitVector(vectorToPlayer);
+				m_steering = MathUtility::truncate(m_steering, MAX_FORCE);
+				m_velocity = MathUtility::truncate(m_velocity + m_steering, MAX_SPEED);
+				m_currentState = AIState::STRAIGHTEN;
+			}*/
+
+
+			break;
+
+	case AIState::STRAIGHTEN:
+		updateHeads();
+
+		rightCollision = isColliding(m_aheadRight, m_aheadRight);
+		leftCollision = isColliding(m_aheadLeft, m_aheadLeft);
+		m_headOnCollision = isColliding(m_aheadFront, m_halfAheadFront);
+
+		//std::cout << "Straighting " << std::endl; 	
+
+
+		//if (!m_headOnCollision ||(!rightCollision && !leftCollision) )   // m_headOnCollision provide decen
+		//{
+		//	m_aiBehaviour = AiBehaviour::SEEK_PLAYER;
+		//}
+
+		if (!m_headOnCollision && !rightCollision && !leftCollision)   // m_headOnCollision provide decen
+		{
+			//currentState = AIState::SEEK_PLAYER;
+		}
+		else if (m_headOnCollision)
+		{
+			//currentState = AIState::SEEK_PLAYER;
+		}
+
+		break;
+	case AIState::STOP:
+		m_velocity = sf::Vector2f(0, 0);
+		
+		//motion->m_speed = 0;
+		break; 
+	default:
+		break;
 	}
 	
+
+	// Now we need to convert our velocity vector into a rotation angle between 0 and 359 degrees.
+	// The m_velocity vector works like this: vector(1,0) is 0 degrees, while vector(0, 1) is 90 degrees.
+	// So for example, 223 degrees would be a clockwise offset from 0 degrees (i.e. along x axis).
+	// Note: we add 180 degrees below to convert the final angle into a range 0 to 359 instead of -PI to +PI
+	auto dest = atan2(-1 * m_velocity.y, -1 * m_velocity.x) / thor::Pi * 180 + 180;
+
+	auto currentRotation = m_rotation;
+
+	// Find the shortest way to rotate towards the player (clockwise or anti-clockwise)
+	if (std::round(currentRotation - dest) == 0.0)
+	{
+		m_steering.x = 0;
+		m_steering.y = 0;
+	}
+
+	else if ((static_cast<int>(std::round(dest - currentRotation + 360))) % 360 < 180)
+	{
+		// rotate clockwise
+		m_rotation = static_cast<int>((m_rotation) + 1) % 360;
+	}
+	else
+	{
+		// rotate anti-clockwise
+		m_rotation = static_cast<int>((m_rotation) - 1) % 360;
+	}
+
+
+	if (thor::length(vectorToPlayer) < MAX_SEE_AHEAD && m_currentState == AIState::Player_Detected)
+	{
+		m_currentState = AIState::Attack_Player;
+	}
+	/*se if (currentState == AIState::STRAIGHTEN)
+	{
+
+	}*/
+	/*else
+	{
+		currentState = AIState::SEEK_PLAYER;
+	}*/
+
+	updateMovement(dt);
+	
+	for (int i = 0; i < 12; i++)
+	{
+
+		if ((CollisionDetector::collision(m_bullets.getBullet(i).getBody(),playerTank.getBase())))
+		{
+			std::cout << "You hit the Enemy" << std::endl;
+			m_bullets.getBullet(i).despawn();
+			
+
+		}
+
+	}
 	
 }
 
@@ -212,26 +258,28 @@ bool TankAi::coneCollisionWithPlayer(Tank const& playerTank)
 	int basePoint = 0;
 	int left = 1;
 	int right = 2;
+	int sizeOfTankDistanceDifference = 7500;
 
 	sf::Vector2f leftPoint = m_tankBase.getPosition() + (thor::rotatedVector(m_visionCone.getCurrentPoint(m_currentState, left), m_tankBase.getRotation()));
 	sf::Vector2f rightPoint = m_tankBase.getPosition() + (thor::rotatedVector(m_visionCone.getCurrentPoint(m_currentState, right), m_tankBase.getRotation()));
 	sf::Vector2f topOfCone = leftPoint;
-	dave.setPosition(leftPoint);
 
 
-	std::cout << "LeftPoint X: " << leftPoint.x << " Y: " << leftPoint.y << std::endl; 
-	std::cout << "RightPoint X: " << rightPoint.x << " Y: " << rightPoint.y << std::endl;
+
+	/*std::cout << "LeftPoint X: " << ((m_tankBase.getPosition().x - leftPoint.x) * (playerTank.getPosition().y - leftPoint.y) -
+		(m_tankBase.getPosition().y - leftPoint.y) * (playerTank.getPosition().x - leftPoint.x)) << " Y: " << leftPoint.y << std::endl;
+	std::cout << "RightPoint X: " << rightPoint.x << " Y: " << rightPoint.y << std::endl;*/
 	
 	
 	bool hasPassLeftLine = ( (m_tankBase.getPosition().x - leftPoint.x  ) * (playerTank.getPosition().y - leftPoint.y) -
-						     (m_tankBase.getPosition().y - leftPoint.y) * (playerTank.getPosition().x - leftPoint.x)        ) < 0;
+						     (m_tankBase.getPosition().y - leftPoint.y) * (playerTank.getPosition().x - leftPoint.x)        ) < sizeOfTankDistanceDifference;
 
 	bool hasPassedRightLine = ( (m_tankBase.getPosition().x - rightPoint.x) * (playerTank.getPosition().y - rightPoint.y) -
-							    (m_tankBase.getPosition().y - rightPoint.y) * (playerTank.getPosition().x - rightPoint.x)   ) > 0;
+							    (m_tankBase.getPosition().y - rightPoint.y) * (playerTank.getPosition().x - rightPoint.x)   ) > -sizeOfTankDistanceDifference;
 	
 
 	bool isWithinCone = ((rightPoint.x - leftPoint.x) * (playerTank.getPosition().y - leftPoint.y) -
-						(rightPoint.y - leftPoint.y) * (playerTank.getPosition().x - leftPoint.x)) > 0;
+						(rightPoint.y - leftPoint.y) * (playerTank.getPosition().x - leftPoint.x)) > -sizeOfTankDistanceDifference;
 	
 	
 	return hasPassLeftLine && hasPassedRightLine && isWithinCone;
@@ -258,8 +306,8 @@ void TankAi::render(sf::RenderWindow & window)
 	
 	m_visionCone.draw(window);
 	window.draw(m_tankBase);
+	m_bullets.draw(window);
 	window.draw(m_turret);
-	window.draw(dave);
 	
 }
 

@@ -122,6 +122,7 @@ public:
 
 private:
 	void initSprites();
+	void decrementFuelSupply();
 
 	// tank variables 
 	sf::Sprite m_tankBase;
@@ -164,4 +165,14 @@ private:
 	int m_repairsMade = 30; 
 
 	SpatialParticion grid;
+
+	sf::Sprite fuelBar;
+	sf::Sprite fuelIndicator; 
+	sf::Texture FuelBarTexture; 
+	sf::Texture fuelIndicatorTexture; 
+
+	sf::RectangleShape fuelShape; 
+
+	float fuelSupply = 100;
+
 };

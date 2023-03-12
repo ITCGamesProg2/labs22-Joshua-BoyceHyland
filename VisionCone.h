@@ -16,20 +16,20 @@ class VisionCone
 
 		sf::Vector2f patrolCone[3] = {
 			{ 0,0 },
-			{ 200, -75 },
-			{ 200, 75 }
+			{ 250, -75 },
+			{ 250, 75 }
 		};
 
 		sf::Vector2f detectionCone[3] = {
 			{ 0,0 },
-			{ 300, -50 },
-			{ 300, 50 }
+			{ 375, -50 },
+			{ 375, 50 }
 		};
 
 		sf::Vector2f attackCone[3] = {
 			{ 0,0 },
-			{ 125, -125 },
-			{ 125, 125}
+			{ 150, -125 },
+			{ 150, 125}
 		};
 		float coneRotation;
 

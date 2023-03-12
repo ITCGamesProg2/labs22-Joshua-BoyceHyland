@@ -6,7 +6,7 @@ Tank::Tank(sf::Texture const & texture, std::vector<sf::Sprite>& t_wallSprites,s
 : m_texture(texture),
   m_wallSprites(t_wallSprites),
   m_target(t_target), 
-  grid(1440, 900)  
+  grid(1440, 900) 
 {
 	initSprites();
 }
@@ -52,11 +52,14 @@ void Tank::update(double dt, std::function<void(int)>& t_funcApplyDamage, sf::Sp
 
 void Tank::render(sf::RenderWindow & window) 
 {
+	
 	grid.draw(window);
 	window.draw(m_tankBase);
 	window.draw(m_turret);
 	m_bulletPool.draw(window);
-	
+	window.draw(fuelShape);
+	window.draw(fuelBar); 
+	window.draw(fuelIndicator);
 }
 
 void Tank::setPosition(sf::Vector2f t_position)
@@ -71,6 +74,7 @@ void Tank::increaseSpeed()
 {
 	m_previousSpeed = m_speed;
 	m_speed += 2;
+	
 }
 
 void Tank::decreaseSpeed()
@@ -108,22 +112,29 @@ void Tank::decreaseRotation()
 void Tank::handleKeyInput()
 {
 	// tank base 
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
+	if (fuelSupply > -1)
 	{
-		increaseSpeed();
-	}
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
+		{
+			increaseSpeed();
+			decrementFuelSupply();
+		}
 
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
-	{
-		decreaseSpeed();
-	}
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
-	{
-		increaseRotation();
-	}
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
-	{
-		decreaseRotation();
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
+		{
+			decreaseSpeed();
+			decrementFuelSupply();
+		}
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
+		{
+			increaseRotation();
+			decrementFuelSupply();
+		}
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
+		{
+			decreaseRotation();
+			decrementFuelSupply();
+		}
 	}
 
 	//turret
@@ -378,4 +389,42 @@ void Tank::initSprites()
 	m_turret.setTextureRect(turretRect);
 	m_turret.setOrigin(turretRect.width / 3.0, turretRect.height / 2.0);
 	m_turret.setRotation(m_turretRotation);
+
+
+	if (!FuelBarTexture.loadFromFile("resources/images/fuelBar.png"))
+	{
+		std::cout << "could not load fuelBar" << std::endl;
+	}
+
+	if (!fuelIndicatorTexture.loadFromFile("resources/images/indicator.png"))
+	{
+		std::cout << "could not load fuelBar" << std::endl;
+	}
+
+
+	//static const int s_width{ 1440 };
+
+	//static const int s_height{ 900 };
+
+	fuelBar.setTexture(FuelBarTexture); 
+
+	fuelBar.setPosition({ 1440 / 2 - 130,750 });
+
+	fuelIndicator.setTexture(fuelIndicatorTexture); 
+	fuelIndicator.setPosition({ (1440 / 2 - 130) + 129,750 + 119 });
+	fuelIndicator.setRotation(15);
+	fuelIndicator.setOrigin({ 129, 119 });
+	fuelShape.setPosition({ 1440 / 2 - 130,750 });
+	fuelShape.setOutlineColor(sf::Color::Red); 
+	fuelShape.setOutlineThickness(2);
+	fuelShape.setSize({ 255,255 });
+
+}
+
+void Tank::decrementFuelSupply()
+{
+	std::cout << "Fuel: " << fuelSupply << std::endl;
+	fuelSupply -= 0.04;
+	fuelIndicator.setRotation(fuelIndicator.getRotation() - 0.05);
+	//fuelIndicator.setRotation(fuelIndicator.getRotation() - 0.001);
 }

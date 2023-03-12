@@ -47,14 +47,15 @@ void VisionCone::update(AIState& t_aiState,sf::Vector2f t_tankPosition, float t_
 			{
 				m_visionCone.setPoint(i, detectionCone[i]);
 			}
-			m_visionCone.setRotation(m_visionCone.getRotation() + 1);
+			m_visionCone.setRotation(m_visionCone.getRotation() + 3);
 			break;
 		case AIState::Attack_Player:
 			for (int i = 0; i < 3; i++)
 			{
 				m_visionCone.setPoint(i, attackCone[i]);
 			}
-
+			m_visionCone.setRotation({ t_tankCenter });
+			break;
 		//case AISTATE::
 	}
 }

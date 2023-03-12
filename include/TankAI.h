@@ -3,6 +3,7 @@
 #include "Tank.h"
 #include "EnemyStates.h"
 #include "VisionCone.h"
+#include "Pool.h"
 #include <SFML/Graphics.hpp>
 #include <Thor/Vectors.hpp>
 #include <iostream>
@@ -166,7 +167,7 @@ private:
 	sf::Vector2f heads[3][2]; 
 
 	// The maximum see ahead range.
-	static float constexpr MAX_SEE_AHEAD{ 50.0f };
+	static float constexpr MAX_SEE_AHEAD{ 200.0f };
 
 	// The maximum avoidance turn rate.
 	static float constexpr MAX_AVOID_FORCE{ 50.0f };
@@ -206,9 +207,10 @@ private:
 	bool m_reachedPatrolTarget{true};
 
 
+	sf::Clock m_statesTransitionTimer;
 
-	sf::CircleShape dave;
+	Pool m_bullets;
 
-	
+	bool m_isStraighening{ false };
 };
 
