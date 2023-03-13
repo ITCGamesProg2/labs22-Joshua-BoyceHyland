@@ -8,12 +8,10 @@ TankAi::TankAi(sf::Texture const & texture, std::vector<sf::Sprite> & wallSprite
 	, m_wallSprites(wallSprites)
 	, m_steering(0, 0)
 	, m_visionCone(), 
-	m_bullets( 150)
+	m_bullets( 300)
 {
 	// Initialises the tank base and turret sprites.
 	initSprites();
-	
-	m_startLocation = m_tankBase.getPosition();
 	m_currentState = AIState::Patrol_Map;
 	
 }
@@ -333,6 +331,8 @@ void TankAi::init(sf::Vector2f position)
 {
 	m_tankBase.setPosition(position);
 	m_turret.setPosition(position);
+
+	m_startLocation = position; 
 
 	for (sf::Sprite const wallSprite : m_wallSprites)
 	{

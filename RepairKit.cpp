@@ -7,7 +7,7 @@ RepairKit::RepairKit()
 		std::cout << "Could not load repair kit" << std::endl;
 	}
 	m_body.setTexture(m_texture); 
-	m_body.setPosition({ 100, 100 }); 
+	m_body.setPosition({ 100, 1000 }); 
 	m_body.setScale({ 0.35, 0.35 }); 
 }
 

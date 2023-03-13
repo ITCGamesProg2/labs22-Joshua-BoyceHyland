@@ -8,22 +8,24 @@ Game::Game()
 	: m_window(sf::VideoMode(ScreenSize::s_width, ScreenSize::s_height, 32), "SFML Playground", sf::Style::Default), 
 	  m_tank(m_tankTexture,m_wallSprites,m_targets), 
 	 m_aiTank(m_tankTexture, m_wallSprites),
-	m_hud(m_font)//, 
+	m_aiTank2(m_tankTexture, m_wallSprites),
+	 m_hud(m_font)//, 
 	//grid(ScreenSize::s_width, ScreenSize::s_height)
 {
 	init();
 	camerSetUp();
 	m_aiTank.init(m_level.m_aiTank.m_position);
+	//m_aiTank2.init({ScreenSize::s_width/2, 1500});
 
 	// Point at TankAI::applyDamage()...this function expects 1 argument(damage amount), but that argument
 		//  will be supplied later when we call the function inside Projectile::udpate()
 		// So we use what is called a placeholder argument and this will be substituted later with the damage amount
-		using std::placeholders::_1;
+	using std::placeholders::_1;
 	// The parameters of bind are the function to be called, followed by the address of the target instance, 
 	//  followed by the placeholder argument.
 	m_funcApplyDamge = std::bind(&TankAi::applyDamage, &m_aiTank, _1);
 	m_funcDecrementHudFuel = std::bind(&HUD::decrementFuelVisual, &m_hud, _1);
-	m_funcDecrementHudHealth = std::bind(&HUD::decrementHealthVisual, &m_hud, _1); 
+	m_funcDecrementHudHealth = std::bind(&HUD::decrementHealthVisual, &m_hud, _1);
 
 }
 
@@ -88,7 +90,13 @@ void Game::init()
 		throw std::exception(fontErrorMsg.c_str());
 	}
 
-
+	float y = 600;
+	for (int i = 0; i < 3; i++)
+	{
+		int randNumX = rand() % ScreenSize::s_width + 1 ;
+		m_fuel[i].setPosition({ static_cast<float>(randNumX), y }); 
+		y += 600; 
+	}
 	
 	setUpText();
 	setUpReturnPoint(); 
@@ -538,7 +546,7 @@ void Game::update(double dt)
 		case EnemyGamePlay:
 			m_tank.update(dt, m_funcApplyDamge,m_funcDecrementHudFuel, m_aiTank.getTankBase());
 			m_aiTank.update(m_funcDecrementHudHealth,m_tank, dt);
-
+		//	m_aiTank2.update(m_funcDecrementHudHealth, m_tank, dt);
 
 			if (!m_tank.isAlive())
 			{
@@ -553,10 +561,13 @@ void Game::update(double dt)
 				m_hud.refilHealth(); 
 			}
 
-			if (m_fuel.collisionCheck(m_tank.getBase()))
+			for (int i = 0; i < 3; i++)
 			{
-				m_tank.fillFuel();
-				m_hud.refilFuel();
+				if (m_fuel[i].collisionCheck(m_tank.getBase()))
+				{
+					m_tank.fillFuel();
+					m_hud.refilFuel();
+				}
 			}
 
 			if (m_backpack.collisionCheck(m_tank.getBase()))
@@ -575,6 +586,7 @@ void Game::update(double dt)
 			{
 				m_currentGameState = Menu;
 				m_aiTank.reset();
+				m_aiTank2.reset();
 				int randSpawn = rand() % m_level.m_tank.m_tankPositions.size();
 				m_tank.setPosition(m_level.m_tank.m_tankPositions[randSpawn]);
 			}
@@ -585,6 +597,7 @@ void Game::update(double dt)
 			{
 				m_currentGameState = Menu;
 				m_aiTank.reset();
+				m_aiTank2.reset();
 				int randSpawn = rand() % m_level.m_tank.m_tankPositions.size();
 				m_tank.setPosition(m_level.m_tank.m_tankPositions[randSpawn]);
 			}
@@ -641,11 +654,16 @@ void Game::render()
 	{
 		m_window.draw(returnPoint);
 		m_repairKit.draw(m_window);
-		m_fuel.draw(m_window);
+		for (int i = 0; i < 3; i++)
+		{
+			m_fuel[i].draw(m_window);
+		}
+		
 		m_backpack.draw(m_window);
 		m_tank.render(m_window);
 
 		m_aiTank.render(m_window);
+		//m_aiTank2.render(m_window); 
 		for (sf::Sprite sprite : m_wallSprites)
 		{
 			m_window.draw(sprite);
