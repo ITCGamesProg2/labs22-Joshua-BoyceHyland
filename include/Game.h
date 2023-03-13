@@ -219,7 +219,7 @@ protected:
 	// tanks 
 	Tank m_tank; 
 	TankAi m_aiTank;
-	TankAi m_aiTank2; 
+	//TankAi m_aiTank2; 
 	sf::Texture m_tankTexture; 
 //	sf::Vector2f m_aiPosition[3] = { 
 //		{ScreenSize::s_width / 2, ScreenSize::s_height / 2 }, 

@@ -8,7 +8,7 @@ Game::Game()
 	: m_window(sf::VideoMode(ScreenSize::s_width, ScreenSize::s_height, 32), "SFML Playground", sf::Style::Default), 
 	  m_tank(m_tankTexture,m_wallSprites,m_targets), 
 	 m_aiTank(m_tankTexture, m_wallSprites),
-	m_aiTank2(m_tankTexture, m_wallSprites),
+	//m_aiTank2(m_tankTexture, m_wallSprites),
 	 m_hud(m_font)//, 
 	//grid(ScreenSize::s_width, ScreenSize::s_height)
 {
@@ -586,7 +586,7 @@ void Game::update(double dt)
 			{
 				m_currentGameState = Menu;
 				m_aiTank.reset();
-				m_aiTank2.reset();
+				//m_aiTank2.reset();
 				int randSpawn = rand() % m_level.m_tank.m_tankPositions.size();
 				m_tank.setPosition(m_level.m_tank.m_tankPositions[randSpawn]);
 			}
@@ -597,7 +597,7 @@ void Game::update(double dt)
 			{
 				m_currentGameState = Menu;
 				m_aiTank.reset();
-				m_aiTank2.reset();
+			//	m_aiTank2.reset();
 				int randSpawn = rand() % m_level.m_tank.m_tankPositions.size();
 				m_tank.setPosition(m_level.m_tank.m_tankPositions[randSpawn]);
 			}
