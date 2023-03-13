@@ -14,7 +14,7 @@ Tank::Tank(sf::Texture const & texture, std::vector<sf::Sprite>& t_wallSprites,s
 void Tank::update(double dt, std::function<void(int)>& t_funcApplyDamage, std::function<void(float)>& t_decrementHudFuel,  sf::Sprite t_tankBaseAI)
 {	
 	handleKeyInput(t_decrementHudFuel); 
-
+	boundaryCheck(); 
 	if (centering)
 	{
 		centreTurret();
@@ -115,23 +115,23 @@ void Tank::handleKeyInput(std::function<void(float)>& t_decrementHudFuel)
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
 		{
 			increaseSpeed();
-			decrementFuelSupply(t_decrementHudFuel);
+			//decrementFuelSupply(t_decrementHudFuel);
 		}
 
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
 		{
 			decreaseSpeed();
-			decrementFuelSupply(t_decrementHudFuel);
+			//decrementFuelSupply(t_decrementHudFuel);
 		}
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
 		{
 			increaseRotation();
-			decrementFuelSupply(t_decrementHudFuel);
+			//decrementFuelSupply(t_decrementHudFuel);
 		}
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
 		{
 			decreaseRotation();
-			decrementFuelSupply(t_decrementHudFuel);
+			//decrementFuelSupply(t_decrementHudFuel);
 		}
 	}
 
@@ -373,6 +373,19 @@ bool Tank::isAlive()
 	return m_health > 0;
 }
 
+void Tank::repairTank()
+{
+	m_fuelLeak = false; 
+	fuelSupply = 100; 
+	m_health = 5;
+
+}
+
+void Tank::fillFuel()
+{
+	fuelSupply = 100;
+}
+
 void Tank::initSprites()
 {
 	sf::IntRect baseRect(2, 43, 79, 43);
@@ -419,4 +432,25 @@ void Tank::decrementFuelSupply(std::function<void(float)>& t_decrementHudFuel)
 		t_decrementHudFuel(0.05f);
 	}
 
+}
+
+void Tank::boundaryCheck()
+{
+	sf::Vector2f tankPos = m_tankBase.getPosition(); 
+
+	if (tankPos.x < 40)
+	{
+		deflect();
+	}
+	else if(tankPos.x > 1400)
+	{
+		deflect();
+		std::cout << "GREATER" << std::endl; 
+	}
+	
+	
+	if (tankPos.y < 40)
+	{
+		deflect();
+	}
 }

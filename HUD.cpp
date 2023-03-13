@@ -33,6 +33,8 @@ HUD::HUD(sf::Font& hudFont)
     initialiseFuelIcon();
     initialiseHealthIcon();
     initialiseHudBackground();
+    initialiseObjectiveIcon();
+   
 }
 
 ////////////////////////////////////////////////////////////
@@ -40,11 +42,6 @@ void HUD::update(GameState const& gameState)
 {
 
     m_gameStateText.setString("GameState: " + m_gameStateStrings[gameState]);
-
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::L))
-    {
-        decrementHealthVisual(20);
-    }
     
    switch (gameState)
     {
@@ -97,7 +94,14 @@ void HUD::render(sf::RenderWindow& window)
     window.draw(m_healthBarBlackout);
     window.draw(m_healthIndicator);
     window.draw(m_healthbar); 
+
+    if (m_objectiveAquired)
+    {
+        window.draw(m_backPack);
+        // window.draw(m_objectiveText);
+    }
     
+   
 
 }
 
@@ -105,7 +109,7 @@ void HUD::updatePositions(sf::Vector2f t_currentScreenCenter)
 {
 
 
-    std::cout << "f: " << m_healthIndicator.getPosition().y << std::endl;
+    std::cout << "f: " << m_currentGameHud.getPosition().y << std::endl;
 
     m_hudOutline.setPosition({ 0, t_currentScreenCenter.y - screenHeight / 2 });
     m_gameStateText.setPosition({ m_gameStateText.getPosition().x,t_currentScreenCenter.y - screenHeight / 2 });
@@ -119,6 +123,11 @@ void HUD::updatePositions(sf::Vector2f t_currentScreenCenter)
     m_healthbar.setPosition({ m_healthbar.getPosition().x, t_currentScreenCenter.y + 390 });
     m_healthIndicator.setPosition({ m_healthIndicator.getPosition().x ,t_currentScreenCenter.y + 403 });
     m_healthBarBlackout.setPosition(m_healthIndicator.getPosition());
+
+    m_backPack.setPosition({ m_backPack.getPosition().x, t_currentScreenCenter.y + 270 });
+
+    m_currentGameHudOutline.setPosition({ m_currentGameHudOutline.getPosition().x, t_currentScreenCenter.y - 100 });
+    m_currentGameHud.setPosition({ m_currentGameHud.getPosition().x,  t_currentScreenCenter.y -100  });
 }
 
 void HUD::initialiseFuelIcon()
@@ -191,6 +200,26 @@ void HUD::initialiseHudBackground()
     m_hudBackground.setPosition({ 0, 750 });
 }
 
+void HUD::initialiseObjectiveIcon()
+{
+    if (!m_backPackTexture.loadFromFile("resources/images/backPack.png"))
+    {
+        std::cout << "Could load backpack icon" << std::endl;
+    }
+
+    m_backPack.setTexture(m_backPackTexture);
+    m_backPack.setScale({ 0.75, 0.75 });
+    m_backPack.setPosition({ 1270, 720 });
+
+    m_objectiveText.setFont(m_textFont); 
+    m_objectiveText.setString("Objective Acquired: "); 
+    m_objectiveText.setPosition({ 1200, 680 });
+    m_objectiveText.setFillColor(sf::Color::Black); 
+    m_objectiveText.setCharacterSize(20);
+
+    
+}
+
 void HUD::decrementFuelVisual(float t_decrementaion)
 {
     fuelIndicator.setRotation(fuelIndicator.getRotation() - t_decrementaion);
@@ -203,5 +232,25 @@ void HUD::decrementHealthVisual(float t_decrementaion)
         m_healthIndicator.setSize({ m_healthIndicator.getSize().x - t_decrementaion, m_healthIndicator.getSize().y });
     }
     
+}
+
+void HUD::refilFuel()
+{
+    fuelIndicator.setRotation(15);
+}
+
+void HUD::refilHealth()
+{
+    m_healthIndicator.setSize({ 102, 12 });
+}
+
+void HUD::acquiredObjective()
+{
+    m_objectiveAquired = true; 
+}
+
+bool HUD::playerHasObjective()
+{
+    return m_objectiveAquired;
 }
 

@@ -17,6 +17,11 @@
 #include "SpatialParticion.h"
 #include "GameStates.h"
 #include "HUD.h"
+
+#include "RepairKit.h"
+#include "Fuel.h"
+#include "BackPack.h"
+
 /// <summary>
 /// @author RP
 /// @date September 2022
@@ -179,6 +184,11 @@ protected:
 	void updateCamera();
 	
 	/// <summary>
+	/// set up of circle to return to with objective
+	/// </summary>
+	void setUpReturnPoint(); 
+
+	/// <summary>
 	///tank ai function to be usable within the tank class when a bullet has collided with an ai tank
 	/// </summary>
 	std::function<void(int)>m_funcApplyDamge;
@@ -250,6 +260,14 @@ protected:
 	// moving camera for map
 	sf::View m_camera;
 	
+	// pick ups
+	RepairKit m_repairKit; 
+	Fuel m_fuel; 
+	BackPack m_backpack; 
+
+	// start/ finish point
+	sf::CircleShape returnPoint; 
+
 	//SpatialParticion grid; 
 #ifdef TEST_FPS
 	sf::Text x_updateFPS;					// text used to display updates per second.

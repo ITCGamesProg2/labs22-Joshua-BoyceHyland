@@ -22,6 +22,8 @@ TankAi::TankAi(sf::Texture const & texture, std::vector<sf::Sprite> & wallSprite
 void TankAi::update(std::function<void(float)>& t_decrementVisualHealth, Tank & playerTank, double dt)
 {
 
+
+
 	m_visionCone.update(m_currentState, m_tankBase.getPosition(), m_tankBase.getRotation());
 	m_bullets.update();
 	sf::Vector2f vectorToPlayer = seek(playerTank.getPosition());
@@ -78,8 +80,8 @@ void TankAi::update(std::function<void(float)>& t_decrementVisualHealth, Tank & 
 		m_velocity = MathUtility::truncate(m_velocity + m_steering, MAX_SPEED);
 		//m_velocity = MathUtility::truncate(m_velocity + acceleration, MAX_SPEED);
 
-		rightCollision = isColliding(m_aheadRight, m_aheadRight);
-		leftCollision = isColliding(m_aheadLeft, m_aheadLeft);
+		/*rightCollision = isColliding(m_aheadRight, m_aheadRight);
+		leftCollision = isColliding(m_aheadLeft, m_aheadLeft);*/
 
 
 

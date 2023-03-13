@@ -35,20 +35,7 @@ public:
     /// </summary>
     void updatePositions(sf::Vector2f t_pos);
 
-    /// <summary>
-    /// sets up the fuel icon and box
-    /// </summary>
-    void initialiseFuelIcon();
-
-    /// <summary>
-    /// sets up the health icon
-    /// </summary>
-    void initialiseHealthIcon();
-
-    /// <summary>
-    /// setups the points for the huf
-    /// </summary>
-    void initialiseHudBackground();
+  
 
     /// <summary>
     /// moves the indicator for fuel gage
@@ -61,7 +48,50 @@ public:
     /// </summary>
     /// <param name="t_decrementaion">the amount which it moves down by </param>
     void decrementHealthVisual(float t_decrementaion); 
+
+    /// <summary>
+    /// adjust rotation of fuel indicator
+    /// </summary>
+    void refilFuel();
+
+    /// <summary>
+    /// adjust health meter to be filled
+    /// </summary>
+    void refilHealth(); 
+
+    /// <summary>
+    /// lets hud no bag has been acquired
+    /// </summary>
+    void acquiredObjective(); 
+
+    /// <summary>
+    /// informs whether player has the objective or not
+    /// </summary>
+    bool playerHasObjective(); 
 private:
+
+    /// <summary>
+  /// sets up the fuel icon and box
+  /// </summary>
+    void initialiseFuelIcon();
+
+    /// <summary>
+    /// sets up the health icon
+    /// </summary>
+    void initialiseHealthIcon();
+
+    /// <summary>
+    /// setups the points for the huf
+    /// </summary>
+    void initialiseHudBackground();
+
+
+    /// <summary>
+    /// sets up backpack icon and text
+    /// </summary>
+    void initialiseObjectiveIcon(); 
+
+
     // The font for this HUD.
     sf::Font m_textFont;
 
@@ -102,12 +132,16 @@ private:
     sf::RectangleShape m_healthBarBlackout;
     sf::Sprite m_healthbar; 
     sf::Texture m_healtTexture;
-    
-  
-
 
     // backGround of hud ui
     sf::ConvexShape m_hudBackground;
+
+    // back pack icon
+    sf::Sprite m_backPack; 
+    sf::Texture m_backPackTexture;
+    sf::Text m_objectiveText;
+
+    bool m_objectiveAquired{ false };
 
     sf::View m_minimap;
 };

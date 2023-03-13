@@ -31,13 +31,13 @@ Game::Game()
 void Game::init()
 {
 	int currentLevel = 1;
-	
+
 	// generates a exception if level loading fails.
 	try
 	{
 		LevelLoader::load(currentLevel, m_level);
 	}
-	catch (std::exception & e)
+	catch (std::exception& e)
 	{
 		std::cout << "Level Loading failure." << std::endl;
 		std::cout << e.what() << std::endl;
@@ -57,13 +57,13 @@ void Game::init()
 	}
 	m_bgTexture.setRepeated(true);
 	m_bgSpritee.setTexture(m_bgTexture);
-	m_bgSpritee.setTextureRect(sf::IntRect(0, 0, ScreenSize::s_width,4000 ));
+	m_bgSpritee.setTextureRect(sf::IntRect(0, 0, ScreenSize::s_width, 4000));
 
 	// Load the player tank
 	if (!m_tankTexture.loadFromFile("./resources/images/SpriteSheet.png"))
 	{
-		std::string s("Error loading texture");  
-		throw std::exception(s.c_str()); 
+		std::string s("Error loading texture");
+		throw std::exception(s.c_str());
 	}
 	if (!m_targetTexture.loadFromFile("resources/images/target2.png"))
 	{
@@ -73,13 +73,13 @@ void Game::init()
 
 	int randSpawn = rand() % m_level.m_tank.m_tankPositions.size();
 	m_tank.setPosition(m_level.m_tank.m_tankPositions[0]);
-	
-	
+
+
 
 	if (!m_spriteSheetTexture.loadFromFile("./resources/images/SpriteSheet.png"))
 	{
-		std::string errorMsg("Error loading texture"); 
-		throw std::exception(errorMsg.c_str()); 
+		std::string errorMsg("Error loading texture");
+		throw std::exception(errorMsg.c_str());
 	}
 
 	if (!m_font.loadFromFile("./resources/fonts/Merc.ttf"))
@@ -87,7 +87,11 @@ void Game::init()
 		std::string fontErrorMsg("Error loading font");
 		throw std::exception(fontErrorMsg.c_str());
 	}
+
+
+	
 	setUpText();
+	setUpReturnPoint(); 
 	generateWalls(); 
 	generateTargets(); 
 #ifdef TEST_FPS
@@ -464,7 +468,7 @@ void Game::updateCamera()
 	{
 		case EnemyGamePlay:
 			
-			float mapLength = 4000;
+			float mapLength = 3000;
 
 			bool tankAtTopOfScreen = m_tank.getPosition().y < (ScreenSize::s_height / 2);
 			bool tankAtBottomOfScreen = m_tank.getPosition().y > (mapLength - ScreenSize::s_height / 2);
@@ -490,6 +494,15 @@ void Game::updateCamera()
 
 			break;
 		}
+}
+
+void Game::setUpReturnPoint()
+{
+	sf::Color red = sf::Color::Red;
+	red.a = 50;
+	returnPoint.setRadius(100);
+	returnPoint.setFillColor(red);
+	returnPoint.setPosition({ ScreenSize::s_width / 2 - 50, 100 });
 }
 
 ////////////////////////////////////////////////////////////
@@ -532,16 +545,29 @@ void Game::update(double dt)
 				m_currentGameState = EnemyGamePlayLose;
 				m_clock.restart();
 			}
-			/*if (m_aiTank.collidesWithPlayer(m_tank))
+
+			if (m_repairKit.collisionCheck(m_tank.getBase()))
+			{
+				m_tank.repairTank();
+				m_hud.refilFuel(); 
+				m_hud.refilHealth(); 
+			}
+
+			if (m_fuel.collisionCheck(m_tank.getBase()))
+			{
+				m_tank.fillFuel();
+				m_hud.refilFuel();
+			}
+
+			if (m_backpack.collisionCheck(m_tank.getBase()))
+			{
+				m_hud.acquiredObjective();
+			}
+			if ((m_hud.playerHasObjective()) && (m_tank.getBase().getGlobalBounds().intersects(returnPoint.getGlobalBounds())))
 			{
 				m_currentGameState = EnemyGamePlayLose;
 				m_clock.restart();
 			}
-			if (!m_aiTank.IsAlive())
-			{
-				m_currentGameState = EnemyGamePlayWin;
-				m_clock.restart();
-			}*/
 			break;
 
 		case EnemyGamePlayLose:
@@ -613,13 +639,30 @@ void Game::render()
 
 	if (m_currentGameState == EnemyGamePlay)
 	{
+		m_window.draw(returnPoint);
+		m_repairKit.draw(m_window);
+		m_fuel.draw(m_window);
+		m_backpack.draw(m_window);
 		m_tank.render(m_window);
+
 		m_aiTank.render(m_window);
 		for (sf::Sprite sprite : m_wallSprites)
 		{
 			m_window.draw(sprite);
 		}
+		
+		m_hud.render(m_window);
 
+	}
+
+	if (m_currentGameState == EnemyGamePlayLose)
+	{
+		m_hud.render(m_window);
+	}
+
+	if (m_currentGameState == EnemyGamePlayWin)
+	{
+		m_hud.render(m_window);
 	}
 	if (m_currentGameState == GameStats)
 	{
@@ -633,7 +676,7 @@ void Game::render()
 	}
 	
 	//m_window.draw(m_gameStateText);
-	m_hud.render(m_window);
+	
 	
 	
 	m_window.display();

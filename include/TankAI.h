@@ -53,14 +53,17 @@ public:
 	//sf::Tr
 
 	/// <summary>
-/// @brief Checks for collision between the AI and player tanks.
-///
-/// </summary>
-/// <param name="player">The player tank instance</param>
-/// <returns>True if collision detected between AI and player tanks.</returns>
+	/// @brief Checks for collision between the AI and player tanks.
+	///
+	/// </summary>
+	/// <param name="player">The player tank instance</param>
+	/// <returns>True if collision detected between AI and player tanks.</returns>
 	bool collidesWithPlayer(Tank const& playerTank) const;
 
-
+	/// <summary>
+	/// applies damage passed through to health of tank ai
+	/// </summary>
+	/// <param name="t_damageAmount"></param>
 	void applyDamage(int t_damageAmount);
 
 	sf::Sprite getTankBase();

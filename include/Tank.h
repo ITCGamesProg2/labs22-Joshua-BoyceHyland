@@ -131,9 +131,30 @@ public:
 	/// </summary>
 	bool isAlive();
 
+	/// <summary>
+	/// repairs tank leak and fuels tanks fully 
+	/// </summary>
+	void repairTank();
+	
+	/// <summary>
+	/// fills fuel
+	/// </summary>
+	void fillFuel(); 
 private:
 	void initSprites();
+
+
+	/// <summary>
+	/// lowers fuel supply and effect uses passed function to effect hud
+	/// </summary>
+	/// <param name="t_decrementHudFuel"></param>
 	void decrementFuelSupply(std::function<void(float)>& t_decrementHudFuel);
+
+	/// <summary>
+	/// simpl check for boundaries of screen and to stop player from leaving screen
+	/// </summary>
+	void boundaryCheck(); 
+
 
 	// tank variables 
 	sf::Sprite m_tankBase;
@@ -180,6 +201,6 @@ private:
 
 	int m_health = 5;
 
-	// contro
+	// controls how much fuel is used up
 	bool m_fuelLeak{ false };
 };
