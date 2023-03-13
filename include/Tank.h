@@ -22,7 +22,7 @@ public:
 /// <param name="t_texture">A reference to the sprite sheet texture</param>
 ///< param name="t_wallSprites">A reference to the container of wall sprites</param>  
 	Tank(sf::Texture const& texture, std::vector<sf::Sprite>& t_wallSprites, std::vector<Target>& t_target);
-	void update(double dt, std::function<void(int)>& t_funcApplyDamage, sf::Sprite t_tankBase);
+	void update(double dt, std::function<void(int)>& t_funcApplyDamage, std::function<void(int)>& t_decrementHudFuel, sf::Sprite t_tankBase);
 	void render(sf::RenderWindow& window);
 	void setPosition(sf::Vector2f t_position);
 
@@ -49,7 +49,7 @@ public:
 	/// <summary>
 	/// processed controle keys and applies speed /rotation as appropiatee
 	/// </summary>
-	void handleKeyInput();
+	void handleKeyInput(std::function<void(int)>& t_decrementHudFuel);
 
 	/// <summary>
 	/// increases rotation the turret on its own
@@ -122,7 +122,7 @@ public:
 
 private:
 	void initSprites();
-	void decrementFuelSupply();
+	void decrementFuelSupply(std::function<void(int)>& t_decrementHudFuel);
 
 	// tank variables 
 	sf::Sprite m_tankBase;
@@ -164,15 +164,7 @@ private:
 	bool m_turretRequiresRepair{ false };
 	int m_repairsMade = 30; 
 
-	SpatialParticion grid;
-
-	sf::Sprite fuelBar;
-	sf::Sprite fuelIndicator; 
-	sf::Texture FuelBarTexture; 
-	sf::Texture fuelIndicatorTexture; 
-
-	sf::RectangleShape fuelShape; 
-
+	// fuel
 	float fuelSupply = 100;
 
 };

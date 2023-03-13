@@ -22,6 +22,7 @@ Game::Game()
 	// The parameters of bind are the function to be called, followed by the address of the target instance, 
 	//  followed by the placeholder argument.
 	m_funcApplyDamge = std::bind(&TankAi::applyDamage, &m_aiTank, _1);
+	m_funcDecrementHudFuel = std::bind(&HUD::decrementFuelVisual, &m_hud, _1);
 }
 
 ////////////////////////////////////////////////////////////
@@ -482,7 +483,7 @@ void Game::updateCamera()
 			}
 			
 			std::cout << "Top: " << m_camera.getViewport().top << std::endl; 
-			m_hud.updatePositions({ 0, m_camera.getCenter().y - ScreenSize::s_height / 2 }); // updates hud to top of screen as it moves
+			m_hud.updatePositions({ 0, m_camera.getCenter().y}); // updates hud to top of screen as it moves
 			m_window.setView(m_camera);
 
 			break;
@@ -499,7 +500,7 @@ void Game::update(double dt)
 			break; 
 
 		case TargetPractice:
-			m_tank.update(dt, m_funcApplyDamge, m_aiTank.getTankBase());
+			//m_tank.update(dt, m_funcApplyDamge,m_funcDecrementHudFuel m_aiTank.getTankBase());
 			timerUpdate();
 			scoreUpdate();
 			manageTargetTimers();
@@ -520,7 +521,7 @@ void Game::update(double dt)
 			break; 
 
 		case EnemyGamePlay:
-			m_tank.update(dt, m_funcApplyDamge, m_aiTank.getTankBase());
+			m_tank.update(dt, m_funcApplyDamge,m_funcDecrementHudFuel, m_aiTank.getTankBase());
 			m_aiTank.update(m_tank, dt);
 			/*if (m_aiTank.collidesWithPlayer(m_tank))
 			{

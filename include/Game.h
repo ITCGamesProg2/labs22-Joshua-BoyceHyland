@@ -183,6 +183,10 @@ protected:
 	/// </summary>
 	std::function<void(int)>m_funcApplyDamge;
 
+	/// <summary>
+	/// makes function for hud available in tank when it loses fuel
+	/// </summary>
+	std::function<void(int)>m_funcDecrementHudFuel; 
 
 
 

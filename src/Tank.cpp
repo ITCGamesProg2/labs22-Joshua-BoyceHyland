@@ -5,15 +5,15 @@
 Tank::Tank(sf::Texture const & texture, std::vector<sf::Sprite>& t_wallSprites,std::vector<Target>& t_target)
 : m_texture(texture),
   m_wallSprites(t_wallSprites),
-  m_target(t_target), 
-  grid(1440, 900) 
+  m_target(t_target)
+  //grid(1440, 900) 
 {
 	initSprites();
 }
 
-void Tank::update(double dt, std::function<void(int)>& t_funcApplyDamage, sf::Sprite t_tankBaseAI)
+void Tank::update(double dt, std::function<void(int)>& t_funcApplyDamage, std::function<void(int)>& t_decrementHudFuel,  sf::Sprite t_tankBaseAI)
 {	
-	handleKeyInput(); 
+	handleKeyInput(t_decrementHudFuel); 
 
 	if (centering)
 	{
@@ -53,13 +53,11 @@ void Tank::update(double dt, std::function<void(int)>& t_funcApplyDamage, sf::Sp
 void Tank::render(sf::RenderWindow & window) 
 {
 	
-	grid.draw(window);
+	//grid.draw(window);
 	window.draw(m_tankBase);
 	window.draw(m_turret);
 	m_bulletPool.draw(window);
-	window.draw(fuelShape);
-	window.draw(fuelBar); 
-	window.draw(fuelIndicator);
+	
 }
 
 void Tank::setPosition(sf::Vector2f t_position)
@@ -109,7 +107,7 @@ void Tank::decreaseRotation()
 	
 }
 
-void Tank::handleKeyInput()
+void Tank::handleKeyInput(std::function<void(int)>& t_decrementHudFuel)
 {
 	// tank base 
 	if (fuelSupply > -1)
@@ -117,23 +115,23 @@ void Tank::handleKeyInput()
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
 		{
 			increaseSpeed();
-			decrementFuelSupply();
+			decrementFuelSupply(t_decrementHudFuel);
 		}
 
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
 		{
 			decreaseSpeed();
-			decrementFuelSupply();
+			decrementFuelSupply(t_decrementHudFuel);
 		}
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
 		{
 			increaseRotation();
-			decrementFuelSupply();
+			decrementFuelSupply(t_decrementHudFuel);
 		}
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
 		{
 			decreaseRotation();
-			decrementFuelSupply();
+			decrementFuelSupply(t_decrementHudFuel);
 		}
 	}
 
@@ -241,14 +239,14 @@ void Tank::centreTurret()
 
 bool Tank::checkCWallCollision()
 {
-	if (m_tankBase.getGlobalBounds().intersects(grid.getRect(8).getGlobalBounds()))
+	/*if (m_tankBase.getGlobalBounds().intersects(grid.getRect(8).getGlobalBounds()))
 	{
 		grid.getRect(8).setFillColor(sf::Color::Red);
 	}
 	else
 	{
 		grid.getRect(8).setFillColor(sf::Color::Transparent);
-	}
+	}*/
 
 	for (sf::Sprite const& wall : m_wallSprites)
 	{
@@ -391,40 +389,11 @@ void Tank::initSprites()
 	m_turret.setRotation(m_turretRotation);
 
 
-	if (!FuelBarTexture.loadFromFile("resources/images/fuelBar.png"))
-	{
-		std::cout << "could not load fuelBar" << std::endl;
-	}
-
-	if (!fuelIndicatorTexture.loadFromFile("resources/images/indicator.png"))
-	{
-		std::cout << "could not load fuelBar" << std::endl;
-	}
-
-
-	//static const int s_width{ 1440 };
-
-	//static const int s_height{ 900 };
-
-	fuelBar.setTexture(FuelBarTexture); 
-
-	fuelBar.setPosition({ 1440 / 2 - 130,750 });
-
-	fuelIndicator.setTexture(fuelIndicatorTexture); 
-	fuelIndicator.setPosition({ (1440 / 2 - 130) + 129,750 + 119 });
-	fuelIndicator.setRotation(15);
-	fuelIndicator.setOrigin({ 129, 119 });
-	fuelShape.setPosition({ 1440 / 2 - 130,750 });
-	fuelShape.setOutlineColor(sf::Color::Red); 
-	fuelShape.setOutlineThickness(2);
-	fuelShape.setSize({ 255,255 });
-
 }
 
-void Tank::decrementFuelSupply()
+void Tank::decrementFuelSupply(std::function<void(int)>& t_decrementHudFuel)
 {
 	std::cout << "Fuel: " << fuelSupply << std::endl;
 	fuelSupply -= 0.04;
-	fuelIndicator.setRotation(fuelIndicator.getRotation() - 0.05);
-	//fuelIndicator.setRotation(fuelIndicator.getRotation() - 0.001);
+	t_decrementHudFuel(-0.05f);
 }

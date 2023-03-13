@@ -1,6 +1,7 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 #include "GameStates.h"
+#include <iostream>
 
 /// <summary>
 /// @brief A basic HUD implementation.
@@ -34,7 +35,26 @@ public:
     /// </summary>
     void updatePositions(sf::Vector2f t_pos);
 
+    /// <summary>
+    /// sets up the fuel icon and box
+    /// </summary>
+    void initialiseFuelIcon();
 
+    /// <summary>
+    /// sets up the health icon
+    /// </summary>
+    void initialiseHealthIcon();
+
+    /// <summary>
+    /// setups the points for the huf
+    /// </summary>
+    void initialiseHudBackground();
+
+    /// <summary>
+    /// moves the indicator for fuel gage
+    /// </summary>
+    /// <param name="t_decrementaion">abiut by which it is rotate</param>
+    void decrementFuelVisual(int t_decrementaion);
 private:
     // The font for this HUD.
     sf::Font m_textFont;
@@ -62,4 +82,23 @@ private:
 
     float screenWidth = 1440;
     float screenHeight = 900;
+
+
+    // fuel visuals
+    sf::Sprite fuelBar;
+    sf::Sprite fuelIndicator;
+    sf::Texture FuelBarTexture;
+    sf::Texture fuelIndicatorTexture;
+    sf::RectangleShape fuelShape;
+
+    // healthVisuals
+    sf::RectangleShape m_healthIndicator; 
+    sf::Sprite m_healthbar; 
+    sf::Texture m_healtTexture;
+
+    sf::View m_minimap; 
+
+
+    // backGround of hud ui
+    sf::ConvexShape m_hudBackground;
 };
