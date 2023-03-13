@@ -54,7 +54,13 @@ public:
     /// moves the indicator for fuel gage
     /// </summary>
     /// <param name="t_decrementaion">abiut by which it is rotate</param>
-    void decrementFuelVisual(int t_decrementaion);
+    void decrementFuelVisual(float t_decrementaion);
+
+    /// <summary>
+    /// moves the health bar down on health bar
+    /// </summary>
+    /// <param name="t_decrementaion">the amount which it moves down by </param>
+    void decrementHealthVisual(float t_decrementaion); 
 private:
     // The font for this HUD.
     sf::Font m_textFont;
@@ -93,12 +99,15 @@ private:
 
     // healthVisuals
     sf::RectangleShape m_healthIndicator; 
+    sf::RectangleShape m_healthBarBlackout;
     sf::Sprite m_healthbar; 
     sf::Texture m_healtTexture;
-
-    sf::View m_minimap; 
+    
+  
 
 
     // backGround of hud ui
     sf::ConvexShape m_hudBackground;
+
+    sf::View m_minimap;
 };

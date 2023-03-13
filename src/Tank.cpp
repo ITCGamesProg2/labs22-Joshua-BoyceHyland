@@ -11,7 +11,7 @@ Tank::Tank(sf::Texture const & texture, std::vector<sf::Sprite>& t_wallSprites,s
 	initSprites();
 }
 
-void Tank::update(double dt, std::function<void(int)>& t_funcApplyDamage, std::function<void(int)>& t_decrementHudFuel,  sf::Sprite t_tankBaseAI)
+void Tank::update(double dt, std::function<void(int)>& t_funcApplyDamage, std::function<void(float)>& t_decrementHudFuel,  sf::Sprite t_tankBaseAI)
 {	
 	handleKeyInput(t_decrementHudFuel); 
 
@@ -107,7 +107,7 @@ void Tank::decreaseRotation()
 	
 }
 
-void Tank::handleKeyInput(std::function<void(int)>& t_decrementHudFuel)
+void Tank::handleKeyInput(std::function<void(float)>& t_decrementHudFuel)
 {
 	// tank base 
 	if (fuelSupply > -1)
@@ -360,6 +360,19 @@ sf::Sprite Tank::getBase() const
 	return m_tankBase;
 }
 
+void Tank::decrementHealth(int t_decrementation)
+{
+	m_fuelLeak = true;
+
+	m_health -= t_decrementation;
+
+}
+
+bool Tank::isAlive()
+{
+	return m_health > 0;
+}
+
 void Tank::initSprites()
 {
 	sf::IntRect baseRect(2, 43, 79, 43);
@@ -391,9 +404,19 @@ void Tank::initSprites()
 
 }
 
-void Tank::decrementFuelSupply(std::function<void(int)>& t_decrementHudFuel)
+void Tank::decrementFuelSupply(std::function<void(float)>& t_decrementHudFuel)
 {
 	std::cout << "Fuel: " << fuelSupply << std::endl;
-	fuelSupply -= 0.04;
-	t_decrementHudFuel(-0.05f);
+	
+	if (m_fuelLeak)
+	{
+		fuelSupply -= 0.12;
+		t_decrementHudFuel(0.15f);
+	}
+	else
+	{
+		fuelSupply -= 0.04;
+		t_decrementHudFuel(0.05f);
+	}
+
 }

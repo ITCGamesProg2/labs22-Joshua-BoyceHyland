@@ -23,6 +23,8 @@ Game::Game()
 	//  followed by the placeholder argument.
 	m_funcApplyDamge = std::bind(&TankAi::applyDamage, &m_aiTank, _1);
 	m_funcDecrementHudFuel = std::bind(&HUD::decrementFuelVisual, &m_hud, _1);
+	m_funcDecrementHudHealth = std::bind(&HUD::decrementHealthVisual, &m_hud, _1); 
+
 }
 
 ////////////////////////////////////////////////////////////
@@ -522,7 +524,14 @@ void Game::update(double dt)
 
 		case EnemyGamePlay:
 			m_tank.update(dt, m_funcApplyDamge,m_funcDecrementHudFuel, m_aiTank.getTankBase());
-			m_aiTank.update(m_tank, dt);
+			m_aiTank.update(m_funcDecrementHudHealth,m_tank, dt);
+
+
+			if (!m_tank.isAlive())
+			{
+				m_currentGameState = EnemyGamePlayLose;
+				m_clock.restart();
+			}
 			/*if (m_aiTank.collidesWithPlayer(m_tank))
 			{
 				m_currentGameState = EnemyGamePlayLose;

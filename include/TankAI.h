@@ -36,7 +36,7 @@ public:
 	/// </summary>
 	/// <param name="playerTank">A reference to the player tank</param>
 	/// <param name="dt">update delta time</param>
-	void update(Tank const & playerTank, double dt);
+	void update(std::function<void(float)>& t_decrementVisualHealth, Tank & playerTank, double dt);
 
 	/// <summary>
 	/// @brief Draws the tank base and turret.

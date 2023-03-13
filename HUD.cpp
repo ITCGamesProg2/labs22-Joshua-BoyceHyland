@@ -41,7 +41,10 @@ void HUD::update(GameState const& gameState)
 
     m_gameStateText.setString("GameState: " + m_gameStateStrings[gameState]);
 
-    
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::L))
+    {
+        decrementHealthVisual(20);
+    }
     
    switch (gameState)
     {
@@ -91,7 +94,10 @@ void HUD::render(sf::RenderWindow& window)
     window.draw(fuelShape);
     window.draw(fuelBar);
     window.draw(fuelIndicator);
+    window.draw(m_healthBarBlackout);
+    window.draw(m_healthIndicator);
     window.draw(m_healthbar); 
+    
 
 }
 
@@ -99,16 +105,20 @@ void HUD::updatePositions(sf::Vector2f t_currentScreenCenter)
 {
 
 
-    std::cout << "f: " << m_healthbar.getPosition().y << std::endl; 
+    std::cout << "f: " << m_healthIndicator.getPosition().y << std::endl;
 
-    m_hudOutline.setPosition({0, t_currentScreenCenter.y - screenHeight / 2 });
-    m_gameStateText.setPosition({ m_gameStateText.getPosition().x,t_currentScreenCenter.y - screenHeight/2});
+    m_hudOutline.setPosition({ 0, t_currentScreenCenter.y - screenHeight / 2 });
+    m_gameStateText.setPosition({ m_gameStateText.getPosition().x,t_currentScreenCenter.y - screenHeight / 2 });
     fuelBar.setPosition({ fuelBar.getPosition().x, t_currentScreenCenter.y + 300 + 25 });
-    fuelIndicator.setPosition({ fuelIndicator.getPosition().x, t_currentScreenCenter.y + 389 + 25});
-    fuelShape.setPosition({ fuelShape.getPosition().x, t_currentScreenCenter.y + 300  + 25});
+    fuelIndicator.setPosition({ fuelIndicator.getPosition().x, t_currentScreenCenter.y + 389 + 25 });
+    fuelShape.setPosition({ fuelShape.getPosition().x, t_currentScreenCenter.y + 300 + 25 });
 
+
+    m_hudBackground.setPosition({ m_hudBackground.getPosition().x, t_currentScreenCenter.y + 300 });
 
     m_healthbar.setPosition({ m_healthbar.getPosition().x, t_currentScreenCenter.y + 390 });
+    m_healthIndicator.setPosition({ m_healthIndicator.getPosition().x ,t_currentScreenCenter.y + 403 });
+    m_healthBarBlackout.setPosition(m_healthIndicator.getPosition());
 }
 
 void HUD::initialiseFuelIcon()
@@ -152,24 +162,46 @@ void HUD::initialiseHealthIcon()
     m_healthbar.setTexture(m_healtTexture);
     m_healthbar.setPosition({ 200, 840 });
     m_healthbar.setScale({ 0.15,0.15 });
-  //  m_healthIndicator.setSize
+    m_healthIndicator.setSize({ 102, 12 });
+    m_healthIndicator.setPosition({ 220, 853 });
+    m_healthIndicator.setFillColor(sf::Color::Red);
+
+    m_healthBarBlackout.setFillColor(sf::Color::Black); 
+    m_healthBarBlackout.setPosition(m_healthIndicator.getPosition()); 
+    m_healthBarBlackout.setSize(m_healthIndicator.getSize());
 }
 
 void HUD::initialiseHudBackground()
 {
-    m_hudBackground.setPointCount(4); 
-    m_hudBackground.setPoint(0, { 0, 750 }); 
-    m_hudBackground.setPoint(1, {200,750 });
-    m_hudBackground.setPoint(2, { 200, 900 });
+    m_hudBackground.setPointCount(6); 
+    m_hudBackground.setPoint(0, { 0, 0 }); 
+    m_hudBackground.setPoint(1, {200,0 });
+    m_hudBackground.setPoint(2, { 200, 80 });
+    m_hudBackground.setPoint(3, { 335, 77 });
+    m_hudBackground.setPoint(4, { 335, 150 });
 
-    m_hudBackground.setPoint(3, { 0, 1000 });
+    m_hudBackground.setPoint(5, { 0, 150 });
 
 
     m_hudBackground.setFillColor(sf::Color(75, 83, 32));
+    m_hudBackground.setOutlineThickness(2); 
+    m_hudBackground.setOutlineColor(sf::Color::Black);
+
+
+    m_hudBackground.setPosition({ 0, 750 });
 }
 
-void HUD::decrementFuelVisual(int t_decrementaion)
+void HUD::decrementFuelVisual(float t_decrementaion)
 {
-    fuelIndicator.setRotation(fuelIndicator.getRotation() - 0.05);
+    fuelIndicator.setRotation(fuelIndicator.getRotation() - t_decrementaion);
+}
+
+void HUD::decrementHealthVisual(float t_decrementaion)
+{
+    if (m_healthIndicator.getSize().x > 0)
+    {
+        m_healthIndicator.setSize({ m_healthIndicator.getSize().x - t_decrementaion, m_healthIndicator.getSize().y });
+    }
+    
 }
 

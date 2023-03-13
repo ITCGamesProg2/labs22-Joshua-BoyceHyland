@@ -186,7 +186,9 @@ protected:
 	/// <summary>
 	/// makes function for hud available in tank when it loses fuel
 	/// </summary>
-	std::function<void(int)>m_funcDecrementHudFuel; 
+	std::function<void(float)>m_funcDecrementHudFuel; 
+
+	std::function<void(float)>m_funcDecrementHudHealth; 
 
 
 

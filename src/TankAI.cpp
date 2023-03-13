@@ -14,15 +14,13 @@ TankAi::TankAi(sf::Texture const & texture, std::vector<sf::Sprite> & wallSprite
 	initSprites();
 	
 	m_startLocation = m_tankBase.getPosition();
-	m_currentState = AIState::Attack_Player;
+	m_currentState = AIState::Patrol_Map;
 	
 }
 
 ////////////////////////////////////////////////////////////
-void TankAi::update(Tank const & playerTank, double dt)
+void TankAi::update(std::function<void(float)>& t_decrementVisualHealth, Tank & playerTank, double dt)
 {
-
-
 
 	m_visionCone.update(m_currentState, m_tankBase.getPosition(), m_tankBase.getRotation());
 	m_bullets.update();
@@ -51,20 +49,20 @@ void TankAi::update(Tank const & playerTank, double dt)
 		acceleration = m_steering / MASS;
 		m_velocity = MathUtility::truncate(m_velocity + m_steering, MAX_SPEED);
 
+
+
+
 		if (checkForTargetReached())
 		{
 			m_reachedPatrolTarget = true;
 		}
-
-		
 		if (coneCollisionWithPlayer(playerTank))
 		{
 			std::cout << "You do be colliding tho" << std::endl;
 			m_currentState = AIState::Player_Detected;
 			m_statesTransitionTimer.restart();
 		}
-	/*	std::cout << "AI X: " << m_tankBase.getPosition().x << " Y: " << m_tankBase.getPosition().y << std::endl; 
-		std::cout << "Target X: " << m_patrolTarget.x << " Y: " << m_patrolTarget.y << std::endl;*/
+		
 		break;
 
 	case AIState::Player_Detected:
@@ -133,31 +131,31 @@ void TankAi::update(Tank const & playerTank, double dt)
 
 			break;
 
-	case AIState::STRAIGHTEN:
-		updateHeads();
+	//case AIState::STRAIGHTEN:
+	//	updateHeads();
 
-		rightCollision = isColliding(m_aheadRight, m_aheadRight);
-		leftCollision = isColliding(m_aheadLeft, m_aheadLeft);
-		m_headOnCollision = isColliding(m_aheadFront, m_halfAheadFront);
+	//	rightCollision = isColliding(m_aheadRight, m_aheadRight);
+	//	leftCollision = isColliding(m_aheadLeft, m_aheadLeft);
+	//	m_headOnCollision = isColliding(m_aheadFront, m_halfAheadFront);
 
-		//std::cout << "Straighting " << std::endl; 	
+	//	//std::cout << "Straighting " << std::endl; 	
 
 
-		//if (!m_headOnCollision ||(!rightCollision && !leftCollision) )   // m_headOnCollision provide decen
-		//{
-		//	m_aiBehaviour = AiBehaviour::SEEK_PLAYER;
-		//}
+	//	//if (!m_headOnCollision ||(!rightCollision && !leftCollision) )   // m_headOnCollision provide decen
+	//	//{
+	//	//	m_aiBehaviour = AiBehaviour::SEEK_PLAYER;
+	//	//}
 
-		if (!m_headOnCollision && !rightCollision && !leftCollision)   // m_headOnCollision provide decen
-		{
-			//currentState = AIState::SEEK_PLAYER;
-		}
-		else if (m_headOnCollision)
-		{
-			//currentState = AIState::SEEK_PLAYER;
-		}
+	//	if (!m_headOnCollision && !rightCollision && !leftCollision)   // m_headOnCollision provide decen
+	//	{
+	//		//currentState = AIState::SEEK_PLAYER;
+	//	}
+	//	else if (m_headOnCollision)
+	//	{
+	//		//currentState = AIState::SEEK_PLAYER;
+	//	}
 
-		break;
+	//	break;
 	case AIState::STOP:
 		m_velocity = sf::Vector2f(0, 0);
 		
@@ -217,8 +215,25 @@ void TankAi::update(Tank const & playerTank, double dt)
 		{
 			std::cout << "You hit the Enemy" << std::endl;
 			m_bullets.getBullet(i).despawn();
-			
+			t_decrementVisualHealth(20);
+			playerTank.decrementHealth(1);
 
+		}
+		else if(m_bullets.getBullet(i).getBody().getPosition().x < 0)
+		{
+			m_bullets.getBullet(i).despawn();
+		}
+		else if (m_bullets.getBullet(i).getBody().getPosition().x > 1440)
+		{
+			m_bullets.getBullet(i).despawn();
+		}
+		else if (m_bullets.getBullet(i).getBody().getPosition().y < 0)
+		{
+			m_bullets.getBullet(i).despawn();
+		}
+		else if (m_bullets.getBullet(i).getBody().getPosition().y > 1440)
+		{
+			m_bullets.getBullet(i).despawn();
 		}
 
 	}
@@ -288,10 +303,10 @@ bool TankAi::coneCollisionWithPlayer(Tank const& playerTank)
 void TankAi::render(sf::RenderWindow & window)
 {
 	// TODO: Don't draw if off-screen...
-	//for (sf::CircleShape circle : m_obstacles)
-	//{
-	//	window.draw(circle);
-	//}
+	for (sf::CircleShape circle : m_obstacles)
+	{
+		window.draw(circle);
+	}
 	//sf::CircleShape ahead(10);
 	//ahead.setPosition(m_aheadFront);
 	//window.draw(ahead);
@@ -319,7 +334,7 @@ void TankAi::init(sf::Vector2f position)
 
 	for (sf::Sprite const wallSprite : m_wallSprites)
 	{
-		sf::CircleShape circle(wallSprite.getTextureRect().width * 1.0f);
+		sf::CircleShape circle(wallSprite.getTextureRect().width * 1.25f);
 		circle.setOrigin(circle.getRadius(), circle.getRadius());
 		circle.setPosition(wallSprite.getPosition());
 		m_obstacles.push_back(circle);

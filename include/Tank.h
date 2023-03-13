@@ -22,7 +22,7 @@ public:
 /// <param name="t_texture">A reference to the sprite sheet texture</param>
 ///< param name="t_wallSprites">A reference to the container of wall sprites</param>  
 	Tank(sf::Texture const& texture, std::vector<sf::Sprite>& t_wallSprites, std::vector<Target>& t_target);
-	void update(double dt, std::function<void(int)>& t_funcApplyDamage, std::function<void(int)>& t_decrementHudFuel, sf::Sprite t_tankBase);
+	void update(double dt, std::function<void(int)>& t_funcApplyDamage, std::function<void(float)>& t_decrementHudFuel, sf::Sprite t_tankBase);
 	void render(sf::RenderWindow& window);
 	void setPosition(sf::Vector2f t_position);
 
@@ -49,7 +49,7 @@ public:
 	/// <summary>
 	/// processed controle keys and applies speed /rotation as appropiatee
 	/// </summary>
-	void handleKeyInput(std::function<void(int)>& t_decrementHudFuel);
+	void handleKeyInput(std::function<void(float)>& t_decrementHudFuel);
 
 	/// <summary>
 	/// increases rotation the turret on its own
@@ -120,9 +120,20 @@ public:
 	sf::Sprite getTurret() const;
 	sf::Sprite getBase() const;
 
+	/// <summary>
+	/// allows for player tank to be damaged
+	/// </summary>
+	/// <param name="t_decrementation">amount player will be damaged</param>
+	void decrementHealth(int t_decrementation); 
+
+	/// <summary>
+	/// returns whether the tank is still alive
+	/// </summary>
+	bool isAlive();
+
 private:
 	void initSprites();
-	void decrementFuelSupply(std::function<void(int)>& t_decrementHudFuel);
+	void decrementFuelSupply(std::function<void(float)>& t_decrementHudFuel);
 
 	// tank variables 
 	sf::Sprite m_tankBase;
@@ -167,4 +178,8 @@ private:
 	// fuel
 	float fuelSupply = 100;
 
+	int m_health = 5;
+
+	// contro
+	bool m_fuelLeak{ false };
 };
