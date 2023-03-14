@@ -304,10 +304,10 @@ bool TankAi::coneCollisionWithPlayer(Tank const& playerTank)
 void TankAi::render(sf::RenderWindow & window)
 {
 	// TODO: Don't draw if off-screen...
-	for (sf::CircleShape circle : m_obstacles)
+	/*for (sf::CircleShape circle : m_obstacles)
 	{
 		window.draw(circle);
-	}
+	}*/
 	//sf::CircleShape ahead(10);
 	//ahead.setPosition(m_aheadFront);
 	//window.draw(ahead);

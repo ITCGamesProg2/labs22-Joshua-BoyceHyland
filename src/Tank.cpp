@@ -115,23 +115,23 @@ void Tank::handleKeyInput(std::function<void(float)>& t_decrementHudFuel)
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
 		{
 			increaseSpeed();
-			//decrementFuelSupply(t_decrementHudFuel);
+			decrementFuelSupply(t_decrementHudFuel);
 		}
 
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
 		{
 			decreaseSpeed();
-			//decrementFuelSupply(t_decrementHudFuel);
+			decrementFuelSupply(t_decrementHudFuel);
 		}
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
 		{
 			increaseRotation();
-			//decrementFuelSupply(t_decrementHudFuel);
+			decrementFuelSupply(t_decrementHudFuel);
 		}
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
 		{
 			decreaseRotation();
-			//decrementFuelSupply(t_decrementHudFuel);
+			decrementFuelSupply(t_decrementHudFuel);
 		}
 	}
 
