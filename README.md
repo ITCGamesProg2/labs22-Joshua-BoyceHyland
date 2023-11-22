@@ -1,10 +1,10 @@
 # Target Practices Gameplay
-<img src="Gifs/target.gif" width="678" height="382"/>
+<img src="Gifs/Target.gif" width="678" height="382"/>
 Target gamemode, shoot all the targets before the timer goes out to show you stats
 
 # Enemy Gameplay
 <img src="Gifs/enemy.gif" width="678" height="382"/>
-FEnemy will roam and fire on you if you enter its detection cone
+Enemys will roam and fire on you if you enter its detection cone
 
 # Fuel UI
 <img src="Gifs/fuel.gif" width="678" height="382"/>
