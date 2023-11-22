@@ -501,6 +501,8 @@ void Game::updateCamera()
 			m_window.setView(m_camera);
 
 			break;
+
+
 		}
 }
 
@@ -528,6 +530,7 @@ void Game::update(double dt)
 			scoreUpdate();
 			manageTargetTimers();
 			chechForTargetRespawn();
+			m_tank.update(dt, m_funcApplyDamge, m_funcDecrementHudFuel, m_aiTank.getTankBase());
 			break;
 
 		case UpdateYAML:

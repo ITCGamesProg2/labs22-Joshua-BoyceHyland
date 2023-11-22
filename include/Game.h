@@ -237,7 +237,7 @@ protected:
 	
 
 	// displayed time variables
-	sf::Time m_timer = sf::seconds(5);
+	sf::Time m_timer = sf::seconds(30);
 	sf::Clock m_clock;
 
 	// switches between gameplay and menu etc
