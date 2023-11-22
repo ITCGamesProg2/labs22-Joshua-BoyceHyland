@@ -1,7 +1,9 @@
 # Target Practices Gameplay
-![]([https://github.com/JoshuaBoyceHyland/3rdPersonUnity/blob/main/Gifs/Player.gif](https://github.com/ITCGamesProg2/labs22-Joshua-BoyceHyland/blob/main/Gifs/Repair%20feature.gif))
-<img src="Gifs/Repair feature.gif" width="678" height="382"/>
+
+
 
 # Enemy Patrolling
 # Repair Feature
+<img src="Gifs/Repair feature.gif" width="678" height="382"/>
+## Turret Will have chance to break, making the turret rotate uncontrollably until R is pressed enough times 
 # UI
